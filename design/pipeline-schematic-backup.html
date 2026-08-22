@@ -1,0 +1,573 @@
+<title>Pipeline Schematic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* dark-first: bare :root holds the dark (default) palette */
+    --bg:#151210;
+    --surface:#1D1916;
+    --surface-2:#221D19;
+    --line:#3A332C;
+    --line-strong:#57493A;
+    --text:#EDE6DA;
+    --text-dim:#9C8F7D;
+    --accent:#FF6A2B;
+    --accent-dim:#8A4A2A;
+    --accent-wash:rgba(255,106,43,0.10);
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#F3EEE4;
+      --surface:#EAE3D3;
+      --surface-2:#E2D9C5;
+      --line:#C9BEA6;
+      --line-strong:#8A7A5C;
+      --text:#241F19;
+      --text-dim:#6B6151;
+      --accent:#C4501A;
+      --accent-dim:#E0A480;
+      --accent-wash:rgba(196,80,26,0.10);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F3EEE4;
+    --surface:#EAE3D3;
+    --surface-2:#E2D9C5;
+    --line:#C9BEA6;
+    --line-strong:#8A7A5C;
+    --text:#241F19;
+    --text-dim:#6B6151;
+    --accent:#C4501A;
+    --accent-dim:#E0A480;
+    --accent-wash:rgba(196,80,26,0.10);
+  }
+  :root[data-theme="dark"]{
+    --bg:#151210;
+    --surface:#1D1916;
+    --surface-2:#221D19;
+    --line:#3A332C;
+    --line-strong:#57493A;
+    --text:#EDE6DA;
+    --text-dim:#9C8F7D;
+    --accent:#FF6A2B;
+    --accent-dim:#8A4A2A;
+    --accent-wash:rgba(255,106,43,0.10);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px),
+      var(--bg);
+    background-attachment:fixed;
+    background-blend-mode: normal;
+    color:var(--text);
+    font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* the grid texture should be extremely faint — tint it via opacity trick */
+  body{ background-color: var(--bg); }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px);
+    opacity:0.06;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{ position:relative; z-index:1; max-width:1180px; margin:0 auto; padding:56px 32px 96px; }
+
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, "SF Mono", monospace; }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  h1,h2,h3{ font-family:"Overpass", ui-sans-serif, sans-serif; text-wrap:balance; margin:0; }
+
+  /* ---------- Title block header ---------- */
+  .titleblock{
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:28px 28px 0;
+    margin-bottom:64px;
+    background:var(--surface);
+  }
+  .titleblock-top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:32px;
+    padding-bottom:26px;
+  }
+  .titleblock h1{
+    font-weight:900;
+    font-size:clamp(28px, 4vw, 44px);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    max-width:15ch;
+  }
+  .titleblock .dek{
+    color:var(--text-dim);
+    font-size:15.5px;
+    line-height:1.6;
+    max-width:46ch;
+    margin-top:14px;
+  }
+  .stamp{
+    text-align:right;
+    flex-shrink:0;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11px;
+    color:var(--text-dim);
+    line-height:1.9;
+    white-space:nowrap;
+  }
+  .stamp b{ color:var(--text); font-weight:600; }
+  .titleblock-strip{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    border-top:1px solid var(--line);
+  }
+  .titleblock-strip div{
+    padding:10px 16px;
+    border-right:1px solid var(--line);
+    font-family:"IBM Plex Mono", monospace;
+    font-size:11px;
+    color:var(--text-dim);
+  }
+  .titleblock-strip div:last-child{ border-right:none; }
+  .titleblock-strip span{ display:block; color:var(--text); font-size:12.5px; margin-top:2px; }
+
+  /* ---------- Pipeline ---------- */
+  .section-head{ margin-bottom:28px; }
+  .section-head h2{ font-size:22px; font-weight:800; margin-top:8px; letter-spacing:-0.01em; }
+  .section-head p{ color:var(--text-dim); font-size:14.5px; max-width:62ch; line-height:1.65; margin-top:10px; }
+
+  .pipeline{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    margin:36px 0 8px;
+    flex-wrap:wrap;
+  }
+  .node{
+    flex:1 1 150px;
+    position:relative;
+    padding:18px 16px 20px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    min-width:150px;
+  }
+  .node + .node{ border-left:none; }
+  .node[data-state="live"]{ border-color:var(--accent); background:var(--accent-wash); }
+  .node[data-state="next"]{ border-style:dashed; border-color:var(--accent-dim); }
+  .node[data-state="planned"]{ border-style:dashed; opacity:0.55; }
+
+  .node .num{ font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--text-dim); }
+  .node[data-state="live"] .num{ color:var(--accent); }
+  .node .label{ font-family:"Overpass", sans-serif; font-weight:800; font-size:15px; margin:8px 0 6px; letter-spacing:0.01em; }
+  .node .cap{ font-size:12.5px; color:var(--text-dim); line-height:1.5; }
+  .chip{
+    display:inline-block; margin-top:12px;
+    font-family:"IBM Plex Mono", monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:3px 7px; border:1px solid var(--line-strong); color:var(--text-dim);
+  }
+  .node[data-state="live"] .chip{ border-color:var(--accent); color:var(--accent); }
+  .node[data-state="next"] .chip{ color:var(--accent-dim); border-color:var(--accent-dim); }
+
+  .connector{
+    flex:0 0 22px;
+    align-self:center;
+    height:1px;
+    background:var(--line-strong);
+    position:relative;
+    transform:scaleX(1);
+    transform-origin:left center;
+  }
+  .connector::before, .connector::after{
+    content:""; position:absolute; top:-3px; width:1px; height:7px; background:var(--line-strong);
+  }
+  .connector::before{ left:0; } .connector::after{ right:0; }
+
+  .js-anim .node{ opacity:0; transform:translateY(6px); animation:nodeIn 0.5s ease forwards; }
+  .js-anim .connector{ transform:scaleX(0); animation:lineIn 0.35s ease forwards; }
+  @keyframes nodeIn{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes lineIn{ to{ transform:scaleX(1); } }
+  @media (prefers-reduced-motion: reduce){
+    .js-anim .node, .js-anim .connector{ animation:none !important; opacity:1 !important; transform:none !important; }
+  }
+
+  .pipeline-note{
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--text-dim);
+    border-left:2px solid var(--accent); padding:10px 14px; margin-top:18px; background:var(--surface-2);
+  }
+  .pipeline-note b{ color:var(--text); }
+
+  /* ---------- Dataset cards ---------- */
+  .datasets{ display:grid; grid-template-columns:repeat(3, 1fr); gap:0; margin-top:24px; }
+  .dcard{
+    border:1px solid var(--line);
+    padding:22px 20px 20px;
+    background:var(--surface);
+    transition:background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .dcard + .dcard{ border-left:none; }
+  .dcard:hover{ background:var(--surface-2); border-color:var(--line-strong); transform:translateY(-2px); }
+  .dcard .tag{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--text-dim); letter-spacing:0.06em; }
+  .dcard h3{ font-size:17px; font-weight:800; margin:10px 0 10px; }
+  .dcard .row{ font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:8px; }
+  .dcard .row b{ color:var(--text); font-weight:600; }
+  .dcard .stat{
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--text-dim);
+    display:flex; justify-content:space-between;
+  }
+  .dcard .stat b{ color:var(--accent); font-size:14px; }
+
+  /* ---------- Viewer ---------- */
+  .tabs{ display:flex; gap:2px; margin:36px 0 0; }
+  .tab{
+    font-family:"IBM Plex Mono", monospace; font-size:12px; letter-spacing:0.03em;
+    padding:10px 16px; border:1px solid var(--line); border-bottom:none;
+    background:var(--surface); color:var(--text-dim); cursor:pointer;
+  }
+  .tab[aria-selected="true"]{ color:var(--accent); border-color:var(--accent); background:var(--accent-wash); }
+  .viewer{ border:1px solid var(--line); }
+  .panes{ display:grid; grid-template-columns:1fr 24px 1fr; }
+  .pane{ min-width:0; }
+  .pane-head{
+    font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--text-dim);
+    padding:10px 16px; border-bottom:1px solid var(--line); background:var(--surface);
+    display:flex; justify-content:space-between;
+  }
+  .pane-body{ padding:16px; background:var(--surface-2); overflow-x:auto; }
+  .pane-body pre{
+    margin:0; font-family:"IBM Plex Mono", monospace; font-size:12.2px; line-height:1.62;
+    color:var(--text); white-space:pre-wrap; word-break:break-word;
+  }
+  .pane-body .json-key{ color:var(--accent); }
+  .pane-body .json-str{ color:var(--text); }
+  .pane-body .json-num{ color:#9BB79A; }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]) .pane-body .json-num{ color:#5C7A5A; }
+  }
+  :root[data-theme="light"] .pane-body .json-num{ color:#5C7A5A; }
+  .ruler{
+    position:relative;
+    background-image:repeating-linear-gradient(180deg, var(--line-strong) 0, var(--line-strong) 1px, transparent 1px, transparent 12px);
+    background-position: center top;
+    background-repeat:repeat-y;
+    background-size:1px 12px;
+  }
+  .ruler::before{ content:""; position:absolute; top:0; bottom:0; left:50%; width:1px; background:var(--line); }
+
+  .viewer-note{
+    padding:12px 16px; border-top:1px solid var(--line); background:var(--surface);
+    font-size:12.5px; color:var(--text-dim); line-height:1.6;
+  }
+  .viewer-note b{ color:var(--text); }
+
+  footer{
+    margin-top:56px; padding-top:20px; border-top:1px solid var(--line);
+    font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--text-dim); line-height:1.8;
+  }
+
+  @media (max-width: 860px){
+    .titleblock-strip{ grid-template-columns:repeat(2,1fr); }
+    .titleblock-strip div:nth-child(2){ border-right:none; }
+    .datasets{ grid-template-columns:1fr; }
+    .dcard{ border-left:1px solid var(--line) !important; border-top:none; }
+    .dcard:first-child{ border-top:1px solid var(--line); }
+    .panes{ grid-template-columns:1fr; }
+    .ruler{ display:none; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="titleblock">
+    <div class="titleblock-top">
+      <div>
+        <div class="eyebrow">AI Anchor — Data Layer</div>
+        <h1>How the pipeline reads<br>Harpreet's data</h1>
+        <p class="dek">A live look at the two stages actually built so far — turning three raw source documents into retrievable, structured chunks — before any retrieval or generation happens.</p>
+      </div>
+      <div class="stamp">
+        DWG NO. <b>AA-001</b><br>
+        REV. <b>A</b><br>
+        SCALE <b>N/A</b><br>
+        DATE <b>2026-08-22</b>
+      </div>
+    </div>
+    <div class="titleblock-strip">
+      <div>STATUS<span>2 of 6 stages live</span></div>
+      <div>DATASETS<span>3 fixed, no uploads</span></div>
+      <div>CHUNKS INDEXED<span>643 total</span></div>
+      <div>NEXT STAGE<span>Embed &amp; Index</span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">The Pipeline</div>
+      <h2>Source → Chunk → Embed → Retrieve → Augment → Generate</h2>
+      <p>Six stages, in order. The first two are real and running on this page. The rest are staged next — showing them now isn't decoration, it's the honest map of what's built and what's coming.</p>
+    </div>
+
+    <div class="pipeline" id="pipeline">
+      <div class="node" data-state="live">
+        <div class="num">01</div>
+        <div class="label">Source</div>
+        <div class="cap">Raw .md / .txt files a human can read top to bottom.</div>
+        <span class="chip">Live</span>
+      </div>
+      <div class="connector"></div>
+      <div class="node" data-state="live">
+        <div class="num">02</div>
+        <div class="label">Chunk</div>
+        <div class="cap">Split into small, individually-citable pieces.</div>
+        <span class="chip">Live</span>
+      </div>
+      <div class="connector"></div>
+      <div class="node" data-state="next">
+        <div class="num">03</div>
+        <div class="label">Embed &amp; Index</div>
+        <div class="cap">Each chunk becomes a vector, computed once.</div>
+        <span class="chip">Next up</span>
+      </div>
+      <div class="connector"></div>
+      <div class="node" data-state="planned">
+        <div class="num">04</div>
+        <div class="label">Retrieve</div>
+        <div class="cap">Match a question to the closest chunks.</div>
+        <span class="chip">Planned</span>
+      </div>
+      <div class="connector"></div>
+      <div class="node" data-state="planned">
+        <div class="num">05</div>
+        <div class="label">Augment</div>
+        <div class="cap">Insert retrieved chunks into the prompt.</div>
+        <span class="chip">Planned</span>
+      </div>
+      <div class="connector"></div>
+      <div class="node" data-state="planned">
+        <div class="num">06</div>
+        <div class="label">Generate</div>
+        <div class="cap">The LLM answers, grounded in that context.</div>
+        <span class="chip">Planned</span>
+      </div>
+    </div>
+
+    <div class="pipeline-note">
+      <b>What "indexed" means below</b> — every source document has been split into chunks and given a consistent shape (stage 02). No vectors exist yet — that's stage 03, next. The JSON on the right is the input embedding will run on, not embeddings themselves.
+    </div>
+  </section>
+
+  <section style="margin-top:60px;">
+    <div class="section-head">
+      <div class="eyebrow">Three Source Datasets</div>
+      <h2>Fixed on purpose — no uploads, ever</h2>
+      <p>A visitor picks one of these three. Nothing else can be queried — that keeps cost at zero and means every dataset here was chosen and verified, not scraped on the fly.</p>
+    </div>
+
+    <div class="datasets">
+      <div class="dcard">
+        <div class="tag">SPEC 01 / 03 — PROSE, PERSONAL</div>
+        <h3>Harpreet's Career</h3>
+        <div class="row"><b>From:</b> resume.md + the live portfolio site's own content.</div>
+        <div class="row"><b>Signifies:</b> the authentic anchor dataset — work history, projects, skills, real writeups of what shipped and why.</div>
+        <div class="stat"><span>CHUNKS</span><b>75</b></div>
+      </div>
+      <div class="dcard">
+        <div class="tag">SPEC 02 / 03 — NUMERIC, VERIFIED</div>
+        <h3>JDM Legends</h3>
+        <div class="row"><b>From:</b> web-verified specs for 8 icons — Supra, GT-R, RX-7, both Fairlady Z generations, NSX, Evo VI, WRX STI.</div>
+        <div class="row"><b>Signifies:</b> the structured dataset — every chunk carries real numeric fields, built for the chart tool coming later.</div>
+        <div class="stat"><span>CHUNKS</span><b>8</b></div>
+      </div>
+      <div class="dcard">
+        <div class="tag">SPEC 03 / 03 — NARRATIVE, PUBLIC DOMAIN</div>
+        <h3>Sherlock Holmes</h3>
+        <div class="row"><b>From:</b> Project Gutenberg — Arthur Conan Doyle, 1892. Unambiguous public domain.</div>
+        <div class="row"><b>Signifies:</b> proof the pipeline generalizes — pure story retrieval, nothing like career facts or car specs.</div>
+        <div class="stat"><span>CHUNKS</span><b>560</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top:60px;">
+    <div class="section-head">
+      <div class="eyebrow">Source vs. Indexed</div>
+      <h2>What chunking actually does to a file</h2>
+      <p>Same underlying fact, two shapes. Left is what a person reads. Right is one chunk of what the retrieval math will search — every dataset gets forced into the same {id, section, title, text, metadata} shape.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-target="career">Harpreet's Career</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="cars">JDM Legends</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="sherlock">Sherlock Holmes</button>
+    </div>
+
+    <div class="viewer">
+      <div class="panels">
+
+        <div class="panel" data-panel="career">
+          <div class="panes">
+            <div class="pane">
+              <div class="pane-head"><span>SOURCE</span><span>resume.md</span></div>
+              <div class="pane-body"><pre>## Summary
+
+AI Engineer with 4+ years of experience
+delivering scalable enterprise applications.
+Transitioned from Power Platform development
+to taking sole ownership of React front-end
+architectures for cutting-edge AI interfaces.
+Adept at bridging user experiences with modern
+cloud integrations (AWS, Lambda) and committed
+to driving team success through advanced GitHub
+version control, CI/CD, and collaborative
+software development practices.</pre></div>
+            </div>
+            <div class="ruler"></div>
+            <div class="pane">
+              <div class="pane-head"><span>INDEXED</span><span>portfolio.json · 1 / 75</span></div>
+              <div class="pane-body"><pre>{
+  <span class="json-key">"id"</span>: <span class="json-str">"resume-summary"</span>,
+  <span class="json-key">"section"</span>: <span class="json-str">"summary"</span>,
+  <span class="json-key">"title"</span>: <span class="json-str">"Summary"</span>,
+  <span class="json-key">"text"</span>: <span class="json-str">"AI Engineer with 4+ years of
+    experience delivering scalable
+    enterprise applications…"</span>,
+  <span class="json-key">"source"</span>: <span class="json-str">"resume.md"</span>,
+  <span class="json-key">"metadata"</span>: {}
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" data-panel="cars" style="display:none;">
+          <div class="panes">
+            <div class="pane">
+              <div class="pane-head"><span>SOURCE</span><span>cars-jdm-legends.md</span></div>
+              <div class="pane-body"><pre>## Toyota Supra MK4 (A80) Turbo
+- Years: 1993–2002
+- Engine: 2JZ-GTE, 3.0L twin-turbo inline-6
+- Horsepower: 321 hp
+- Torque: 315 lb-ft
+- 0–60 mph: 4.6 s
+- Top speed: 155 mph (electronically
+  limited; unlimited US models
+  observed near 177 mph)
+- Curb weight: 3,560 lb
+- Note: JDM output was understated
+  under Japan's manufacturer
+  horsepower agreement.</pre></div>
+            </div>
+            <div class="ruler"></div>
+            <div class="pane">
+              <div class="pane-head"><span>INDEXED</span><span>cars-jdm-legends.json · 1 / 8</span></div>
+              <div class="pane-body"><pre>{
+  <span class="json-key">"id"</span>: <span class="json-str">"cars-toyota-supra-mk4-a80-turbo"</span>,
+  <span class="json-key">"section"</span>: <span class="json-str">"car_spec"</span>,
+  <span class="json-key">"title"</span>: <span class="json-str">"Toyota Supra MK4 (A80) Turbo"</span>,
+  <span class="json-key">"text"</span>: <span class="json-str">"Toyota Supra MK4 (A80) Turbo
+    - Years: 1993–2002 …"</span>,
+  <span class="json-key">"metadata"</span>: {
+    <span class="json-key">"horsepowerHp"</span>: <span class="json-num">321</span>,
+    <span class="json-key">"torqueLbFt"</span>: <span class="json-num">315</span>,
+    <span class="json-key">"zeroToSixtySec"</span>: <span class="json-num">4.6</span>,
+    <span class="json-key">"curbWeightLb"</span>: <span class="json-num">3560</span>,
+    <span class="json-key">"yearStart"</span>: <span class="json-num">1993</span>,
+    <span class="json-key">"yearEnd"</span>: <span class="json-num">2002</span>
+  }
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" data-panel="sherlock" style="display:none;">
+          <div class="panes">
+            <div class="pane">
+              <div class="pane-head"><span>SOURCE</span><span>sherlock-holmes.txt</span></div>
+              <div class="pane-body"><pre>I. A SCANDAL IN BOHEMIA
+
+I.
+
+To Sherlock Holmes she is always _the_
+woman. I have seldom heard him mention
+her under any other name. In his eyes
+she eclipses and predominates the whole
+of her sex. It was not that he felt any
+emotion akin to love for Irene Adler.
+All emotions, and that one particularly,
+were abhorrent to his cold, precise but
+admirably balanced mind…</pre></div>
+            </div>
+            <div class="ruler"></div>
+            <div class="pane">
+              <div class="pane-head"><span>INDEXED</span><span>sherlock-holmes.json · 1 / 560</span></div>
+              <div class="pane-body"><pre>{
+  <span class="json-key">"id"</span>: <span class="json-str">"sherlock-a-scandal-in-bohemia-1"</span>,
+  <span class="json-key">"section"</span>: <span class="json-str">"story"</span>,
+  <span class="json-key">"title"</span>: <span class="json-str">"A SCANDAL IN BOHEMIA"</span>,
+  <span class="json-key">"text"</span>: <span class="json-str">"I. A SCANDAL IN BOHEMIA …
+    To Sherlock Holmes she is always
+    _the_ woman…"</span>,
+  <span class="json-key">"source"</span>: <span class="json-str">"sherlock-holmes.txt"</span>,
+  <span class="json-key">"metadata"</span>: {
+    <span class="json-key">"story"</span>: <span class="json-str">"A SCANDAL IN BOHEMIA"</span>,
+    <span class="json-key">"part"</span>: <span class="json-num">1</span>
+  }
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="viewer-note">
+        <b>Why 560 chunks for one book?</b> Each story is cut into ~1,200-character pieces along paragraph breaks — small enough that a question about one clue retrieves that clue, not the whole story.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    DESIGN SAMPLE — reflects actual build state as of 2026-08-22. Stages 01–02 are real, wired to the files in this repo. Stages 03–06 are the intended path, not yet built.
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var pipeline = document.getElementById('pipeline');
+      pipeline.classList.add('js-anim');
+      var children = pipeline.children;
+      var delay = 0;
+      for (var i = 0; i < children.length; i++) {
+        (function(el, d){
+          el.style.animationDelay = d + 'ms';
+        })(children[i], delay);
+        delay += 70;
+      }
+    }
+    var tabs = document.querySelectorAll('.tab');
+    var panels = document.querySelectorAll('.panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+        tab.setAttribute('aria-selected','true');
+        var target = tab.getAttribute('data-target');
+        panels.forEach(function(p){
+          p.style.display = (p.getAttribute('data-panel') === target) ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>

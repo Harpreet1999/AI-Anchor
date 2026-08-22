@@ -1,0 +1,869 @@
+{
+  "datasetId": "portfolio",
+  "displayName": "Harpreet's Career",
+  "description": "Harpreet Singh's resume and full portfolio site — work history, projects, skills, certifications, achievements, and education. Ask about his AI Engineer work at Cognizant, the Agentic Grounding Platform, or anything else on his site.",
+  "sourceFiles": [
+    "data/sources/resume.md",
+    "data/sources/portfolio.md"
+  ],
+  "chunks": [
+    {
+      "id": "resume-summary",
+      "section": "summary",
+      "title": "Summary",
+      "text": "AI Engineer with 4+ years of experience delivering scalable enterprise applications. Transitioned from Power Platform development to taking sole ownership of React front-end architectures for cutting-edge AI interfaces. Adept at bridging user experiences with modern cloud integrations (AWS, Lambda) and committed to driving team success through advanced GitHub version control, CI/CD, and collaborative software development practices.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-role-cognizant-associate-ai-engineer-nov-2025-jul-2026",
+      "section": "work_experience",
+      "title": "Cognizant — Associate, AI Engineer (Nov 2025 — Jul 2026)",
+      "text": "Cognizant — Associate, AI Engineer (Nov 2025 — Jul 2026)\n- Led front-end development of the CTS VergiForce/Agentic Grounding Platform — sole front-end development of a React-based interface from scratch for an internal AI agent-creation platform. Developed features for agent configuration in an application grounding context.\n- Worked on backend integration by transferring Streamlit functionality to native React UI and developing AWS Lambda functions to move local processing to a serverless architecture, improving scalability and simplifying application maintenance.\n- Contributed to the Enhertu Case Evaluation Intelligence Agent by developing the application's user interface, integrating/testing backend APIs, and supporting client demonstrations through interactive prototypes and presentations.\n- Strengthened expertise in AWS Cloud, AI services, Streamlit, GitHub collaboration, CI/CD architecture, GitHub Copilot, Claude CLI, and modern AI development practices through project work and certified courses, with ongoing pursuit of Associate/Professional-level Generative AI, ML, and Cloud certifications.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-role-cognizant-associate-power-platform-engineer-apr-2024-oct-2025",
+      "section": "work_experience",
+      "title": "Cognizant — Associate, Power Platform Engineer (Apr 2024 — Oct 2025)",
+      "text": "Cognizant — Associate, Power Platform Engineer (Apr 2024 — Oct 2025)\n- Designed and implemented custom business solutions using Power Apps and automated workflows with Power Automate, enhancing client processes and meeting business requirements.\n- Resolved complex requests for SharePoint, Power Apps, and Power Automate, consistently maintaining SLA and KPI compliance.\n- Provided Microsoft 365 administration and support for SharePoint Online, MS Teams, and other Microsoft services, ensuring optimal performance and user satisfaction within the Life Sciences domain.\n- Conducted knowledge transfer (KT) sessions and interactive training to empower team members with best practices and technical insights.\n- Onboarded and trained a junior resource, providing hands-on guidance on project responsibilities and technical processes.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-role-cognizant-programmer-analyst-pa-and-pa-trainee-feb-2022-mar-2024",
+      "section": "work_experience",
+      "title": "Cognizant — Programmer Analyst (PA) and PA Trainee (Feb 2022 — Mar 2024)",
+      "text": "Cognizant — Programmer Analyst (PA) and PA Trainee (Feb 2022 — Mar 2024)\n- Administered Microsoft 365 services including SharePoint Online, Power Platform, and Power Apps, ensuring smooth operations in the Life Sciences sector.\n- Led data migration and automation with Power Automate, optimizing workflows and ensuring SLA/KPI compliance, and provided development, support, and maintenance with regular status reporting to ensure project transparency.\n- Completed global onboarding, documentation, ethics and compliance trainings.\n- SharePoint domain training in HTML, CSS, JS, React, C#. Projects: Restaurant Website, Landing pages, MFRP Sales Portal.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-role-globiz-technology-web-dev-trainee-internship-oct-2021-feb-2022",
+      "section": "work_experience",
+      "title": "Globiz Technology — Web Dev Trainee, Internship (Oct 2021 — Feb 2022)",
+      "text": "Globiz Technology — Web Dev Trainee, Internship (Oct 2021 — Feb 2022)\n- Full Stack Web Development internship using the MERN stack.\n- Projects: the organization's newly redesigned website (MERN stack), and client projects as a front-end developer.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-projects-agentic-ai-projects-cts-vergiforce",
+      "section": "project",
+      "title": "Projects",
+      "text": "**Agentic AI Projects**: CTS VergiForce/Agentic Grounding Platform — a React-based interface for an internal AI agent-creation platform. Enhertu Case Evaluation Intelligence Agent. Community contribution projects. Tech: React.js, Vite, Streamlit (front end); Node.js, Express.js, REST APIs, PostgreSQL (back end); Antigravity, GitHub Copilot, Claude CLI.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-projects-organization-hackathon-expense-manag",
+      "section": "project",
+      "title": "Projects",
+      "text": "**Organization Hackathon — Expense Management System**: Automated expense management with bank account and credit card registration, admin dashboard, and auto-approval based on employee band. Tech: Power Apps (front end), SharePoint (back end), Power Automate (automation).",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-projects-mfrp-sales-portal-sales-portal-in-s",
+      "section": "project",
+      "title": "Projects",
+      "text": "**MFRP Sales Portal**: Sales portal in SharePoint using Web Parts, SPFx, and an Application Customizer with custom lists and validations. Tech: HTML, CSS, React, Gulp, Yeoman, Power Automate.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-projects-internship-projects-globiz-website",
+      "section": "project",
+      "title": "Projects",
+      "text": "**Internship Projects — Globiz Website**: Used the MERN stack to build front-end design, back-end logic, and dynamic binding of data from dynamic APIs.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-projects-setup-practice-projects-aimpress-e",
+      "section": "project",
+      "title": "Projects",
+      "text": "**Setup/Practice Projects**: Aimpress, Exam Timer, GitHub Profile Search, Restaurant website, Tic-Tac-Toe, \"Awesome\" landing page, Matilda. Tech: HTML, SCSS, JavaScript, Bootstrap, React.js, Node.js, REST APIs.",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-front-end-development-react-js-jav",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**Front-End Development**: React.js, JavaScript, Vite, HTML5, CSS3, SCSS/SASS, Bootstrap, Responsive Web Design",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-back-end-apis-database-node-js",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**Back-End, APIs & Database**: Node.js, Express.js, REST APIs, PostgreSQL, Postman, AWS Lambda, MongoDB",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-ai-cloud-technologies-agentic-ai",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**AI & Cloud Technologies**: Agentic AI Applications, AI Agent Interfaces (Streamlit and React-based), RAG, AWS (Lambda, S3, EC2), Microsoft Azure, AI/ML Technologies, Citrix Workspace",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-architecture-development-applicat",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**Architecture & Development**: Application Architecture, Project Structuring, Feature Planning, API Integration, Front-End/Back-End Integration",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-version-control-ai-tools-git-git",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**Version Control & AI Tools**: Git, GitHub, Jira, GH Actions (CI/CD), Agile/Scrum, Architecture Design, GitHub Copilot, Claude CLI, Antigravity IDE",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-leadership-collaboration-and-soft-sk",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**Leadership / Collaboration and Soft Skills**: Technical Leadership/Mentoring, Task Planning, Team Coordination/Training, Technical Communication, Collaborative Decision-Making, Problem Solving",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-skills-power-platform-power-apps-power-au",
+      "section": "skills",
+      "title": "Skills",
+      "text": "**Power Platform**: Power Apps, Power Automate, Power BI, SharePoint Online, SPFx, Microsoft 365",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-microsoft-certifications-azure-fundamen",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "Microsoft Certifications: Azure Fundamentals (AZ-900), Power Platform Fundamentals (PL-900), Artificial Intelligence Fundamentals (AI-900), GitHub Foundations (GH-900), GitHub Actions (GH-200), GitHub Copilot (GH-300), GitHub Administration (GH-100)",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-aws-certifications-cloud-practitioner",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "AWS Certifications: Cloud Practitioner (CLF-C02), AI Practitioner (AIF-C01)",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-scrum-foundation-professional-certificat",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "SCRUM Foundation Professional Certification",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-client-recognition-and-certification-for",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "Client recognition and certification for being the winner of the Quarterly Quizzo Competition",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-cognizant-certified-frontline-leaders",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "Cognizant Certified Frontline Leaders — People Leadership",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-full-stack-development-of-a-personal-web",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "Full stack development of a personal website — \"Globiz Technology\" — and \"Aimpress\" for an organization that was live and actively used",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-top-5-finalist-in-google-code-in-gsoc",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "Top 5 Finalist in Google Code-In / GSOC, an international competition hosted by Google LLC for open source contribution to KDE",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-certifications-achievements-corresponding-author-on-a-research-artic",
+      "section": "certification",
+      "title": "Certifications / Achievements",
+      "text": "Corresponding author on a research article at Elsevier: \"An outline on modern day applications of solid lubricants\"",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-education-guru-nanak-dev-engineering-college",
+      "section": "education",
+      "title": "Education",
+      "text": "**Guru Nanak Dev Engineering College** — Bachelor of Technology (IKGPTU), CGPA: 8.83, Punjab, India (Jul 2018 — Jun 2021)",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "resume-education-guru-nanak-dev-polytechnic-college",
+      "section": "education",
+      "title": "Education",
+      "text": "**Guru Nanak Dev Polytechnic College** — Polytechnic Diploma (PSBTE&IT), Percentage: 84.07%, Punjab, India (Jul 2015 — May 2018)",
+      "source": "resume.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-identity-hero",
+      "section": "identity",
+      "title": "Identity / Hero",
+      "text": "- Name: Harpreet Singh\n- Title: AI Engineer\n- Tagline: Building AI interfaces for enterprise software\n- Badges: AI Engineer, AI/ML, Fullstack Dev, FrontEnd - React, Power Platform\n- Company badge: @ Cognizant\n- Bio: \"I build front-end interfaces for agentic AI platforms, backed by enterprise automation experience. I care about turning complex AI systems into interfaces people actually trust.\"\n- Location: India — Timezone: IST (UTC +5:30)\n- Availability: Open to new opportunities — \"Open to full-time front-end / AI-interface engineering roles — happy to talk contract work too.\"\n\n### Stats\n- 4+ — Years across 3 roles at Cognizant\n- 10+ — Projects shipped, prototype to production\n- 10+ — Professional certifications, Microsoft & AWS\n- 7 — Leadership & open-source credits\n- 800+ — Members on the community platform where he contributed as Tech Lead and management",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-about",
+      "section": "about",
+      "title": "About",
+      "text": "Intro: \"Harpreet Singh — AI Engineer, with a front end that showed up before the AI did. I spent my first couple of years administering Microsoft 365 and Power Platform inside a Life Sciences enterprise, which meant learning how a system actually gets used long before I ever touched what runs underneath it. That's the habit that carried over: agentic AI platforms and enterprise automation are the subject, but the interface — the part someone has to actually trust — is still where I start.\"\n\nFocus areas:\n- Building React front-ends for internal AI agent-creation platforms\n- Deep interest in agentic workflows & RAG grounding\n- Currently exploring AWS Lambda & serverless architecture\n- Talk to me about React, Power Platform, or AI interfaces\n- Migrating Streamlit prototypes to native, production-ready UI\n- Learning stays part of the job, not separate from it",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-education-guru-nanak-dev-engineering-college-ikgptu",
+      "section": "education",
+      "title": "Guru Nanak Dev Engineering College (IKGPTU)",
+      "text": "Guru Nanak Dev Engineering College (IKGPTU) — Bachelor of Technology, CGPA 8.83, Jul 2018 — Jun 2021. Related: Google Summer of Code (Open Source Contributor), Published Author at Elsevier; related project: Easybank Landing Page.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-education-guru-nanak-dev-polytechnic-college-psbte-it",
+      "section": "education",
+      "title": "Guru Nanak Dev Polytechnic College (PSBTE&IT)",
+      "text": "Guru Nanak Dev Polytechnic College (PSBTE&IT) — Polytechnic Diploma, 84.07%, Jul 2015 — May 2018. Related: Google Code-In — Top 5 Finalist (2016), Student Council Member.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-education-teja-singh-sutantar-memorial-sr-secondary-school-pseb-e",
+      "section": "education",
+      "title": "Teja Singh Sutantar Memorial Sr. Secondary School (PSEB) — e",
+      "text": "Teja Singh Sutantar Memorial Sr. Secondary School (PSEB) — earlier schooling.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-azure-fundamentals-az-900",
+      "section": "certification",
+      "title": "Azure Fundamentals (AZ-900)",
+      "text": "Azure Fundamentals (AZ-900), Microsoft — Core cloud concepts (economics, scalability, shared responsibility model) and the main Azure service categories: compute, networking, storage, databases. Also covers management/governance: cost management, Azure Policy, resource locks, compliance tooling. The on-ramp before any role-based Azure certification.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-power-platform-fundamentals-pl-900",
+      "section": "certification",
+      "title": "Power Platform Fundamentals (PL-900)",
+      "text": "Power Platform Fundamentals (PL-900), Microsoft — The full Power Platform suite and how the pieces connect: Power Apps, Power Automate, Power BI, Copilot Studio for building agents, and Dataverse as the shared data layer, plus where AI plugs into each tool.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-artificial-intelligence-fundamentals-ai-900",
+      "section": "certification",
+      "title": "Artificial Intelligence Fundamentals (AI-900)",
+      "text": "Artificial Intelligence Fundamentals (AI-900), Microsoft — Core AI/ML workload categories on Azure (computer vision, NLP, generative AI) plus responsible-AI principles (fairness, transparency, privacy) treated as core content, not a side topic.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-github-foundations-gh-900",
+      "section": "certification",
+      "title": "GitHub Foundations (GH-900)",
+      "text": "GitHub Foundations (GH-900), Microsoft — Git/GitHub fundamentals end to end: repositories, commits, branches, pull requests, issues, code review, plus Codespaces, GitHub Pages, and Projects.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-github-actions-gh-200",
+      "section": "certification",
+      "title": "GitHub Actions (GH-200)",
+      "text": "GitHub Actions (GH-200), Microsoft — CI/CD via GitHub Actions: workflow YAML, event triggers, custom actions, self-hosted vs. GitHub-hosted runners, secrets, environment protection, and supply-chain security.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-github-copilot-gh-300",
+      "section": "certification",
+      "title": "GitHub Copilot (GH-300)",
+      "text": "GitHub Copilot (GH-300), Microsoft — Using Copilot responsibly across the dev lifecycle: suggestions, Copilot Chat, prompt engineering, data/privacy exclusions, and where human review still matters.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-github-administration-gh-100",
+      "section": "certification",
+      "title": "GitHub Administration (GH-100)",
+      "text": "GitHub Administration (GH-100), Microsoft — Running GitHub at the org level: access control, team structure, SSO/SAML, audit logs, branch protection, and security policy.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-aws-ai-practitioner-aif-c01",
+      "section": "certification",
+      "title": "AWS AI Practitioner (AIF-C01)",
+      "text": "AWS AI Practitioner (AIF-C01), AWS — Generative AI, Amazon Bedrock, AWS AI services, responsible AI, ML fundamentals (non-technical depth, cloud-provider AI equivalent of AI-900).",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-microsoft-365-copilot-chat-explorer",
+      "section": "certification",
+      "title": "Microsoft 365: Copilot Chat Explorer",
+      "text": "Microsoft 365: Copilot Chat Explorer, Microsoft Learn — Grounding, prompt basics, and where Copilot Chat sits inside the Microsoft 365 app suite.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-sharepoint-power-platform-development-201-intermediate-sp-pp-201",
+      "section": "certification",
+      "title": "SharePoint / Power Platform Development — 201 (Intermediate) (SP-PP-201)",
+      "text": "SharePoint / Power Platform Development — 201 (Intermediate) (SP-PP-201), Cognizant — Completed after ~6 months of structured internal SPFx / Power Apps / Power Automate practice, between the Microsoft fundamentals certs and production work.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-scrum-foundation-professional-certification-sfpc",
+      "section": "certification",
+      "title": "Scrum Foundation Professional Certification (SFPC)",
+      "text": "Scrum Foundation Professional Certification (SFPC) — Scrum roles, ceremonies, and Agile team mechanics.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-client-recognition-certification",
+      "section": "certification",
+      "title": "Client Recognition Certification",
+      "text": "Client Recognition Certification, Cognizant — Awarded twice at quarterly client review events for staying aligned with client goals; personally recognized by the client's CEO.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-cts-leadership-track-pa-to-associate-cts-l1",
+      "section": "certification",
+      "title": "CTS Leadership Track — PA to Associate (CTS-L1)",
+      "text": "CTS Leadership Track — PA to Associate (CTS-L1), Cognizant — Leadership course for the Programmer Analyst → Associate transition.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-certification-cts-leadership-track-associate-to-senior-associate-manager-cts-l2",
+      "section": "certification",
+      "title": "CTS Leadership Track — Associate to Senior Associate/Manager (CTS-L2)",
+      "text": "CTS Leadership Track — Associate to Senior Associate/Manager (CTS-L2), Cognizant — Leadership course for the Associate → Senior Associate → Manager transition.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-client-recognition-quarterly-excellence-x2",
+      "section": "achievement",
+      "title": "Client Recognition — Quarterly Excellence (x2)",
+      "text": "Client Recognition — Quarterly Excellence (x2), Cognizant client — won client recognition twice at quarterly review events, including personal recognition from the client's CEO.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-google-code-in-top-5-finalist-2016",
+      "section": "achievement",
+      "title": "Google Code-In — Top 5 Finalist (2016)",
+      "text": "Google Code-In — Top 5 Finalist (2016), Google · KDE — open-source contribution.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-published-research-article-elsevier",
+      "section": "achievement",
+      "title": "Published Research Article, Elsevier",
+      "text": "Published Research Article, Elsevier — \"An outline on modern day applications of solid lubricants,\" published during the B.Tech.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-student-council-member-polytechnic-diploma",
+      "section": "achievement",
+      "title": "Student Council Member — Polytechnic Diploma",
+      "text": "Student Council Member — Polytechnic Diploma — ranked #2 state-level, #1 in batch at graduation.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-cognizant-certified-frontline-leaders-people-leadership",
+      "section": "achievement",
+      "title": "Cognizant Certified Frontline Leaders — People Leadership",
+      "text": "Cognizant Certified Frontline Leaders — People Leadership — completed Cognizant's People Leadership program.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-technical-extracurriculars-thermax-storm-challenge-solidworks",
+      "section": "achievement",
+      "title": "Technical Extracurriculars — Thermax Storm Challenge & SolidWorks",
+      "text": "Technical Extracurriculars — Thermax Storm Challenge & SolidWorks — participated in the Thermax Storm Challenge; completed a certified SolidWorks course at Central Tool Room, Ludhiana (CAD/mechanical-design exposure outside the core curriculum).",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-lead-developer-community-lead-aimpress",
+      "section": "achievement",
+      "title": "Lead Developer & Community Lead — Aimpress",
+      "text": "Lead Developer & Community Lead — Aimpress (aimpress.co.in) — stepped up to lead a team of developers while still new to the community; project planning, task assignment, on-time delivery; building a gaming community platform for marginalized genders, live with ~800 members and growing. Stack: Jira, Antigravity and other AI coding agents, Node.js, Express + Supabase, React/Vite.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-achievement-front-end-lead-matilda-on-hold",
+      "section": "achievement",
+      "title": "Front-End Lead — Matilda (on hold)",
+      "text": "Front-End Lead — Matilda (on hold) — helped build a safe community platform for survivors of sexual assault, molestation, and related trauma; led front-end development; currently on hold, unfinished.",
+      "source": "portfolio.md",
+      "metadata": {}
+    },
+    {
+      "id": "portfolio-skills-front-end",
+      "section": "skills",
+      "title": "Front-End",
+      "text": "Front-End: React.js 88, JavaScript 85, Vite 80, HTML5/CSS3 90, SCSS/SASS 78, Bootstrap 80, Responsive Web Design 88",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "React.js",
+            "value": 88
+          },
+          {
+            "name": "JavaScript",
+            "value": 85
+          },
+          {
+            "name": "Vite",
+            "value": 80
+          },
+          {
+            "name": "HTML5/CSS3",
+            "value": 90
+          },
+          {
+            "name": "SCSS/SASS",
+            "value": 78
+          },
+          {
+            "name": "Bootstrap",
+            "value": 80
+          },
+          {
+            "name": "Responsive Web Design",
+            "value": 88
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-skills-back-end-data",
+      "section": "skills",
+      "title": "Back-End & Data",
+      "text": "Back-End & Data: Node.js 78, Express.js 76, REST APIs 85, PostgreSQL 72, MongoDB 70, Postman 80",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "Node.js",
+            "value": 78
+          },
+          {
+            "name": "Express.js",
+            "value": 76
+          },
+          {
+            "name": "REST APIs",
+            "value": 85
+          },
+          {
+            "name": "PostgreSQL",
+            "value": 72
+          },
+          {
+            "name": "MongoDB",
+            "value": 70
+          },
+          {
+            "name": "Postman",
+            "value": 80
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-skills-ai-cloud",
+      "section": "skills",
+      "title": "AI & Cloud",
+      "text": "AI & Cloud: Agentic AI 82, RAG 78, AWS (Lambda, S3, EC2) 74, Microsoft Azure 76, Streamlit 80, AI/ML 80, Citrix Workspace 70",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "Agentic AI",
+            "value": 82
+          },
+          {
+            "name": "RAG",
+            "value": 78
+          },
+          {
+            "name": "AWS (Lambda, S3, EC2)",
+            "value": 74
+          },
+          {
+            "name": "Microsoft Azure",
+            "value": 76
+          },
+          {
+            "name": "Streamlit",
+            "value": 80
+          },
+          {
+            "name": "AI/ML",
+            "value": 80
+          },
+          {
+            "name": "Citrix Workspace",
+            "value": 70
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-skills-power-platform",
+      "section": "skills",
+      "title": "Power Platform",
+      "text": "Power Platform: Power Apps 90, Power Automate 88, Power BI 75, SharePoint Online 85, SPFx 72, Microsoft 365 85",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "Power Apps",
+            "value": 90
+          },
+          {
+            "name": "Power Automate",
+            "value": 88
+          },
+          {
+            "name": "Power BI",
+            "value": 75
+          },
+          {
+            "name": "SharePoint Online",
+            "value": 85
+          },
+          {
+            "name": "SPFx",
+            "value": 72
+          },
+          {
+            "name": "Microsoft 365",
+            "value": 85
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-skills-tools-practices",
+      "section": "skills",
+      "title": "Tools & Practices",
+      "text": "Tools & Practices: Git/GitHub 90, GH Actions (CI/CD) 78, Agile/Scrum 82, GitHub Copilot 88, Jira 82, Architecture Design 80, Claude CLI 78, Antigravity IDE 75",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "Git/GitHub",
+            "value": 90
+          },
+          {
+            "name": "GH Actions (CI/CD)",
+            "value": 78
+          },
+          {
+            "name": "Agile/Scrum",
+            "value": 82
+          },
+          {
+            "name": "GitHub Copilot",
+            "value": 88
+          },
+          {
+            "name": "Jira",
+            "value": 82
+          },
+          {
+            "name": "Architecture Design",
+            "value": 80
+          },
+          {
+            "name": "Claude CLI",
+            "value": 78
+          },
+          {
+            "name": "Antigravity IDE",
+            "value": 75
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-skills-architecture-development",
+      "section": "skills",
+      "title": "Architecture & Development",
+      "text": "Architecture & Development: Application Architecture, Project Structuring, Feature Integration, Front-End/Back-End Integration",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "Application Architecture"
+          },
+          {
+            "name": "Project Structuring"
+          },
+          {
+            "name": "Feature Integration"
+          },
+          {
+            "name": "Front-End/Back-End Integration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-skills-leadership-soft-skills",
+      "section": "skills",
+      "title": "Leadership & Soft Skills",
+      "text": "Leadership & Soft Skills: Technical Leadership & Mentoring, Task Planning, Team Coordination & Training, Technical Communication, Collaborative Decision-Making, Problem Solving",
+      "source": "portfolio.md",
+      "metadata": {
+        "skills": [
+          {
+            "name": "Technical Leadership & Mentoring"
+          },
+          {
+            "name": "Task Planning"
+          },
+          {
+            "name": "Team Coordination & Training"
+          },
+          {
+            "name": "Technical Communication"
+          },
+          {
+            "name": "Collaborative Decision-Making"
+          },
+          {
+            "name": "Problem Solving"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-role-associate-ai-engineer-front-end-developer-cognizant-nov-2025-present",
+      "section": "work_experience",
+      "title": "Associate — AI Engineer / Front-End Developer, Cognizant (Nov 2025 — Present)",
+      "text": "Associate — AI Engineer / Front-End Developer, Cognizant (Nov 2025 — Present)\nTags: React, Vite, AWS Lambda, AI Agents\n- Sole front-end developer of a React-based interface built from scratch for an internal AI agent-creation platform, including features for agent configuration in application grounding.\n- Migrated Streamlit prototypes to a native React UI and built AWS Lambda functions to move local processing to a serverless architecture, improving scalability and simplifying maintenance.\n- Owned the client-facing half of an AI case-evaluation agent — UI, backend integration, and the prototypes used in live demos.\nRelated projects: Agentic AI Grounding Platform, Case Evaluation Intelligence Agent. Related volunteering: Cognizant Certified Frontline Leaders.",
+      "source": "portfolio.md",
+      "metadata": {
+        "tags": [
+          "React",
+          "Vite",
+          "AWS Lambda",
+          "AI Agents"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-role-associate-power-platform-engineer-cognizant-apr-2024-oct-2025",
+      "section": "work_experience",
+      "title": "Associate — Power Platform Engineer, Cognizant (Apr 2024 — Oct 2025)",
+      "text": "Associate — Power Platform Engineer, Cognizant (Apr 2024 — Oct 2025)\nTags: Power Apps, Power Automate, SharePoint\n- Delivered custom Power Apps and Power Automate solutions for enterprise clients, taking projects from requirements through implementation.\n- Trusted with operational continuity across SharePoint, Power Apps, and Power Automate — resolving complex requests independently while holding SLA/KPI compliance.\n- Onboarded and mentored a junior resource, providing hands-on guidance on project responsibilities and technical processes.\n- Led client and internal team communications during key projects — managed status calls, gathered requirements, coordinated updates across teams.\n- Won the quarterly quiz competition twice, earning a Client Recognition Certification for staying aligned with client goals.\nRelated projects: Expense Management System. Related volunteering: Client Recognition — Quarterly Excellence (x2).",
+      "source": "portfolio.md",
+      "metadata": {
+        "tags": [
+          "Power Apps",
+          "Power Automate",
+          "SharePoint"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-role-programmer-analyst-pa-trainee-cognizant-feb-2022-mar-2024",
+      "section": "work_experience",
+      "title": "Programmer Analyst / PA Trainee, Cognizant (Feb 2022 — Mar 2024)",
+      "text": "Programmer Analyst / PA Trainee, Cognizant (Feb 2022 — Mar 2024)\nTags: Microsoft 365, Power Automate, SharePoint\n- Ran the Microsoft 365 environment (SharePoint Online, Power Platform, Power Apps) for a Life Sciences enterprise client.\n- Led data migration and automation with Power Automate, optimizing workflows and reporting to ensure project transparency.\n- Shipped three real projects while still learning to code — a restaurant website, landing pages, and the MFRP Sales Portal.\nRelated projects: MFRP Sales Portal.",
+      "source": "portfolio.md",
+      "metadata": {
+        "tags": [
+          "Microsoft 365",
+          "Power Automate",
+          "SharePoint"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-role-web-dev-trainee-internship-globiz-technology-oct-2021-feb-2022",
+      "section": "work_experience",
+      "title": "Web Dev Trainee (Internship), Globiz Technology (Oct 2021 — Feb 2022)",
+      "text": "Web Dev Trainee (Internship), Globiz Technology (Oct 2021 — Feb 2022)\nTags: HTML, SCSS, JavaScript\n- Built front-end design and back-end logic for the organization's newly redesigned website, plus front-end work on client projects.\nRelated projects: Globiz Technology Website, Practice & Learning Projects.",
+      "source": "portfolio.md",
+      "metadata": {
+        "tags": [
+          "HTML",
+          "SCSS",
+          "JavaScript"
+        ]
+      }
+    },
+    {
+      "id": "portfolio-project-agentic-ai-grounding-platform",
+      "section": "project",
+      "title": "Agentic AI Grounding Platform",
+      "text": "Agentic AI Grounding Platform\n*Full Stack · Enterprise · AI* — React, Vite, Node.js, Express, AWS Lambda, PostgreSQL\nSummary: A Streamlit prototype proved the idea worked — the harder question was how to make it something an enterprise team could actually rely on. Rebuilt natively in React with serverless AWS Lambda processing.\n- Problem: The Streamlit prototype proved the underlying idea worked, but Streamlit itself wasn't something an enterprise team could build a production workflow on top of — no real component ownership, limited state control, and no clean path to a serverless backend.\n- Approach: Rebuilt the interface natively in React from scratch, including the agent-configuration and application-grounding screens, and moved local processing into AWS Lambda functions to get to a serverless, horizontally scalable backend.\n- Outcome: The platform now runs as a real internal product rather than a prototype demo — easier to maintain, easier to scale, and owned end-to-end on the front end.\n- Architecture: Frontend React + Vite; Backend Node.js/Express + AWS Lambda (serverless); Database PostgreSQL; Deployment AWS.\n- Key features: Agent-configuration screens for application grounding; serverless AWS Lambda processing pipeline; native React UI replacing the Streamlit prototype; built for enterprise-grade reliability and maintainability.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {
+          "frontend": "React + Vite",
+          "backend": "Node.js/Express + AWS Lambda (serverless)",
+          "database": "PostgreSQL",
+          "deployment": "AWS"
+        }
+      }
+    },
+    {
+      "id": "portfolio-project-case-evaluation-intelligence-agent",
+      "section": "project",
+      "title": "Case Evaluation Intelligence Agent",
+      "text": "Case Evaluation Intelligence Agent\n*AI Agent · Life Sciences* — React, Streamlit, REST APIs, AI Agent Interfaces\nSummary: The agent could evaluate cases correctly — the open question was how to make that legible to stakeholders who had to trust it enough to sign off. Built the UI and shaped the client-facing demo prototypes.\n- Problem: The AI agent could evaluate cases correctly, but a correct answer isn't useful if the people who have to sign off on it can't see why the agent reached it — trust was the actual blocker, not accuracy.\n- Approach: Owned the client-facing half of the agent — the UI, the REST API integration back to the model, and the prototypes used live in stakeholder demos — focused on making the agent's reasoning legible rather than just its output.\n- Outcome: Demos now walk stakeholders through the agent's reasoning, not just its conclusion — which is what actually moved sign-off conversations forward.\n- Architecture: Frontend React; Backend REST API integration to the evaluation model; Deployment Internal.\n- Key features: Reasoning-first UI that shows why the agent reached a conclusion; REST API integration to the evaluation model; client-facing demo prototypes used live in stakeholder sessions.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {
+          "frontend": "React",
+          "backend": "REST API integration to the evaluation model",
+          "deployment": "Internal"
+        }
+      }
+    },
+    {
+      "id": "portfolio-project-mfrp-sales-portal",
+      "section": "project",
+      "title": "MFRP Sales Portal",
+      "text": "MFRP Sales Portal\n*SharePoint · SPFx · Full Stack* — SPFx, React, SharePoint, Power Automate\nSummary: Sales portal built in SharePoint using Web Parts, SPFx, and an Application Customizer, with custom lists and validations.\n- Key features: Custom SharePoint Web Parts; SPFx Application Customizer; validated custom lists for deal tracking; built inside the client's existing SharePoint environment.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {}
+      }
+    },
+    {
+      "id": "portfolio-project-globiz-technology-website",
+      "section": "project",
+      "title": "Globiz Technology Website",
+      "text": "Globiz Technology Website\n*Full Stack · MERN · Live* — MERN, React, Node.js — Live at globiztechnology.com\nSummary: Full-stack MERN website for the organization — front-end design, back-end logic, and dynamic API-driven data binding. Shipped live; the site has since been redesigned by the company, overwriting this original build.\n- Problem: The organization's public website needed a full redesign and a real backend behind it, not a static rebuild.\n- Approach: Built it end to end on the MERN stack — front-end design, Node.js/Express backend logic, and dynamic API-driven data binding — as one of the first full projects while still learning to code professionally.\n- Outcome: Shipped live and served as the organization's public-facing site. The version linked today is a newer redesign by the company that has since overwritten the original build.\n- Architecture: Frontend React; Backend Node.js/Express; Database MongoDB; Deployment Live/hosted.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {
+          "frontend": "React",
+          "backend": "Node.js/Express",
+          "database": "MongoDB",
+          "deployment": "Live/hosted"
+        }
+      }
+    },
+    {
+      "id": "portfolio-project-expense-management-system",
+      "section": "project",
+      "title": "Expense Management System",
+      "text": "Expense Management System\n*Hackathon · Power Apps*\nSummary: Automated expense management system with bank/credit card registration, an admin dashboard, and auto-approval based on employee band.\n- Problem: Manual expense approval was slow and inconsistent — no auto-approval logic, no self-serve card registration, no admin visibility into pending claims.\n- Approach: Built an automated system on Power Apps with bank/credit-card registration, an admin dashboard, and rule-based auto-approval keyed off employee band, backed by Power Automate and SharePoint.\n- Outcome: Faster approvals for routine claims and a clear dashboard for the exceptions that still need a human.\n- Architecture: Frontend Power Apps; Backend Power Automate; Database SharePoint; Deployment Power Platform.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {
+          "frontend": "Power Apps",
+          "backend": "Power Automate",
+          "database": "SharePoint",
+          "deployment": "Power Platform"
+        }
+      }
+    },
+    {
+      "id": "portfolio-project-easybank-landing-page",
+      "section": "project",
+      "title": "Easybank Landing Page",
+      "text": "Easybank Landing Page\n*HTML · SCSS · First Project* — Live at harpreet1999.github.io/Easybank/\nSummary: The very first development project — a fintech landing page built during the B.Tech by following an Easybank tutorial series, where structured code and SCSS were learned from scratch.\n- Problem: Starting from zero, the goal wasn't originality — it was learning to write clean, structured HTML and SCSS instead of one giant, unmaintainable stylesheet.\n- Approach: Followed an Easybank landing page tutorial series end to end — layout, responsive breakpoints, and componentized SCSS partials built by hand rather than copy-pasted.\n- Outcome: The actual first development project, full stop — everything since, from Globiz to the paid work, builds on the structured-code and SCSS habits formed here.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {}
+      }
+    },
+    {
+      "id": "portfolio-project-aimpress",
+      "section": "project",
+      "title": "Aimpress",
+      "text": "Aimpress\n*Community · Full Stack · Live* — Live at aimpress.co.in, ~800 members\nSummary: A gaming community platform for marginalized genders, live with around 800 members and still growing. Stepped up to lead a team of developers while still new to the community.\n- Problem: Marginalized genders in gaming needed a real community platform, not just another server — and the team building it needed someone to actually lead: planning, task assignment, keeping delivery on schedule.\n- Approach: Stepped up to lead a team of developers while still new to the community — project planning and task tracking in Jira, on-time delivery. Built end to end on Node.js, Express, and Supabase on the backend, React/Vite on the front end, with Antigravity and other AI coding agents in the workflow.\n- Outcome: Live at aimpress.co.in with around 800 members and still growing. Alongside Aimpress, also led front-end on Matilda, a society welfare initiative for survivors of sexual assault, molestation, and related trauma — that build is currently on hold.\n- Architecture: Frontend React + Vite; Backend Node.js/Express; Database Supabase; Deployment Live.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {
+          "frontend": "React + Vite",
+          "backend": "Node.js/Express",
+          "database": "Supabase",
+          "deployment": "Live"
+        }
+      }
+    },
+    {
+      "id": "portfolio-project-practice-learning-projects",
+      "section": "project",
+      "title": "Practice & Learning Projects",
+      "text": "Practice & Learning Projects\n*Learning · Practice* — HTML, SCSS, JavaScript, React\nSummary: Small, shipped builds beyond Easybank — an \"Awesome\" product landing page, an Accordion Card, a React Todo App, a food-delivery UI, and a Restaurant Website.\n- Problem: Learning HTML, SCSS, JavaScript, Bootstrap, and React well enough to ship real work meant building more than tutorials — small, finished things, repeatedly.\n- Approach: After Easybank — an \"Awesome\" product landing page, an Accordion Card, a React Todo App (functionality over polish), a food-delivery UI, and a Restaurant Website — each one picked to force a specific new skill.\n- Outcome: The repetition is the point — every one of these fed directly into the front-end instincts used on the paid work above.\n- Live: \"Awesome\" Landing Page, Restaurant Website (Pitza Place), Accordion Card, React Todo App, Food Delivery UI — all on GitHub Pages.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {}
+      }
+    },
+    {
+      "id": "portfolio-project-functional-practice-apps",
+      "section": "project",
+      "title": "Functional Practice Apps",
+      "text": "Functional Practice Apps\n*React · Utility · Functional*\nSummary: Four small apps built to nail logic and function over visual polish — a GitHub User Search tool, a Calculator, Tic-Tac-Toe, and an Exam Timer.\n- Problem: Landing pages and UI clones cover layout and styling, but not state, logic, or working with a real API — a different muscle worth training on its own.\n- Approach: Built a GitHub User Search tool against the real GitHub REST API, a working Calculator, a two-player Tic-Tac-Toe game, and a countdown Exam Timer.\n- Outcome: Four small, fully working tools — practice that pays off directly in state management and API-integration work on the paid projects above.\n- Architecture: Frontend React/JavaScript; Backend GitHub REST API (user search); Deployment Vercel.",
+      "source": "portfolio.md",
+      "metadata": {
+        "architecture": {
+          "frontend": "React/JavaScript",
+          "backend": "GitHub REST API (user search)",
+          "deployment": "Vercel"
+        }
+      }
+    },
+    {
+      "id": "portfolio-contact",
+      "section": "contact",
+      "title": "Contact",
+      "text": "- Email: erharpreet1999@gmail.com\n- LinkedIn: linkedin.com/in/Harpreet---Singh\n- GitHub: github.com/Harpreet1999\n- Resume: available as a PDF download from the site",
+      "source": "portfolio.md",
+      "metadata": {}
+    }
+  ]
+}

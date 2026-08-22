@@ -1,0 +1,138 @@
+{
+  "datasetId": "cars-jdm-legends",
+  "displayName": "JDM Legends — Spec Comparison",
+  "description": "Verified specs (horsepower, torque, 0-60, weight, production years) for 8 iconic 1990s-2000s Japanese sports cars, including both Fairlady Z generations. A numeric, chartable dataset.",
+  "sourceFiles": [
+    "data/sources/cars-jdm-legends.md"
+  ],
+  "chunks": [
+    {
+      "id": "cars-toyota-supra-mk4-a80-turbo",
+      "section": "car_spec",
+      "title": "Toyota Supra MK4 (A80) Turbo",
+      "text": "Toyota Supra MK4 (A80) Turbo\n- Years: 1993–2002\n- Engine: 2JZ-GTE, 3.0L twin-turbo inline-6\n- Horsepower: 321 hp\n- Torque: 315 lb-ft\n- 0–60 mph: 4.6 s\n- Top speed: 155 mph (electronically limited; unlimited US models observed near 177 mph)\n- Curb weight: 3,560 lb\n- Note: JDM output was understated under Japan's manufacturer horsepower agreement; export (US/EU) figures are generally considered closer to true output.",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "2JZ-GTE, 3.0L twin-turbo inline-6",
+        "horsepowerHp": 321,
+        "torqueLbFt": 315,
+        "zeroToSixtySec": 4.6,
+        "curbWeightLb": 3560,
+        "yearStart": 1993,
+        "yearEnd": 2002
+      }
+    },
+    {
+      "id": "cars-nissan-skyline-gt-r-r34",
+      "section": "car_spec",
+      "title": "Nissan Skyline GT-R (R34)",
+      "text": "Nissan Skyline GT-R (R34)\n- Years: 1999–2002\n- Engine: RB26DETT, 2.6L twin-turbo inline-6\n- Horsepower: 276 hp (officially — capped by Japan's \"gentlemen's agreement\"; real output widely believed higher)\n- Torque: 293 lb-ft (392 Nm)\n- 0–60 mph: 4.7 s\n- Top speed: 156 mph (electronically limited)\n- Curb weight: 3,439 lb (V-Spec and Nür trims run heavier)\n- Drivetrain: ATTESA E-TS Pro AWD",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "RB26DETT, 2.6L twin-turbo inline-6",
+        "horsepowerHp": 276,
+        "torqueLbFt": 293,
+        "zeroToSixtySec": 4.7,
+        "curbWeightLb": 3439,
+        "yearStart": 1999,
+        "yearEnd": 2002
+      }
+    },
+    {
+      "id": "cars-mazda-rx-7-fd3s",
+      "section": "car_spec",
+      "title": "Mazda RX-7 (FD3S)",
+      "text": "Mazda RX-7 (FD3S)\n- Years: 1992–2002\n- Engine: 13B-REW, 1.3L twin-rotor sequential twin-turbo\n- Horsepower: 255 hp (JDM base) — up to 280 hp on the late Spirit R\n- Torque: 217 lb-ft\n- 0–60 mph: 4.9 s\n- Top speed: 155 mph (limited); Spirit R models to 161 mph\n- Curb weight: ~2,800 lb\n- Note: lightest car in this set, prized for 50/50 weight distribution.",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "13B-REW, 1.3L twin-rotor sequential twin-turbo",
+        "horsepowerHp": 255,
+        "torqueLbFt": 217,
+        "zeroToSixtySec": 4.9,
+        "curbWeightLb": 2800,
+        "yearStart": 1992,
+        "yearEnd": 2002
+      }
+    },
+    {
+      "id": "cars-nissan-fairlady-z-300zx-z32-twin-turbo",
+      "section": "car_spec",
+      "title": "Nissan Fairlady Z / 300ZX (Z32) Twin Turbo",
+      "text": "Nissan Fairlady Z / 300ZX (Z32) Twin Turbo\n- Years: 1989–2000 (JDM production; US sales ended 1996)\n- Engine: VG30DETT, 3.0L twin-turbo V6\n- Horsepower: 300 hp\n- Torque: 283 lb-ft\n- 0–60 mph: ~5.6–5.9 s (sources vary)\n- Top speed: 155 mph (limited)\n- Curb weight: 3,571 lb",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "VG30DETT, 3.0L twin-turbo V6",
+        "horsepowerHp": 300,
+        "torqueLbFt": 283,
+        "zeroToSixtySec": 5.6,
+        "curbWeightLb": 3571,
+        "yearStart": 1989,
+        "yearEnd": 2000
+      }
+    },
+    {
+      "id": "cars-nissan-fairlady-z-370z-z34",
+      "section": "car_spec",
+      "title": "Nissan Fairlady Z / 370Z (Z34)",
+      "text": "Nissan Fairlady Z / 370Z (Z34)\n- Years: 2009–2020\n- Engine: VQ37VHR, 3.7L naturally aspirated V6\n- Horsepower: 324 hp standard / 350 hp (Nismo)\n- Torque: 268 lb-ft standard / 276 lb-ft (Nismo)\n- 0–60 mph: 5.1 s standard / 5.4 s (Nismo)\n- Curb weight: 3,333 lb standard\n- Drivetrain: naturally aspirated, no turbo — the outlier in this set alongside the NSX.",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "VQ37VHR, 3.7L naturally aspirated V6",
+        "horsepowerHp": 324,
+        "torqueLbFt": 268,
+        "zeroToSixtySec": 5.1,
+        "curbWeightLb": 3333,
+        "yearStart": 2009,
+        "yearEnd": 2020
+      }
+    },
+    {
+      "id": "cars-honda-nsx-na1-na2",
+      "section": "car_spec",
+      "title": "Honda NSX (NA1 / NA2)",
+      "text": "Honda NSX (NA1 / NA2)\n- Years: 1990–2005\n- Engine: NA1 — C30A 3.0L V6 VTEC; NA2 — C32B 3.2L V6 VTEC (both naturally aspirated)\n- Horsepower: 270 hp (NA1) / 276 hp (NA2)\n- Torque: 209 lb-ft (NA1) / 220 lb-ft (NA2)\n- 0–60 mph: 5.7 s (both generations)\n- Curb weight: 3,020 lb (NA1; NA2 similar)\n- Note: mid-engine, naturally aspirated — the only non-turbo/non-rotary car here besides the 370Z.",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "NA1 — C30A 3.0L V6 VTEC; NA2 — C32B 3.2L V6 VTEC (both naturally aspirated)",
+        "horsepowerHp": 270,
+        "torqueLbFt": 209,
+        "zeroToSixtySec": 5.7,
+        "curbWeightLb": 3020,
+        "yearStart": 1990,
+        "yearEnd": 2005
+      }
+    },
+    {
+      "id": "cars-mitsubishi-lancer-evolution-vi-cp9a",
+      "section": "car_spec",
+      "title": "Mitsubishi Lancer Evolution VI (CP9A)",
+      "text": "Mitsubishi Lancer Evolution VI (CP9A)\n- Years: 1999–2001\n- Engine: 4G63T, 2.0L turbo inline-4\n- Horsepower: 276 hp (280 PS)\n- Torque: 275 lb-ft\n- 0–60 mph: 4.4 s (GSR)\n- Top speed: 150 mph\n- Curb weight: 2,998 lb\n- Drivetrain: AWD, rally-bred",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "4G63T, 2.0L turbo inline-4",
+        "horsepowerHp": 276,
+        "torqueLbFt": 275,
+        "zeroToSixtySec": 4.4,
+        "curbWeightLb": 2998,
+        "yearStart": 1999,
+        "yearEnd": 2001
+      }
+    },
+    {
+      "id": "cars-subaru-impreza-wrx-sti-gc8-version-vi",
+      "section": "car_spec",
+      "title": "Subaru Impreza WRX STI (GC8) Version VI",
+      "text": "Subaru Impreza WRX STI (GC8) Version VI\n- Years: 1999–2000\n- Engine: EJ20, 2.0L turbo flat-4\n- Horsepower: 280 PS (~276 hp)\n- Torque: ~260 lb-ft (353 Nm)\n- 0–60 mph: 6.4 s\n- Curb weight: 2,800 lb (1,270 kg)\n- Drivetrain: AWD, rally-bred\n- Note: slowest 0–60 in this set despite similar power-to-weight peers — worth a look at why (gearing/AWD launch behavior of the era), a good real \"surprising data point\" for the chart demo.",
+      "source": "cars-jdm-legends.md",
+      "metadata": {
+        "engine": "EJ20, 2.0L turbo flat-4",
+        "horsepowerHp": 280,
+        "torqueLbFt": 260,
+        "zeroToSixtySec": 6.4,
+        "curbWeightLb": 2800,
+        "yearStart": 1999,
+        "yearEnd": 2000
+      }
+    }
+  ]
+}

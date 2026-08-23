@@ -4,6 +4,7 @@ const STEPS = [
   { n: 3, name: "Pick a Dataset" },
   { n: 4, name: "See It Chunked" },
   { n: 5, name: "See the Embeddings" },
+  { n: 6, name: "Plan Retrieval" },
 ];
 
 export default function TopProgress({ active, onNavigate }) {

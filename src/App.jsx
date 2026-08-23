@@ -7,6 +7,7 @@ import Step2Intro from "./components/Step2Intro.jsx";
 import Step3Select from "./components/Step3Select.jsx";
 import Step4Preview from "./components/Step4Preview.jsx";
 import Step5Embeddings from "./components/Step5Embeddings.jsx";
+import Step6RetrievalPlan from "./components/Step6RetrievalPlan.jsx";
 import { STAGES } from "./components/PipelineGrid.jsx";
 
 const liveCount = STAGES.filter((s) => s.state === "live").length;
@@ -81,6 +82,14 @@ function App() {
               track={track}
               selectedId={selectedId}
               onBack={() => setActiveStep(4)}
+              onNext={() => setActiveStep(6)}
+            />
+          )}
+          {activeStep === 6 && (
+            <Step6RetrievalPlan
+              track={track}
+              selectedId={selectedId}
+              onBack={() => setActiveStep(5)}
             />
           )}
         </div>

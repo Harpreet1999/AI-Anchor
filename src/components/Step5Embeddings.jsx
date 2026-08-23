@@ -42,7 +42,7 @@ function EmbeddingStrip({ vector }) {
   );
 }
 
-export default function Step5Embeddings({ track, selectedId, onBack }) {
+export default function Step5Embeddings({ track, selectedId, onBack, onNext }) {
   const dataset = selectedId ? BY_TRACK[track][selectedId] : null;
   const [index, setIndex] = useState(0);
 
@@ -82,7 +82,7 @@ export default function Step5Embeddings({ track, selectedId, onBack }) {
         bar below is a real number from the real {track === "node" ? "Xenova (JS)" : "Sentence-Transformers (Python)"} run
         against this exact chunk. "Nearest chunks" is computed live, right here, by comparing this
         vector against every other one in the dataset — a small, honest preview of what retrieval
-        will do once it's built.
+        will do once it's built. Step 06 maps that next stage without pretending it is wired yet.
       </p>
 
       {!selectedId && (
@@ -133,7 +133,7 @@ export default function Step5Embeddings({ track, selectedId, onBack }) {
         </>
       )}
 
-      <StepNav onBack={onBack} backLabel="See it chunked" />
+      <StepNav onBack={onBack} backLabel="See it chunked" onNext={onNext} nextLabel="Plan retrieval" />
     </section>
   );
 }

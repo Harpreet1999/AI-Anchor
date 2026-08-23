@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Python track (data-py) — the venv and caches are machine-local
+data-py/.venv
+data-py/**/__pycache__
+*.pyc
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

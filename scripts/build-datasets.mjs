@@ -118,7 +118,7 @@ function canonicalSection(tag) {
 }
 
 // ---------------------------------------------------------------------------
-// Dataset 1: Portfolio ("Harpreet's Career")
+// Dataset 1: Portfolio ("Portfolio Data")
 // ---------------------------------------------------------------------------
 function buildPortfolio() {
   const chunks = [];
@@ -266,7 +266,7 @@ function buildPortfolio() {
 
   return {
     datasetId: "portfolio",
-    displayName: "Harpreet's Career",
+    displayName: "Portfolio Data",
     description:
       "Harpreet Singh's resume and full portfolio site — work history, projects, skills, certifications, achievements, and education. Ask about his AI Engineer work at Cognizant, the Agentic Grounding Platform, or anything else on his site.",
     sourceFiles: ["data/sources/resume.md", "data/sources/portfolio.md"],

@@ -240,7 +240,7 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
               <button type="button" className={`chunk-nav-btn topk-button${topK === 5 ? " active" : ""}`} onClick={() => { setTopK(5); setResults([]); }}>5</button>
             </div>
             <button className="chunk-nav-btn retrieve-button" type="submit" disabled={loading || !nodeDataset}>
-              {loading ? "Searching…" : "Run retrieval"}
+              {loading ? <span className="loading-pulse">Searching…</span> : "Run retrieval"}
             </button>
             {error && <p className="retrieval-note" style={{ color: "#f7b5b5" }}>{error}</p>}
           </form>
@@ -286,9 +286,9 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
               <button type="button" className={`chunk-nav-btn topk-button${pyTopK === 5 ? " active" : ""}`} onClick={() => { setPyTopK(5); setPyResults([]); }}>5</button>
             </div>
             <button className="chunk-nav-btn retrieve-button" type="submit" disabled={pyLoading}>
-              {pyLoading ? (pyWaking ? "Waking up the service…" : "Searching…") : "Run retrieval"}
+              {pyLoading ? <span className="loading-pulse">{pyWaking ? "Waking up the service…" : "Searching…"}</span> : "Run retrieval"}
             </button>
-            {pyWaking && <p className="retrieval-note">The Python service is on free hosting and sleeps when idle — this can take up to a minute on a cold start.</p>}
+            {pyWaking && <p className="retrieval-note loading-pulse">The Python service is on free hosting and sleeps when idle — this can take up to a minute on a cold start.</p>}
             {pyError && <p className="retrieval-note" style={{ color: "#f7b5b5" }}>{pyError}</p>}
           </form>
         )}

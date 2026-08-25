@@ -11,7 +11,8 @@
     "data:build": "node scripts/build-datasets.mjs",
     "data:embed": "node scripts/embed-datasets.mjs",
     "dev:api": "node --env-file-if-exists=.env server/dev-api.mjs",
-    "dev:full": "concurrently -n vite,api -c blue,green \"npm:dev\" \"npm:dev:api\""
+    "dev:py": "data-py\\.venv\\Scripts\\python.exe -m uvicorn app:app --app-dir service-py --port 8000",
+    "dev:full": "concurrently -n vite,api,py -c blue,green,magenta \"npm:dev\" \"npm:dev:api\" \"npm:dev:py\""
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",

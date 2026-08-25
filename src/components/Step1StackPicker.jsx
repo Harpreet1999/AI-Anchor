@@ -11,7 +11,7 @@ const ROWS = [
   { stage: "Data Prep", shared: false, node: ["Node.js", "Built — wired to the files in this repo"], python: ["Python", "Done — the same 3 datasets, chunked and embedded, run once locally"] },
   { stage: "Chunking", shared: false, node: ["Hand-rolled splitter", "Structure-aware — one chunk per real unit (a cert, a car, a story paragraph)"], python: ["LangChain Text Splitters", "RecursiveCharacterTextSplitter — the standard generic approach"] },
   { stage: "Embeddings", shared: false, node: ["Xenova (transformers.js)", "all-MiniLM-L6-v2, runs once locally — $0, one language"], python: ["Sentence-Transformers", "Same model, the industry-standard Python runtime for it"] },
-  { stage: "Vector Search", shared: false, node: ["Cosine similarity / Upstash Vector", "No server needed at this scale — fits a stateless deploy"], python: ["ChromaDB", "A real vector DB, run locally for comparison"] },
+  { stage: "Vector Search", shared: false, node: ["Cosine similarity / Upstash Vector", "No server needed at this scale — fits a stateless deploy"], python: ["ChromaDB", "A real vector DB, live on a small FastAPI service — free-tier hosted, so it can sleep and wake"] },
   { stage: "Orchestration", shared: true, both: ["LangChain.js + LangGraph.js", "Kept in JS either way — no second runtime on the deployed app"] },
   { stage: "Live LLM Call", shared: true, both: ["Groq — GPT-OSS 120B", "Free tier, fastest available inference — the only part that isn't fully $0 by construction, kept on a free tier by design"] },
 ];
@@ -40,7 +40,7 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
           className={`track-btn${track === "python" ? " active" : ""}`}
           onClick={() => onSelectTrack("python")}
         >
-          <DocumentCode size={16} variant="Outline" color="currentColor" /> Python + LangChain <span className="track-status">Chunked + Embedded</span>
+          <DocumentCode size={16} variant="Outline" color="currentColor" /> Python + LangChain <span className="track-status live">Live</span>
         </button>
       </div>
 
@@ -48,7 +48,7 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
         <div className="fig-frame-inner">
           <StackFlowDiagram track={track} />
           <div className="fig-caption">
-            <span className={`status${track === "node" ? " live" : ""}`}>{track === "node" ? "Live" : "Chunked + Embedded"}</span> This is the currently-selected track
+            <span className="status live">Live</span> This is the currently-selected track
           </div>
         </div>
       </div>

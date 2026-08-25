@@ -7,6 +7,7 @@ import retrievalDemo from "../../data-py/processed/retrieval-demo.json";
 import StepNav from "./StepNav.jsx";
 import RetrievalResults from "./RetrievalResults.jsx";
 import { rankChunks } from "../lib/retrieval.js";
+import { pyApiUrl } from "../lib/pyApi.js";
 
 const DATASETS = {
   career: "Portfolio Data",
@@ -57,7 +58,7 @@ function PlanNode({ number, label, detail, active }) {
 export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }) {
   const isNode = track === "node";
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
-  const searchName = isNode ? "Cosine similarity / in-memory index" : "ChromaDB (local, cosine)";
+  const searchName = isNode ? "Cosine similarity / in-memory index" : "ChromaDB (live, cosine)";
 
   // Node: live free-text search against the real in-memory vectors.
   const nodeDataset = useMemo(() => (selectedId ? NODE_DATA[selectedId] : null), [selectedId]);
@@ -67,20 +68,81 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
   const [error, setError] = useState("");
   const [topK, setTopK] = useState(3);
 
-  // Python: a small, fixed set of real questions already run through a
-  // real ChromaDB collection offline — see data-py/scripts/retrieve_local.py.
-  // Not a live arbitrary-question search (ChromaDB has no browser story and
-  // there's no backend yet) — a genuinely different, honest retrieval path,
-  // not a disguised copy of Node's.
-  const pyEntries = selectedId ? retrievalDemo.datasets[PY_DATASET_ID[selectedId]] || [] : [];
-  const [pyPickedIndex, setPyPickedIndex] = useState(null);
+  // Python: live retrieval too, now — but against a real FastAPI + ChromaDB
+  // service (service-py/), not the browser. That service has no on-disk
+  // persistence and free-tier hosting sleeps when idle, so a first request
+  // after a while can take tens of seconds to wake — surfaced honestly as
+  // its own state below rather than hidden behind a generic spinner.
+  // The handful of pre-verified questions from data-py/scripts/retrieve_local.py
+  // are kept as one-click examples, not the only option anymore.
+  const pyExamples = selectedId ? (retrievalDemo.datasets[PY_DATASET_ID[selectedId]] || []).map((e) => e.question) : [];
+  const [pyQuestion, setPyQuestion] = useState("");
+  const [pyResults, setPyResults] = useState([]);
+  const [pyLoading, setPyLoading] = useState(false);
+  const [pyWaking, setPyWaking] = useState(false);
+  const [pyError, setPyError] = useState("");
+  const [pyTopK, setPyTopK] = useState(5);
 
   useEffect(() => {
     setQuestion("");
     setResults([]);
     setError("");
-    setPyPickedIndex(null);
+    setPyQuestion("");
+    setPyResults([]);
+    setPyError("");
+    setPyWaking(false);
   }, [selectedId, track]);
+
+  const handlePySearch = async (event) => {
+    event.preventDefault();
+    if (!selectedId) return;
+
+    const trimmed = pyQuestion.trim();
+    if (!trimmed) {
+      setPyError("Please enter a question to search.");
+      return;
+    }
+
+    setPyLoading(true);
+    setPyError("");
+    setPyWaking(false);
+
+    // The free-tier host sleeps when idle. A slow first response almost
+    // always means it's waking up, not that anything is broken — say so
+    // instead of leaving a bare spinner up for 30-50 seconds.
+    const wakingTimer = setTimeout(() => setPyWaking(true), 4000);
+
+    try {
+      const res = await fetch(pyApiUrl("/retrieve"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ datasetId: PY_DATASET_ID[selectedId], question: trimmed, k: pyTopK }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw Object.assign(new Error(data.detail || "Retrieval failed."), { status: res.status });
+      }
+      setPyResults(data.results || []);
+    } catch (searchError) {
+      console.error(searchError);
+      // status is undefined when fetch itself threw (a real network error —
+      // the typical shape in production, calling the service's own origin
+      // directly); 502/503/504 covers the local dev-proxy case, where Vite
+      // still returns a normal HTTP response even though the upstream
+      // service it's proxying to is down or not answering yet.
+      const unreachable = searchError.status === undefined || [502, 503, 504].includes(searchError.status);
+      setPyError(
+        unreachable
+          ? "Couldn't reach the Python retrieval service. It may still be waking up from idle — try again in a moment."
+          : searchError.message || "Retrieval failed."
+      );
+      setPyResults([]);
+    } finally {
+      clearTimeout(wakingTimer);
+      setPyLoading(false);
+      setPyWaking(false);
+    }
+  };
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -108,12 +170,8 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
     }
   };
 
-  const pickPyQuestion = (index) => {
-    setPyPickedIndex(index);
-    setResults(pyEntries[index]?.results || []);
-  };
-
-  const activeQuestion = isNode ? question.trim() : (pyPickedIndex !== null ? pyEntries[pyPickedIndex]?.question : "");
+  const activeQuestion = isNode ? question.trim() : pyQuestion.trim();
+  const activeResults = isNode ? results : pyResults;
 
   return (
     <section className="sheet">
@@ -125,7 +183,7 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
       <p className="dek">
         {isNode
           ? "Ask anything. The question is embedded live and compared against every chunk in the selected dataset, in your browser."
-          : "Python's retrieval runs through real ChromaDB — but locally, offline, and only for a small fixed set of pre-verified questions (ChromaDB has no browser story, and there's no backend yet to call it live)."}
+          : "Ask anything here too. The question is sent to a small FastAPI + ChromaDB service (service-py/) that embeds it with Sentence-Transformers and searches a real, in-memory ChromaDB collection. It's on free hosting, so it can take a while to wake up if it's been idle."}
       </p>
 
       <div className="retrieval-context">
@@ -135,11 +193,11 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
       </div>
 
       <div className="retrieval-flow" aria-label="Retrieval flow">
-        <PlanNode number="01" label="Question" detail={isNode ? "Any question, typed live." : "One of a few pre-verified questions."} active />
+        <PlanNode number="01" label="Question" detail="Any question, typed live." active />
         <div className="retrieval-arrow" aria-hidden="true">→</div>
         <PlanNode number="02" label="Embed" detail="Same MiniLM model used at indexing." active />
         <div className="retrieval-arrow" aria-hidden="true">→</div>
-        <PlanNode number="03" label="Search index" detail={isNode ? "Score against in-memory chunk vectors, live." : "Real ChromaDB query, run once, offline."} active />
+        <PlanNode number="03" label="Search index" detail={isNode ? "Score against in-memory chunk vectors, live." : "Real ChromaDB query, live, over the network."} active />
         <div className="retrieval-arrow" aria-hidden="true">→</div>
         <PlanNode number="04" label="Top K evidence" detail="Return chunks, scores, and source IDs." active />
       </div>
@@ -176,27 +234,45 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
             {error && <p className="retrieval-note" style={{ color: "#f7b5b5" }}>{error}</p>}
           </form>
         ) : (
-          <div className="retrieval-panel query-panel">
-            <div className="retrieval-panel-head"><span>INPUT</span><span>PYTHON — 6 PRE-VERIFIED</span></div>
-            <label className="query-label">Pick a question</label>
-            <div className="demo-question-list">
-              {pyEntries.map((entry, i) => (
-                <button
-                  key={entry.question}
-                  type="button"
-                  className={`demo-question${pyPickedIndex === i ? " active" : ""}`}
-                  onClick={() => pickPyQuestion(i)}
-                >
-                  {entry.question}
-                </button>
-              ))}
-              {pyEntries.length === 0 && <p className="retrieval-note">No pre-verified questions for this dataset yet.</p>}
-            </div>
+          <form className="retrieval-panel query-panel" onSubmit={handlePySearch}>
+            <div className="retrieval-panel-head"><span>INPUT</span><span>PYTHON DEMO — LIVE</span></div>
+            <label className="query-label" htmlFor="py-retrieval-question">Question</label>
+            <textarea
+              id="py-retrieval-question"
+              className="query-field"
+              value={pyQuestion}
+              onChange={(event) => {
+                setPyQuestion(event.target.value);
+                setPyResults([]);
+                setPyError("");
+              }}
+              rows={4}
+              placeholder={`Ask a precise question about ${datasetName}…`}
+            />
+            {pyExamples.length > 0 && (
+              <div className="demo-question-list" aria-label="Example questions">
+                {pyExamples.map((q) => (
+                  <button key={q} type="button" className="demo-question" onClick={() => { setPyQuestion(q); setPyResults([]); setPyError(""); }}>
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="query-meta">
               <span>MODEL</span><b>{retrievalDemo.model}</b>
-              <span>ENGINE</span><b>{retrievalDemo.generatedWith}</b>
+              <span>OUTPUT</span><b>384 dimensions</b>
             </div>
-          </div>
+            <div className="topk-row">
+              <span className="topk-label">Top K</span>
+              <button type="button" className={`chunk-nav-btn topk-button${pyTopK === 3 ? " active" : ""}`} onClick={() => { setPyTopK(3); setPyResults([]); }}>3</button>
+              <button type="button" className={`chunk-nav-btn topk-button${pyTopK === 5 ? " active" : ""}`} onClick={() => { setPyTopK(5); setPyResults([]); }}>5</button>
+            </div>
+            <button className="chunk-nav-btn retrieve-button" type="submit" disabled={pyLoading}>
+              {pyLoading ? (pyWaking ? "Waking up the service…" : "Searching…") : "Run retrieval"}
+            </button>
+            {pyWaking && <p className="retrieval-note">The Python service is on free hosting and sleeps when idle — this can take up to a minute on a cold start.</p>}
+            {pyError && <p className="retrieval-note" style={{ color: "#f7b5b5" }}>{pyError}</p>}
+          </form>
         )}
 
         <div className="retrieval-panel index-panel">
@@ -209,20 +285,20 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
             </>
           ) : (
             <>
-              <h3>A real ChromaDB collection, queried offline.</h3>
-              <p>Chunks are embedded with Sentence-Transformers and added to a persistent local ChromaDB collection. Each question on the left was actually queried against it once — this is real ChromaDB output, not a simulation, just not a live arbitrary-question endpoint yet.</p>
-              <div className="index-specs"><span>VECTOR DB</span><b>ChromaDB (local)</b><span>QUESTIONS</span><b>{pyEntries.length} pre-verified</b></div>
+              <h3>A real ChromaDB collection, queried live.</h3>
+              <p>Chunks are embedded with Sentence-Transformers and loaded into an in-memory ChromaDB collection on a small FastAPI service. Your question is embedded server-side and matched against it in real time — a real network round trip to a real vector database, not a browser simulation.</p>
+              <div className="index-specs"><span>VECTOR DB</span><b>ChromaDB (in-memory)</b><span>HOSTING</span><b>Free tier — sleeps when idle</b></div>
             </>
           )}
         </div>
       </div>
 
-      <RetrievalResults results={results} loading={loading} />
+      <RetrievalResults results={activeResults} loading={isNode ? loading : pyLoading} />
 
       <StepNav
         onBack={onBack}
         backLabel="See the embeddings"
-        onNext={results.length ? () => onNext({ question: activeQuestion, results }) : undefined}
+        onNext={activeResults.length ? () => onNext({ question: activeQuestion, results: activeResults }) : undefined}
         nextLabel="Augment context"
       />
     </section>

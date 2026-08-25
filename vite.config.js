@@ -14,6 +14,17 @@ export default defineConfig({
         target: 'http://localhost:8787',
         changeOrigin: true,
       },
+      // The Python retrieval service (service-py/) is a separate FastAPI
+      // process, run locally with `uvicorn app:app --port 8000`. In
+      // production there's no Vercel-side proxy for it — the frontend
+      // calls its public URL directly (see VITE_PY_API_URL in
+      // src/lib/pyApi.js) since it's a public, read-only, unauthenticated
+      // demo endpoint with nothing for a proxy to protect.
+      '/py-api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/py-api/, ''),
+      },
     },
   },
 })

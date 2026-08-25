@@ -74,7 +74,14 @@ export async function generateAnswer({ question, results, apiKey }) {
         { role: "user", content: userPrompt },
       ],
       temperature: 0.2,
-      max_tokens: 300,
+      // gpt-oss-120b is a reasoning model — its internal "thinking" tokens
+      // are billed against the same max_tokens budget as the visible
+      // answer, so a low budget can silently truncate the answer mid-
+      // sentence after reasoning eats most of it. "low" effort keeps
+      // reasoning short for a task this simple, and a bigger budget
+      // gives the visible answer room even so.
+      reasoning_effort: "low",
+      max_tokens: 600,
     }),
   });
 
@@ -86,6 +93,10 @@ export async function generateAnswer({ question, results, apiKey }) {
   }
 
   const data = await res.json();
-  const answer = data.choices?.[0]?.message?.content?.trim() || "";
-  return { answer, model: MODEL, usage: data.usage || null };
+  const choice = data.choices?.[0];
+  const answer = choice?.message?.content?.trim() || "";
+  // finish_reason "length" means we hit max_tokens — surface that instead
+  // of silently returning a sentence that stops mid-word.
+  const truncated = choice?.finish_reason === "length";
+  return { answer, model: MODEL, usage: data.usage || null, truncated };
 }

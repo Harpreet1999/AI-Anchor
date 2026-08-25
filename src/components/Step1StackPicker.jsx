@@ -35,18 +35,28 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
         switch back.
       </p>
 
-      <div className="track-toggle" role="tablist" aria-label="Processing track">
+      <div className="track-pick-big" role="tablist" aria-label="Processing track">
         <button
-          className={`track-btn${track === "node" ? " active" : ""}`}
+          type="button"
+          className={`track-pick-big-btn${track === "node" ? " active" : ""}`}
+          role="tab"
+          aria-selected={track === "node"}
           onClick={() => onSelectTrack("node")}
         >
-          <Code1 size={16} variant="Outline" color="currentColor" /> Node.js <span className="track-status live">Live</span>
+          <Code1 size={34} variant="Outline" color="currentColor" />
+          <span className="track-pick-big-name">Node.js <span className="track-status live">Live</span></span>
+          <span className="track-pick-big-sub">Hand-rolled splitter · Xenova embeddings · cosine search, all client-side</span>
         </button>
         <button
-          className={`track-btn${track === "python" ? " active" : ""}`}
+          type="button"
+          className={`track-pick-big-btn${track === "python" ? " active" : ""}`}
+          role="tab"
+          aria-selected={track === "python"}
           onClick={() => onSelectTrack("python")}
         >
-          <DocumentCode size={16} variant="Outline" color="currentColor" /> Python + LangChain <span className="track-status live">Live</span>
+          <DocumentCode size={34} variant="Outline" color="currentColor" />
+          <span className="track-pick-big-name">Python + LangChain <span className="track-status live">Live</span></span>
+          <span className="track-pick-big-sub">LangChain splitter · Sentence-Transformers · live ChromaDB retrieval</span>
         </button>
       </div>
       {!track && <p className="track-pick-hint">Pick a track above — Step 03 onward is locked to it until you do (Step 02 is just an overview, so it's open either way).</p>}

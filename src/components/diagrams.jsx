@@ -380,12 +380,13 @@ export function CookGlyph() {
 // stays neutral, mirroring the live app-wide color swap.
 // A swim-lane backdrop for one track's row — turns "three floating boxes"
 // into "a labeled lane," and doubles as the active/inactive indicator so
-// the whole row reads as one track, not just its individual boxes. The
-// identifying label is a big, low-opacity wordmark spanning the whole
-// lane (drawn first, so the chain boxes paint over it) instead of a small
-// label parked at the left edge — that used to sit right where the entry
-// arrow lands, so the curve visually cut through it every time.
-function Lane({ x, y, w, h, bigLabel, active }) {
+// the whole row reads as one track, not just its individual boxes. Each
+// lane is taller than the row of chain boxes it holds, and the label
+// sits in that extra space — above the boxes for the top (Node) lane,
+// below them for the bottom (Python) lane, lined up over the Embed
+// column — instead of at the lane's left edge, which used to sit right
+// where the entry arrow lands and get visually cut through by the curve.
+function Lane({ x, y, w, h, label, labelX, labelY, active }) {
   return (
     <g>
       <rect
@@ -395,10 +396,10 @@ function Lane({ x, y, w, h, bigLabel, active }) {
         stroke="currentColor" strokeWidth="1.2" opacity={active ? 0.9 : 0.4}
       />
       <text
-        x={x + w / 2} y={y + h / 2 + 16} textAnchor="middle" fontSize="46" fontWeight="900"
-        fontFamily="Archivo, sans-serif" letterSpacing="0.03em" fill="currentColor"
-        className={active ? "accent-mark" : undefined} opacity={active ? 0.32 : 0.2}
-      >{bigLabel}</text>
+        x={labelX} y={labelY} textAnchor="middle" fontSize="13" fontWeight="700"
+        fontFamily="Space Mono, monospace" letterSpacing="0.05em" fill="currentColor"
+        className={active ? "accent-mark" : undefined} opacity={active ? 1 : 0.55}
+      >{label}</text>
     </g>
   );
 }
@@ -421,14 +422,18 @@ export function StackFlowDiagram({ track }) {
       role="img"
       aria-label="A shared set of datasets branches sideways into a Node.js tool chain on top and a Python tool chain below it, each doing chunk, embed, and retrieve left to right, converging into a shared augment step and then a shared generate step."
     >
-      <svg viewBox="0 0 1410 260" width="100%" style={{ display: "block", height: "auto" }}>
+      <svg viewBox="0 0 1410 280" width="100%" style={{ display: "block", height: "auto" }}>
         <text x="18" y="22" fontSize="11" fontFamily="Space Mono, monospace" letterSpacing="0.08em" fill="currentColor" opacity="0.45">FIG. 00</text>
 
         <rect x="16" y="98" width="110" height="56" rx="4" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.8" />
         <text x="71" y="130" textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.8">3 DATASETS</text>
 
-        <Lane x={230} y={40} w={780} h={76} bigLabel="NODE" active={nodeActive} />
-        <Lane x={230} y={152} w={780} h={76} bigLabel="PYTHON" active={pyActive} />
+        {/* Node's lane grew upward (extra room above its boxes), Python's
+            grew downward (extra room below) — the inner edges facing each
+            other, and everything between them (the arrows, the shared
+            Augment/Generate boxes), are untouched. */}
+        <Lane x={230} y={20} w={780} h={96} label="NODE" labelX={640} labelY={42} active={nodeActive} />
+        <Lane x={230} y={152} w={780} h={96} label="PYTHON" labelX={640} labelY={234} active={pyActive} />
 
         <FlowArrow x1={126} y1={116} x2={324} y2={78} bow={-34} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={126} y1={136} x2={324} y2={190} bow={34} markerId="stackArrow" strokeWidth={1.4} />

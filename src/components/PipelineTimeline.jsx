@@ -63,7 +63,11 @@ export default function PipelineTimeline({ activeStep }) {
                     <span className="timeline-node-num">{s.num}</span>
                     <span className="timeline-node-title">{s.title}</span>
                   </div>
-                  {i < STAGES.length - 1 && <div className="timeline-connector" aria-hidden="true" />}
+                  {i < STAGES.length - 1 && (
+                    <div className="timeline-connector" aria-hidden="true">
+                      <div className="timeline-connector-fill" />
+                    </div>
+                  )}
                 </div>
               );
             })}

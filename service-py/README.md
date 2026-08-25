@@ -30,35 +30,41 @@ curl -X POST http://localhost:8000/retrieve \
 
 `datasetId` is one of `portfolio`, `cars-jdm-legends`, `sherlock-holmes`.
 
-## Deploy for free — Hugging Face Spaces (Docker SDK)
+## Deploy for free — Render (Web Service, Docker)
 
-This is a separate git remote from GitHub, so deploying means pushing
-this folder's contents to a Space's own repo. No credit card required.
+(Hugging Face Spaces used to be the free option here, but HF now
+requires a paid PRO plan for Docker/Gradio Spaces — free tier is
+static-only, which can't run this. Render's free tier still supports a
+real Docker web service with no credit card required, verified against
+their current docs, not assumed.)
 
-1. Create a free account at huggingface.co if you don't have one.
-2. Create a new Space: huggingface.co/new-space
-   - SDK: **Docker**
-   - Visibility: Public (so the frontend can call it)
-   - Hardware: the free CPU tier
-3. Clone the Space's git repo it gives you, then copy this folder's
-   contents (`app.py`, `requirements.txt`, `Dockerfile`, `data/`) into
-   it and push:
+Render can deploy straight from a subdirectory of this GitHub repo —
+no separate git remote to manage, unlike the old HF Spaces approach.
+
+1. Create a free account at render.com if you don't have one (no card
+   needed to start).
+2. Dashboard → **New → Web Service** → connect your GitHub account →
+   select the `AI-Anchor` repo.
+3. Configure:
+   - **Root Directory:** `service-py`
+   - **Runtime:** Docker (it should auto-detect the `Dockerfile`)
+   - **Instance Type:** Free
+   - **Branch:** whichever branch you're deploying from (e.g. `ui-polish`)
+4. Deploy. First build takes a few minutes (installing
+   sentence-transformers/chromadb, downloading the embedding model
+   into the image). Render gives you a URL like
+   `https://<service-name>.onrender.com`. Confirm it's real before
+   moving on:
    ```
-   git clone https://huggingface.co/spaces/<your-username>/<space-name>
-   cp -r service-py/* <space-name>/
-   cd <space-name>
-   git add -A && git commit -m "Deploy retrieval service" && git push
+   curl https://<service-name>.onrender.com/health
    ```
-4. The Space builds the Dockerfile and starts serving at
-   `https://<your-username>-<space-name>.hf.space`. Confirm with:
-   ```
-   curl https://<your-username>-<space-name>.hf.space/health
-   ```
+   should return `{"ok":true,"model":"all-MiniLM-L6-v2","datasets":[...]}`.
 5. Set that URL as `VITE_PY_API_URL` in the frontend's environment
    (see the repo root README / `.env.example`).
 
-**Cold starts are real and expected on the free tier.** The Space
-sleeps after a period of inactivity and takes tens of seconds to wake
-on the next request — the frontend shows a "waking up" state for this
-rather than hiding it, matching the rest of this project's stance on
-not overclaiming what's actually live at any given moment.
+**Cold starts are real and expected on the free tier.** Render spins
+the service down after 15 minutes of no traffic and takes about a
+minute to wake on the next request — the frontend shows a "waking up"
+state for this rather than hiding it, matching the rest of this
+project's stance on not overclaiming what's actually live at any given
+moment.

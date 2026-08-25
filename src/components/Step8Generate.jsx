@@ -5,7 +5,7 @@ import StepNav from "./StepNav.jsx";
 
 const DATASETS = {
   career: "Portfolio Data",
-  cars: "JDM Legends",
+  cars: "Car Legends",
   sherlock: "Sherlock Holmes",
   cookbook: "Boston Cooking-School Cook Book",
 };

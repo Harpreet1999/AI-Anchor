@@ -9,7 +9,7 @@ import { useDataset } from "../lib/useDataset.js";
 
 const DATASETS = {
   career: "Portfolio Data",
-  cars: "JDM Legends",
+  cars: "Car Legends",
   sherlock: "Sherlock Holmes",
   cookbook: "Boston Cooking-School Cook Book",
 };

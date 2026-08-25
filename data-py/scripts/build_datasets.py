@@ -44,13 +44,19 @@ DATASETS = [
     },
     {
         "id": "cars-jdm-legends",
-        "displayName": "JDM Legends — Spec Comparison",
+        "displayName": "Car Legends — Spec Comparison",
         "description": (
-            "Verified specs (horsepower, torque, 0-60, weight, production years) for 8 iconic "
-            "1990s-2000s Japanese sports cars, including both Fairlady Z generations. A numeric, "
-            "chartable dataset."
+            "Verified specs (horsepower, torque, 0-60, weight, production years) for 65 real "
+            "cars across 8 categories — JDM Legends, Porsche, Lamborghini, Koenigsegg, Muscle, "
+            "Track & Hypercar, Luxury, and Lowrider Culture. A numeric, chartable dataset."
         ),
-        "files": ["cars-jdm-legends.md"],                                                                                                           
+        "files": ["cars-jdm-legends.md"],
+        # No override — stays on the shared default (1000/120), same as
+        # before this file grew. LangChain's generic splitter will still
+        # fuse a couple of short car entries into one chunk here and there;
+        # that's an intentional contrast with Node's heading-based splitter,
+        # which always lands exactly one chunk per car (see the note at the
+        # top of scripts/build-datasets.mjs's buildCars()).
     },
     {
         "id": "sherlock-holmes",

@@ -190,7 +190,11 @@ svg{ color:var(--text); }
      against the rail's FULL width, not width-minus-toggle. */
   display:flex; flex-direction:column; border-left:1px solid var(--line); background:var(--surface);
   width:248px; flex-shrink:0; transition:width .2s ease;
+  /* Scrolling still works (overflow-y:auto above) — just without the
+     visible scrollbar chrome, which read as clutter in a 248px rail. */
+  scrollbar-width:none; -ms-overflow-style:none;
 }
+.timeline-rail::-webkit-scrollbar{ display:none; }
 /* Fully collapsed — genuinely 0 width, not a thin leftover strip. The
    toggle itself switches to a small floating button pinned to the
    viewport instead of sitting inside the (now zero-width) rail, so
@@ -209,7 +213,7 @@ svg{ color:var(--text); }
 .timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 16px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:10px; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:2px; }
 /* Plain <svg> icons now (timelineIcons.jsx), not the <figure>-wrapped FIG.
    icons — each one's artwork is centered on its own viewBox already, so
    centering the box here is all that's needed; nothing drifts off-center. */
@@ -218,6 +222,10 @@ svg{ color:var(--text); }
   width:72px; height:72px; opacity:0.45; border-radius:10px; transition:opacity .2s, background .2s;
 }
 .timeline-node-icon svg{ width:46px; height:46px; display:block; }
+/* Thin, deliberately — a CSS rule on the svg element itself won't win
+   over each shape's own strokeWidth attribute, so this targets the
+   shapes directly instead of relying on inheritance. */
+.timeline-node-icon svg :is(rect, line, circle, path){ stroke-width:1.3; }
 .timeline-node.current .timeline-node-icon, .timeline-node.past .timeline-node-icon{ opacity:1; }
 .timeline-node.current .timeline-node-icon svg, .timeline-node.past .timeline-node-icon svg{ color:var(--accent); }
 /* "Current" reads as a solid colored chip, not an animated ring — calmer,
@@ -228,11 +236,13 @@ svg{ color:var(--text); }
 .timeline-node-title{ font-family:"Archivo", sans-serif; font-size:10.5px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
 .timeline-node.current .timeline-node-title{ color:var(--accent); }
 .timeline-node.past .timeline-node-title{ color:var(--text); }
-/* A real progress-bar segment, not a 1px hairline — an unfilled track
+/* A real progress-bar segment, not a plain hairline — an unfilled track
    plus a fill that's either solid (this segment's fully behind you) or
-   half-filled (you're mid-way, at the current node above it). */
-.timeline-connector{ width:6px; height:28px; margin:3px 0; border-radius:3px; background:var(--line-strong); overflow:hidden; }
-.timeline-connector-fill{ width:100%; height:0; background:var(--accent); border-radius:2px; }
+   half-filled (you're mid-way, at the current node above it). Thin
+   (close to the icon strokes) but tall, so it still reads as its own
+   element without the earlier thick/short bar look. */
+.timeline-connector{ width:2px; height:44px; margin:0; border-radius:1px; background:var(--line-strong); overflow:hidden; }
+.timeline-connector-fill{ width:100%; height:0; background:var(--accent); border-radius:1px; }
 .timeline-node.past .timeline-connector-fill{ height:100%; }
 .timeline-node.current .timeline-connector-fill{ height:50%; }
 

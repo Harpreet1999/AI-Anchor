@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import TopProgress from "./components/TopProgress.jsx";
 import Masthead from "./components/Masthead.jsx";
+import PipelineTimeline from "./components/PipelineTimeline.jsx";
 import Step1StackPicker from "./components/Step1StackPicker.jsx";
 import Step2Intro from "./components/Step2Intro.jsx";
 import Step3Select from "./components/Step3Select.jsx";
@@ -117,6 +118,7 @@ function App() {
             />
           )}
         </div>
+        <PipelineTimeline activeStep={activeStep} />
       </div>
     </>
   );

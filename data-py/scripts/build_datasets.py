@@ -70,6 +70,11 @@ DATASETS = [
             "Ask how to make something, or what goes in it."
         ),
         "files": ["boston-cooking-school-cookbook.txt"],
+        # Coarser than the 1000-char default (~500 chunks instead of
+        # ~1700) — a deliberate demo-scale decision, not a change in what
+        # the splitter does. Verified against the real text: 3000 chars
+        # lands at 490 chunks.
+        "chunk_size": 3000,
     },
 ]
 
@@ -81,7 +86,13 @@ def slugify(s: str) -> str:
 
 
 def build_dataset(model: SentenceTransformer, spec: dict) -> dict:
-    splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
+    # Per-dataset override, falling back to the shared default — only
+    # cookbook (and, if it ever needs one, cars) uses a non-default size;
+    # portfolio and sherlock-holmes stay on exactly the chunking they've
+    # always had.
+    chunk_size = spec.get("chunk_size", CHUNK_SIZE)
+    chunk_overlap = spec.get("chunk_overlap", CHUNK_OVERLAP)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 
     pieces = []  # [(source_file, piece_index, text)]
     for filename in spec["files"]:

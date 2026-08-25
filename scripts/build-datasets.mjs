@@ -414,7 +414,12 @@ function buildCookbook() {
   });
 
   const chunks = [];
-  const TARGET_LEN = 1200;
+  // 2800 chars/chunk (up from an earlier 1200) — deliberately coarser so
+  // the whole dataset lands around ~500 chunks instead of ~1270. This is
+  // purely a demo-scale decision (matches Sherlock's chunk count better,
+  // and shrinks the Python service's cold-start/RAM footprint), not a
+  // change in what the chunker actually does.
+  const TARGET_LEN = 2800;
   for (const chapter of chapters) {
     const paragraphs = chapter.text.split(/\n\s*\n/).filter((p) => p.trim());
     let buf = "";

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import CopyButton from "./CopyButton.jsx";
 import StepNav from "./StepNav.jsx";
 
 const DATASETS = {
@@ -6,14 +8,18 @@ const DATASETS = {
   sherlock: "Sherlock Holmes",
 };
 
+const SYSTEM_LINE = "SYSTEM: Answer the user's question using only the supplied evidence. Cite the source when relevant.";
+
 export default function Step7Augment({ track, selectedId, retrievalData, onBack, onNext }) {
   const results = retrievalData?.results || [];
   const question = retrievalData?.question || "No question has been retrieved yet.";
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
   const trackName = track === "node" ? "NODE.JS" : "PYTHON";
-  const context = results.length
+  const [openIndex, setOpenIndex] = useState(results.length ? 0 : null);
+
+  const fullPrompt = results.length
     ? [
-        "SYSTEM: Answer the user's question using only the supplied evidence. Cite the source when relevant.",
+        SYSTEM_LINE,
         `USER QUESTION: ${question}`,
         "RETRIEVED EVIDENCE:",
         results.map((result, index) => (
@@ -50,10 +56,54 @@ export default function Step7Augment({ track, selectedId, retrievalData, onBack,
         </div>
       </div>
 
-      <div className="retrieval-panel prompt-panel">
-        <div className="retrieval-panel-head"><span>AUGMENTED PROMPT CONTEXT</span><span>{trackName} · {results.length} CHUNKS</span></div>
-        <pre>{context}</pre>
-      </div>
+      {results.length > 0 ? (
+        <div className="retrieval-panel prompt-panel">
+          <div className="retrieval-panel-head">
+            <span>AUGMENTED PROMPT CONTEXT</span>
+            <span>{trackName} · {results.length} CHUNKS</span>
+          </div>
+
+          <div className="prompt-block prompt-system">
+            <span className="prompt-block-label">SYSTEM</span>
+            <p>{SYSTEM_LINE}</p>
+          </div>
+          <div className="prompt-block">
+            <span className="prompt-block-label">QUESTION</span>
+            <p>{question}</p>
+          </div>
+
+          <div className="prompt-evidence-list">
+            {results.map((result, index) => {
+              const isOpen = openIndex === index;
+              return (
+                <div key={result.chunkId || index} className="prompt-evidence-item">
+                  <button
+                    type="button"
+                    className="prompt-evidence-toggle"
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className="prompt-evidence-tag">[{index + 1}]</span>
+                    <span className="prompt-evidence-title">{result.title} · {result.source}</span>
+                    <span className="prompt-evidence-caret">{isOpen ? "▾" : "▸"}</span>
+                  </button>
+                  {isOpen && <p className="prompt-evidence-text">{result.text}</p>}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="prompt-panel-foot">
+            <span>{fullPrompt.length.toLocaleString()} characters sent to the model in Step 08</span>
+            <CopyButton getText={() => fullPrompt} label="Copy full prompt" />
+          </div>
+        </div>
+      ) : (
+        <div className="retrieval-panel prompt-panel">
+          <div className="retrieval-panel-head"><span>AUGMENTED PROMPT CONTEXT</span><span>{trackName}</span></div>
+          <p className="retrieval-note">Run retrieval in Step 06 to create augmented context.</p>
+        </div>
+      )}
 
       <div className="augment-note">
         <b>What this proves:</b> the answer stage receives traceable evidence with source IDs, not just an unstructured question.

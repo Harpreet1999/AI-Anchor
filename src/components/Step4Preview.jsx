@@ -11,6 +11,7 @@ import carsRaw from "../../data/sources/cars-jdm-legends.md?raw";
 import sherlockRaw from "../../data/sources/sherlock-holmes.txt?raw";
 import { excerptChars } from "../lib/mdExcerpt.js";
 import JsonBlock from "./JsonBlock.jsx";
+import CopyButton from "./CopyButton.jsx";
 import StepNav from "./StepNav.jsx";
 
 const EXCERPT_LEN = 1800;
@@ -92,6 +93,9 @@ export default function Step4Preview({ track, selectedId, processing, onBack, on
           <div className="pane">
             <div className="pane-head"><span>INDEXED</span><span>{jsonFile} · chunk {index + 1} of {total}</span></div>
             <div className="pane-body">
+              <div className="pane-body-toolbar">
+                <CopyButton getText={() => JSON.stringify(chunk, null, 2)} label="Copy chunk JSON" />
+              </div>
               <pre className="chunk-block"><JsonBlock value={chunk} /></pre>
             </div>
             <div className="chunk-nav">

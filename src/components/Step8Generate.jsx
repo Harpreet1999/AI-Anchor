@@ -1,4 +1,6 @@
 import { useState } from "react";
+import CopyButton from "./CopyButton.jsx";
+import JsonBlock from "./JsonBlock.jsx";
 import StepNav from "./StepNav.jsx";
 
 const DATASETS = {
@@ -20,6 +22,11 @@ function describeError(status, message) {
 export default function Step8Generate({ track, selectedId, retrievalData, onBack }) {
   const [answer, setAnswer] = useState("");
   const [model, setModel] = useState("");
+  const [usage, setUsage] = useState(null);
+  const [truncated, setTruncated] = useState(false);
+  const [latencyMs, setLatencyMs] = useState(null);
+  const [rawResponse, setRawResponse] = useState(null);
+  const [showRaw, setShowRaw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const results = retrievalData?.results || [];
@@ -31,6 +38,7 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
     if (!results.length) return;
     setLoading(true);
     setError("");
+    const started = performance.now();
 
     try {
       const res = await fetch("/api/generate", {
@@ -44,6 +52,10 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
       }
       setAnswer(data.answer || "The model returned no answer.");
       setModel(data.model || "");
+      setUsage(data.usage || null);
+      setTruncated(Boolean(data.truncated));
+      setLatencyMs(Math.round(performance.now() - started));
+      setRawResponse(data);
     } catch (generationError) {
       console.error(generationError);
       setError(describeError(generationError.status ?? 0, generationError.message));
@@ -88,7 +100,33 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
         <div className={`answer-body${answer ? " ready" : ""}`}>
           {answer || "Run generation to produce a grounded answer."}
         </div>
+
+        {truncated && (
+          <p className="retrieval-note" style={{ color: "#E8B923" }}>
+            This answer hit the model's output limit and may be cut off mid-sentence — try regenerating.
+          </p>
+        )}
         {error && <p className="retrieval-note" style={{ color: "#f7b5b5" }}>{error}</p>}
+
+        {answer && !error && (
+          <div className="usage-strip">
+            <div className="usage-chip"><span>LATENCY</span><b>{latencyMs !== null ? `${latencyMs}ms` : "—"}</b></div>
+            <div className="usage-chip"><span>PROMPT TOKENS</span><b>{usage?.prompt_tokens ?? "—"}</b></div>
+            <div className="usage-chip"><span>REASONING TOKENS</span><b>{usage?.completion_tokens_details?.reasoning_tokens ?? "—"}</b></div>
+            <div className="usage-chip"><span>ANSWER TOKENS</span><b>{usage?.completion_tokens ?? "—"}</b></div>
+            <div className="usage-actions">
+              <CopyButton getText={() => answer} label="Copy answer" />
+              <button type="button" className="copy-btn" onClick={() => setShowRaw((v) => !v)}>
+                {showRaw ? "Hide raw response" : "View raw response"}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showRaw && rawResponse && (
+          <pre className="chunk-block raw-response-block"><JsonBlock value={rawResponse} /></pre>
+        )}
+
         <button className="chunk-nav-btn generate-button" type="button" onClick={handleGenerate} disabled={loading || !results.length}>
           {loading ? "Generating…" : answer ? "Generate again" : "Generate answer"}
         </button>

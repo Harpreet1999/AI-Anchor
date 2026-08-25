@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CopyButton from "./CopyButton.jsx";
 
 function ResultRow({ result, index, isOpen, onToggle }) {
   return (
@@ -10,7 +11,9 @@ function ResultRow({ result, index, isOpen, onToggle }) {
         <div className="evidence-placeholder">
           <span className="evidence-rank">{String(index + 1).padStart(2, '0')}</span>
           <span>{(result.score * 100).toFixed(1)}%</span>
-          <span className="evidence-line" />
+          <span className="evidence-bar-track" aria-hidden="true">
+            <span className="evidence-bar-fill" style={{ width: `${Math.max(0, Math.min(100, result.score * 100))}%` }} />
+          </span>
           <span className="evidence-title">{result.title} · {result.source}</span>
         </div>
         <button type="button" className="evidence-toggle" onClick={(event) => { event.stopPropagation(); onToggle(); }} aria-expanded={isOpen}>
@@ -19,7 +22,10 @@ function ResultRow({ result, index, isOpen, onToggle }) {
       </div>
       {isOpen && (
         <div className="evidence-detail">
-          <div className="evidence-detail-head">Chunk text</div>
+          <div className="evidence-detail-head">
+            <span>Chunk text</span>
+            <CopyButton getText={() => result.text} label="Copy chunk" />
+          </div>
           <p>{result.text}</p>
         </div>
       )}

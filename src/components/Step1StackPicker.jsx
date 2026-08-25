@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { Code1, DocumentCode } from "iconsax-react";
 import { StackFlowDiagram } from "./diagrams.jsx";
+import LiveCheck from "./LiveCheck.jsx";
+import { pyApiUrl } from "../lib/pyApi.js";
 import StepNav from "./StepNav.jsx";
 
 // The forked rows differ by track; the shared rows don't fork at all —
@@ -11,9 +13,9 @@ const ROWS = [
   { stage: "Data Prep", shared: false, node: ["Node.js", "Built — wired to the files in this repo"], python: ["Python", "Done — the same 3 datasets, chunked and embedded, run once locally"] },
   { stage: "Chunking", shared: false, node: ["Hand-rolled splitter", "Structure-aware — one chunk per real unit (a cert, a car, a story paragraph)"], python: ["LangChain Text Splitters", "RecursiveCharacterTextSplitter — the standard generic approach"] },
   { stage: "Embeddings", shared: false, node: ["Xenova (transformers.js)", "all-MiniLM-L6-v2, runs once locally — $0, one language"], python: ["Sentence-Transformers", "Same model, the industry-standard Python runtime for it"] },
-  { stage: "Vector Search", shared: false, node: ["Cosine similarity / Upstash Vector", "No server needed at this scale — fits a stateless deploy"], python: ["ChromaDB", "A real vector DB, live on a small FastAPI service — free-tier hosted, so it can sleep and wake"] },
+  { stage: "Vector Search", shared: false, node: ["Cosine similarity / Upstash Vector", "No server needed at this scale — fits a stateless deploy"], python: ["ChromaDB", "A real vector DB, live on a small FastAPI service — free-tier hosted, so it can sleep and wake"], pythonCheck: { label: "Check now", url: pyApiUrl("/health") } },
   { stage: "Orchestration", shared: true, both: ["LangChain.js + LangGraph.js", "Kept in JS either way — no second runtime on the deployed app"] },
-  { stage: "Live LLM Call", shared: true, both: ["Groq — GPT-OSS 120B", "Free tier, fastest available inference — the only part that isn't fully $0 by construction, kept on a free tier by design"] },
+  { stage: "Live LLM Call", shared: true, both: ["Groq — GPT-OSS 120B", "Free tier, fastest available inference — the only part that isn't fully $0 by construction, kept on a free tier by design"], sharedCheck: { label: "Check now", url: "/api/health" } },
 ];
 
 export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
@@ -65,16 +67,19 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
               <div className="stack-cell shared" style={{ gridColumn: "span 2" }}>
                 <b>{r.both[0]}</b>
                 <p>{r.both[1]}</p>
+                {r.sharedCheck && <LiveCheck label={r.sharedCheck.label} url={r.sharedCheck.url} />}
               </div>
             ) : (
               <>
                 <div className={`stack-cell${track === "node" ? " active" : ""}`}>
                   <b>{r.node[0]}</b>
                   <p>{r.node[1]}</p>
+                  {r.nodeCheck && <LiveCheck label={r.nodeCheck.label} url={r.nodeCheck.url} />}
                 </div>
                 <div className={`stack-cell${track === "python" ? " active" : ""}`}>
                   <b>{r.python[0]}</b>
                   <p>{r.python[1]}</p>
+                  {r.pythonCheck && <LiveCheck label={r.pythonCheck.label} url={r.pythonCheck.url} />}
                 </div>
               </>
             )}

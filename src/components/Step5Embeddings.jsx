@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
+import CopyButton from "./CopyButton.jsx";
 import portfolioNode from "../../data/processed/portfolio.json";
 import carsNode from "../../data/processed/cars-jdm-legends.json";
 import sherlockNode from "../../data/processed/sherlock-holmes.json";
@@ -45,9 +46,11 @@ function EmbeddingStrip({ vector }) {
 export default function Step5Embeddings({ track, selectedId, onBack, onNext }) {
   const dataset = selectedId ? BY_TRACK[track][selectedId] : null;
   const [index, setIndex] = useState(0);
+  const [showFull, setShowFull] = useState(false);
 
   useEffect(() => {
     setIndex(0);
+    setShowFull(false);
   }, [selectedId, track]);
 
   const total = dataset ? dataset.chunks.length : 0;
@@ -104,8 +107,18 @@ export default function Step5Embeddings({ track, selectedId, onBack, onNext }) {
             <p className="embed-chunk-text">{chunk.text.length > 260 ? chunk.text.slice(0, 260).trim() + "…" : chunk.text}</p>
 
             <EmbeddingStrip vector={chunk.embedding} />
-            <div className="embed-numbers">
-              [{chunk.embedding.slice(0, 8).map((n) => n.toFixed(4)).join(", ")}, …]
+            <div className="embed-numbers-row">
+              <div className="embed-numbers">
+                {showFull
+                  ? `[${chunk.embedding.map((n) => n.toFixed(4)).join(", ")}]`
+                  : `[${chunk.embedding.slice(0, 8).map((n) => n.toFixed(4)).join(", ")}, …]`}
+              </div>
+              <div className="embed-numbers-actions">
+                <button type="button" className="copy-btn" onClick={() => setShowFull((v) => !v)}>
+                  {showFull ? `Show first 8` : `Show all ${chunk.embedding.length}`}
+                </button>
+                <CopyButton getText={() => JSON.stringify(chunk.embedding)} label="Copy vector" />
+              </div>
             </div>
 
             <div className="chunk-nav">

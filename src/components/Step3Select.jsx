@@ -1,3 +1,4 @@
+import { useState } from "react";
 import portfolioNode from "../../data/processed/portfolio.json";
 import carsNode from "../../data/processed/cars-jdm-legends.json";
 import sherlockNode from "../../data/processed/sherlock-holmes.json";
@@ -40,6 +41,8 @@ const META = [
 ];
 
 export default function Step3Select({ track, selectedId, onSelectDataset, onBack }) {
+  const [previewId, setPreviewId] = useState(null);
+
   return (
     <section className="sheet">
       <div className="sheet-num">STEP 03</div>
@@ -53,20 +56,36 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onBack
       <div className="dataset-grid">
         {META.map((m) => {
           const d = BY_TRACK[track][m.id];
+          const isPreviewing = previewId === m.id;
+          const previewChunk = d.chunks[Math.floor(d.chunks.length / 3)];
           return (
-            <button
-              key={m.id}
-              className={`dcard dcard-select${selectedId === m.id ? " selected" : ""}`}
-              onClick={() => onSelectDataset(m.id)}
-            >
+            <div key={m.id} className={`dcard dcard-select${selectedId === m.id ? " selected" : ""}`}>
               <m.Glyph />
               <div className="tag">{m.tag}</div>
               <h3>{d.displayName}</h3>
               <p><b>From:</b> {m.from}</p>
               <p><b>Signifies:</b> {m.signifies}</p>
               <div className="stat"><span>CHUNKS ({track === "node" ? "Node.js" : "Python"})</span><b>{d.chunks.length}</b></div>
-              <div className="dcard-cta">{selectedId === m.id ? "✓ Selected — see Step 04" : "Select this dataset →"}</div>
-            </button>
+
+              <button
+                type="button"
+                className="dcard-preview-toggle"
+                onClick={() => setPreviewId(isPreviewing ? null : m.id)}
+                aria-expanded={isPreviewing}
+              >
+                {isPreviewing ? "▾ Hide a real chunk" : "▸ Peek at a real chunk"}
+              </button>
+              {isPreviewing && (
+                <div className="dcard-preview-body">
+                  <span className="dcard-preview-title">{previewChunk.title}</span>
+                  <p>{previewChunk.text.length > 220 ? previewChunk.text.slice(0, 220).trim() + "…" : previewChunk.text}</p>
+                </div>
+              )}
+
+              <button type="button" className="dcard-cta-btn" onClick={() => onSelectDataset(m.id)}>
+                {selectedId === m.id ? "✓ Selected — see Step 04" : "Select this dataset →"}
+              </button>
+            </div>
           );
         })}
       </div>

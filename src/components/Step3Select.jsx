@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Code1, DocumentCode } from "iconsax-react";
 import { BarGlyph, BookGlyph, CookGlyph } from "./diagrams.jsx";
 import { useDataset } from "../lib/useDataset.js";
@@ -76,10 +77,23 @@ function DatasetPreviewModal({ title, fileLabel, loading, raw, error, onConfirm,
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // A genuine full-screen takeover — lock the page behind it so it
+    // can't be scrolled while this is up, same as it would if this were
+    // its own route rather than an overlay.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [onClose]);
 
-  return (
+  // Rendered straight onto document.body, not in place — the app's own
+  // layout (.layout) is its own stacking context with a z-index lower
+  // than the sticky top bar's, so no z-index set from inside it could
+  // ever paint above that bar (the same class of bug the boot screen hit
+  // earlier for the same reason). A portal escapes that entirely.
+  return createPortal(
     <div
       className="dataset-preview-overlay"
       role="dialog"
@@ -117,7 +131,8 @@ function DatasetPreviewModal({ title, fileLabel, loading, raw, error, onConfirm,
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

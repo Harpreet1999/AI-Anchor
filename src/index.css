@@ -204,16 +204,18 @@ svg{ color:var(--text); }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
 .timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:10px; }
+/* Plain <svg> icons now (timelineIcons.jsx), not the <figure>-wrapped FIG.
+   icons — each one's artwork is centered on its own viewBox already, so
+   centering the box here is all that's needed; nothing drifts off-center. */
 .timeline-node-icon{
   position:relative; display:flex; align-items:center; justify-content:center;
-  width:80px; height:66px; opacity:0.45; border-radius:10px; transition:opacity .2s, background .2s;
+  width:72px; height:72px; opacity:0.45; border-radius:10px; transition:opacity .2s, background .2s;
 }
-.timeline-node-icon figure{ width:80px; height:66px; margin:0; display:flex; align-items:center; justify-content:center; }
-.timeline-node-icon svg{ width:100%; max-width:68px; height:auto; max-height:56px; display:block; }
-/* Bolder strokes specifically in the timeline — the same icon components
-   render at their normal weight in Step 02's grid; this is a scoped
-   override so the rail's smaller icons still read clearly at a glance. */
-.timeline-node-icon svg :is(rect, line, circle, path, polygon){ stroke-width:2.4; }
+.timeline-node-icon svg{ width:46px; height:46px; display:block; }
+/* A CSS rule on the svg element itself won't win over each shape's own
+   strokeWidth attribute (presentation attributes only lose to a rule
+   that targets that element directly) — so this targets the shapes. */
+.timeline-node-icon svg :is(rect, line, circle, path){ stroke-width:2.2; }
 .timeline-node.current .timeline-node-icon, .timeline-node.past .timeline-node-icon{ opacity:1; }
 .timeline-node.current .timeline-node-icon svg, .timeline-node.past .timeline-node-icon svg{ color:var(--accent); }
 /* "Current" reads as a solid colored chip, not an animated ring — calmer,
@@ -591,10 +593,9 @@ svg{ color:var(--text); }
    card to open a detail panel below the grid instead of navigating away.
    Master/detail, not accordion-per-card, so the 3-column grid never
    reflows awkwardly when one card expands. ---------- */
-.stage-btn{ display:block; width:100%; text-align:left; font:inherit; cursor:pointer; border:none; background:var(--surface); padding:20px 18px; opacity:1; transition:opacity .18s ease, background .15s ease; }
+.stage-btn{ display:block; width:100%; text-align:left; font:inherit; cursor:pointer; border:none; background:var(--surface); padding:20px 18px; transition:background .15s ease; }
 .stage-btn.live{ box-shadow:inset 2px 0 0 var(--accent); }
 .stage-btn:hover{ background:var(--surface-2); }
-.stage-btn.dimmed{ opacity:0.62; }
 .stage-btn.expanded{ background:var(--surface-2); box-shadow:inset 2px 0 0 var(--accent), inset 0 -2px 0 var(--accent); }
 .stage-expand-hint{ margin-top:10px; font-family:"Space Mono", monospace; font-size:10px; color:var(--text-dim); letter-spacing:0.04em; text-transform:uppercase; display:flex; align-items:center; gap:5px; }
 .stage-btn.expanded .stage-expand-hint{ color:var(--accent); }

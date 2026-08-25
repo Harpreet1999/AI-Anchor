@@ -125,24 +125,7 @@ function Callout({ x1, y1, x2, y2, labelX, labelY, anchor = "start", children })
   );
 }
 
-// Wraps one stage's drawing in a hoverable/fadeable group — shared by
-// HeroDiagram and RetrieveGenerateDiagram so hovering a segment of either
-// figure, or a card in the stage grid below (see PipelineGrid.jsx), can
-// dim every *other* stage across both, tying the picture to the list.
-function StageGroup({ stageKey, hovered, onHover, children }) {
-  const dimmed = hovered && hovered !== stageKey;
-  return (
-    <g
-      onMouseEnter={() => onHover?.(stageKey)}
-      onMouseLeave={() => onHover?.(null)}
-      style={{ opacity: dimmed ? 0.5 : 1, transition: "opacity .18s ease", cursor: onHover ? "pointer" : undefined }}
-    >
-      {children}
-    </g>
-  );
-}
-
-export function HeroDiagram({ hoveredStage, onHoverStage } = {}) {
+export function HeroDiagram() {
   return (
     <figure
       role="img"
@@ -153,35 +136,29 @@ export function HeroDiagram({ hoveredStage, onHoverStage } = {}) {
         <text x="18" y="26" fontSize="10.5" fontFamily="Space Mono, monospace" letterSpacing="0.08em" fill="currentColor" opacity="0.45">FIG. 01</text>
 
         {/* source document */}
-        <StageGroup stageKey="source" hovered={hoveredStage} onHover={onHoverStage}>
-          <IsoBox cx={128} cy={128} s={46} h={62} lines={4} accent={false} />
-          <Callout x1={92} y1={190} x2={70} y2={230} labelX={70} labelY={244} anchor="middle">SOURCE DOCUMENT</Callout>
-        </StageGroup>
+        <IsoBox cx={128} cy={128} s={46} h={62} lines={4} accent={false} />
+        <Callout x1={92} y1={190} x2={70} y2={230} labelX={70} labelY={244} anchor="middle">SOURCE DOCUMENT</Callout>
 
         {/* split */}
         <FlowArrow x1={180} y1={128} x2={280} y2={128} bow={-20} markerId="heroArrow" />
         <text x={230} y={98} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">split</text>
 
         {/* three chunks, cascading like the reference cube clusters */}
-        <StageGroup stageKey="chunk" hovered={hoveredStage} onHover={onHoverStage}>
-          <IsoBox cx={330} cy={92} s={24} h={26} />
-          <IsoBox cx={362} cy={136} s={24} h={26} />
-          <IsoBox cx={330} cy={180} s={24} h={26} />
-          <Callout x1={362} y1={196} x2={362} y2={234} labelX={362} labelY={248} anchor="middle">3 CHUNKS</Callout>
-        </StageGroup>
+        <IsoBox cx={330} cy={92} s={24} h={26} />
+        <IsoBox cx={362} cy={136} s={24} h={26} />
+        <IsoBox cx={330} cy={180} s={24} h={26} />
+        <Callout x1={362} y1={196} x2={362} y2={234} labelX={362} labelY={248} anchor="middle">3 CHUNKS</Callout>
 
         {/* embed */}
         <FlowArrow x1={392} y1={136} x2={472} y2={136} bow={-20} markerId="heroArrow" />
         <text x={432} y={106} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">embed</text>
 
         {/* embedding space: a plane with points floating above it */}
-        <StageGroup stageKey="embed" hovered={hoveredStage} onHover={onHoverStage}>
-          <IsoPlane cx={610} cy={190} s={120} />
-          <FloatingPoint x={634} y={178} h={44} />
-          <FloatingPoint x={666} y={196} h={64} />
-          <FloatingPoint x={598} y={210} h={26} />
-          <Callout x1={610} y1={250} x2={610} y2={280} labelX={610} labelY={294} anchor="middle">EMBEDDING SPACE</Callout>
-        </StageGroup>
+        <IsoPlane cx={610} cy={190} s={120} />
+        <FloatingPoint x={634} y={178} h={44} />
+        <FloatingPoint x={666} y={196} h={64} />
+        <FloatingPoint x={598} y={210} h={26} />
+        <Callout x1={610} y1={250} x2={610} y2={280} labelX={610} labelY={294} anchor="middle">EMBEDDING SPACE</Callout>
 
         <defs>
           <marker id="heroArrow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
@@ -194,7 +171,7 @@ export function HeroDiagram({ hoveredStage, onHoverStage } = {}) {
   );
 }
 
-export function RetrieveGenerateDiagram({ hoveredStage, onHoverStage } = {}) {
+export function RetrieveGenerateDiagram() {
   return (
     <figure
       role="img"
@@ -204,49 +181,44 @@ export function RetrieveGenerateDiagram({ hoveredStage, onHoverStage } = {}) {
       <svg viewBox="0 0 760 320" width="100%" style={{ height: "auto" }}>
         <text x="18" y="26" fontSize="10.5" fontFamily="Space Mono, monospace" letterSpacing="0.08em" fill="currentColor" opacity="0.45">FIG. 02</text>
 
-        {/* retrieve: question arrives at the already-indexed points and
-            captures its nearest neighbors — index + top-2 chunks are one
-            stage's output, so they fade together */}
-        <StageGroup stageKey="retrieve" hovered={hoveredStage} onHover={onHoverStage}>
-          <FlowArrow x1={150} y1={64} x2={150} y2={140} bow={18} markerId="rgArrow" />
-          <text x={150} y={54} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">ask</text>
+        {/* a question arrives at the already-indexed points */}
+        <FlowArrow x1={150} y1={64} x2={150} y2={140} bow={18} markerId="rgArrow" />
+        <text x={150} y={54} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">ask</text>
 
-          <IsoPlane cx={150} cy={190} s={100} />
-          <circle cx={185} cy={175} r="3" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-          <circle cx={115} cy={205} r="3" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-          <circle cx={195} cy={215} r="3" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
-          <circle cx={150} cy={192} r="42" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 3" opacity="0.4" />
-          <line x1={150} y1={192} x2={185} y2={175} stroke="currentColor" strokeWidth="1" opacity="0.6" />
-          <line x1={150} y1={192} x2={115} y2={205} stroke="currentColor" strokeWidth="1" opacity="0.6" />
-          <circle cx={150} cy={192} r="4.5" fill="currentColor" className="accent-mark" />
-          <Callout x1={150} y1={244} x2={150} y2={266} labelX={150} labelY={280} anchor="middle">THE INDEX</Callout>
+        <IsoPlane cx={150} cy={190} s={100} />
+        <circle cx={185} cy={175} r="3" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+        <circle cx={115} cy={205} r="3" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+        <circle cx={195} cy={215} r="3" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+        <circle cx={150} cy={192} r="42" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 3" opacity="0.4" />
+        <line x1={150} y1={192} x2={185} y2={175} stroke="currentColor" strokeWidth="1" opacity="0.6" />
+        <line x1={150} y1={192} x2={115} y2={205} stroke="currentColor" strokeWidth="1" opacity="0.6" />
+        <circle cx={150} cy={192} r="4.5" fill="currentColor" className="accent-mark" />
+        <Callout x1={150} y1={244} x2={150} y2={266} labelX={150} labelY={280} anchor="middle">THE INDEX</Callout>
 
-          <FlowArrow x1={252} y1={192} x2={304} y2={172} bow={-20} markerId="rgArrow" />
-          <text x={278} y={148} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">retrieve</text>
+        {/* retrieve */}
+        <FlowArrow x1={252} y1={192} x2={304} y2={172} bow={-20} markerId="rgArrow" />
+        <text x={278} y={148} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">retrieve</text>
 
-          <IsoBox cx={330} cy={130} s={22} h={24} />
-          <IsoBox cx={330} cy={195} s={22} h={24} />
-          <Callout x1={330} y1={231} x2={330} y2={252} labelX={330} labelY={266} anchor="middle">TOP-2 CHUNKS</Callout>
-        </StageGroup>
+        {/* the 2 captured chunks */}
+        <IsoBox cx={330} cy={130} s={22} h={24} />
+        <IsoBox cx={330} cy={195} s={22} h={24} />
+        <Callout x1={330} y1={231} x2={330} y2={252} labelX={330} labelY={266} anchor="middle">TOP-2 CHUNKS</Callout>
 
         {/* augment: both chunks converge into one prompt */}
-        <StageGroup stageKey="augment" hovered={hoveredStage} onHover={onHoverStage}>
-          <line x1={362} y1={130} x2={412} y2={165} stroke="currentColor" strokeWidth="1" opacity="0.55" />
-          <line x1={362} y1={195} x2={412} y2={175} stroke="currentColor" strokeWidth="1" opacity="0.55" />
-          <text x={400} y={140} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">augment</text>
-          <IsoBox cx={452} cy={170} s={32} h={36} />
-          <Callout x1={452} y1={228} x2={452} y2={250} labelX={452} labelY={264} anchor="middle">PROMPT</Callout>
-        </StageGroup>
+        <line x1={362} y1={130} x2={412} y2={165} stroke="currentColor" strokeWidth="1" opacity="0.55" />
+        <line x1={362} y1={195} x2={412} y2={175} stroke="currentColor" strokeWidth="1" opacity="0.55" />
+        <text x={400} y={140} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">augment</text>
+        <IsoBox cx={452} cy={170} s={32} h={36} />
+        <Callout x1={452} y1={228} x2={452} y2={250} labelX={452} labelY={264} anchor="middle">PROMPT</Callout>
 
-        {/* generate — the grounded answer is a speech bubble, not a
-            document: this is an answer being generated, not a file being
-            read */}
-        <StageGroup stageKey="generate" hovered={hoveredStage} onHover={onHoverStage}>
-          <FlowArrow x1={491} y1={174} x2={589} y2={145} bow={-20} markerId="rgArrow" />
-          <text x={540} y={118} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">generate</text>
-          <AnswerBubble x={600} y={105} w={112} h={90} lines={3} />
-          <Callout x1={608} y1={196} x2={634} y2={230} labelX={634} labelY={244} anchor="middle">GROUNDED ANSWER</Callout>
-        </StageGroup>
+        {/* generate */}
+        <FlowArrow x1={491} y1={174} x2={589} y2={145} bow={-20} markerId="rgArrow" />
+        <text x={540} y={118} textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">generate</text>
+
+        {/* the grounded answer — a speech bubble, not a document: this is an
+            answer being generated, not a file being read */}
+        <AnswerBubble x={600} y={105} w={112} h={90} lines={3} />
+        <Callout x1={608} y1={196} x2={634} y2={230} labelX={634} labelY={244} anchor="middle">GROUNDED ANSWER</Callout>
 
         <defs>
           <marker id="rgArrow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
@@ -408,8 +380,12 @@ export function CookGlyph() {
 // stays neutral, mirroring the live app-wide color swap.
 // A swim-lane backdrop for one track's row — turns "three floating boxes"
 // into "a labeled lane," and doubles as the active/inactive indicator so
-// the whole row reads as one track, not just its individual boxes.
-function Lane({ x, y, w, h, label, active }) {
+// the whole row reads as one track, not just its individual boxes. The
+// identifying label is a big, low-opacity wordmark spanning the whole
+// lane (drawn first, so the chain boxes paint over it) instead of a small
+// label parked at the left edge — that used to sit right where the entry
+// arrow lands, so the curve visually cut through it every time.
+function Lane({ x, y, w, h, bigLabel, active }) {
   return (
     <g>
       <rect
@@ -419,10 +395,10 @@ function Lane({ x, y, w, h, label, active }) {
         stroke="currentColor" strokeWidth="1.2" opacity={active ? 0.9 : 0.4}
       />
       <text
-        x={x + 16} y={y + h / 2 + 4} fontSize="10.5" fontWeight="700"
-        fontFamily="Space Mono, monospace" letterSpacing="0.04em" fill="currentColor"
-        className={active ? "accent-mark" : undefined} opacity={active ? 1 : 0.55}
-      >{label}</text>
+        x={x + w / 2} y={y + h / 2 + 16} textAnchor="middle" fontSize="46" fontWeight="900"
+        fontFamily="Archivo, sans-serif" letterSpacing="0.03em" fill="currentColor"
+        className={active ? "accent-mark" : undefined} opacity={active ? 0.32 : 0.2}
+      >{bigLabel}</text>
     </g>
   );
 }
@@ -445,14 +421,14 @@ export function StackFlowDiagram({ track }) {
       role="img"
       aria-label="A shared set of datasets branches sideways into a Node.js tool chain on top and a Python tool chain below it, each doing chunk, embed, and retrieve left to right, converging into a shared augment step and then a shared generate step."
     >
-      <svg viewBox="0 0 1560 260" width="100%" style={{ display: "block", height: "auto" }}>
+      <svg viewBox="0 0 1410 260" width="100%" style={{ display: "block", height: "auto" }}>
         <text x="18" y="22" fontSize="11" fontFamily="Space Mono, monospace" letterSpacing="0.08em" fill="currentColor" opacity="0.45">FIG. 00</text>
 
         <rect x="16" y="98" width="110" height="56" rx="4" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.8" />
         <text x="71" y="130" textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.8">3 DATASETS</text>
 
-        <Lane x={230} y={40} w={780} h={76} label="NODE.JS" active={nodeActive} />
-        <Lane x={230} y={152} w={780} h={76} label="PYTHON" active={pyActive} />
+        <Lane x={230} y={40} w={780} h={76} bigLabel="NODE" active={nodeActive} />
+        <Lane x={230} y={152} w={780} h={76} bigLabel="PYTHON" active={pyActive} />
 
         <FlowArrow x1={126} y1={116} x2={324} y2={78} bow={-34} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={126} y1={136} x2={324} y2={190} bow={34} markerId="stackArrow" strokeWidth={1.4} />

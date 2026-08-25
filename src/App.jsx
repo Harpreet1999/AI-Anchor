@@ -95,6 +95,22 @@ function App() {
     lockedTimerRef.current = setTimeout(() => setLockedMsg(""), 3200);
   };
 
+  // Switching track mid-flow used to leave selectedId/retrievalData from
+  // the OLD track sitting in state — since computeMaxStep's "earned"
+  // ladder just checks whether those are truthy, not which track they
+  // belong to, that meant every step stayed unlocked in the sidebar after
+  // a track switch even though nothing had actually been redone for the
+  // new track. Picking a genuinely different track now clears both, so
+  // progress has to be re-earned for it, same as a fresh run.
+  const handleSelectTrack = (newTrack) => {
+    if (newTrack !== track) {
+      setSelectedId(null);
+      setRetrievalData(null);
+      setActiveStep((s) => (s > 3 ? 3 : s));
+    }
+    setTrack(newTrack);
+  };
+
   const handleSelectDataset = (id) => {
     setSelectedId(id);
     setProcessing(true);
@@ -136,7 +152,7 @@ function App() {
         <div className="sheets">
           <Suspense fallback={<div className="step-loading" role="status" aria-live="polite">Loading step…</div>}>
             {activeStep === 1 && (
-              <Step1StackPicker track={track} onSelectTrack={setTrack} onNext={() => attemptNavigate(2)} />
+              <Step1StackPicker track={track} onSelectTrack={handleSelectTrack} onNext={() => attemptNavigate(2)} />
             )}
             {activeStep === 2 && (
               <Step2Intro onBack={() => setActiveStep(1)} onNext={() => attemptNavigate(3)} />
@@ -146,7 +162,7 @@ function App() {
                 track={track}
                 selectedId={selectedId}
                 onSelectDataset={handleSelectDataset}
-                onSelectTrack={setTrack}
+                onSelectTrack={handleSelectTrack}
                 onBack={() => setActiveStep(2)}
               />
             )}

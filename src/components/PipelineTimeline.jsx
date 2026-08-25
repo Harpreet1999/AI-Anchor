@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight2 } from "iconsax-react";
 import { STAGES } from "./PipelineGrid.jsx";
+import { TIMELINE_ICON_BY_KEY } from "./timelineIcons.jsx";
 
 const COLLAPSE_KEY = "ai-anchor-timeline-collapsed";
 
@@ -52,10 +53,11 @@ export default function PipelineTimeline({ activeStep }) {
             {STAGES.map((s, i) => {
               const isCurrent = i === currentIndex;
               const isPast = currentIndex !== undefined && i < currentIndex;
+              const Icon = TIMELINE_ICON_BY_KEY[s.key];
               return (
                 <div key={s.num} className={`timeline-node${isCurrent ? " current" : ""}${isPast ? " past" : ""}`}>
                   <div className="timeline-node-icon">
-                    <s.Icon />
+                    <Icon />
                   </div>
                   <div className="timeline-node-label">
                     <span className="timeline-node-num">{s.num}</span>

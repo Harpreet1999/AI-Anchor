@@ -14,10 +14,8 @@ import LiveCheck from "./LiveCheck.jsx";
 // `tech` and `detail` back the expandable drawer below; `check` (optional)
 // wires a stage to a real health endpoint so "Live" can be verified on the
 // spot, not just asserted. `key` is a plain machine id (not the "01"-style
-// display number) shared with the FIG. 01/02 diagrams above, so hovering a
-// segment of either figure and hovering a card here can highlight the
-// same stage in both places — see PipelineTimeline.jsx for the same key
-// reused a third time, in the live position sidebar.
+// display number) — used by PipelineTimeline.jsx to pick the right glyph
+// for the live position sidebar.
 export const STAGES = [
   {
     num: "01", key: "source", title: "Source", cap: "Raw .md / .txt files a human can read top to bottom.", state: "live", Icon: SourceIcon,
@@ -55,10 +53,7 @@ export const STAGES = [
 
 const STATUS_LABEL = { live: "Live", next: "Next up", planned: "Planned" };
 
-// `hoveredStage`/`onHoverStage` are optional — Step2Intro passes them down
-// so a hover here can also fade the FIG. 01/02 diagrams above (and vice
-// versa); without a parent controlling it, the grid just doesn't fade.
-export default function PipelineGrid({ hoveredStage, onHoverStage }) {
+export default function PipelineGrid() {
   const [openNum, setOpenNum] = useState(null);
   // Kept separate from openNum so the detail panel's collapse animation
   // has something to shrink — content, not just clear instantly the
@@ -86,15 +81,12 @@ export default function PipelineGrid({ hoveredStage, onHoverStage }) {
       <div className="stage-grid">
         {STAGES.map((s) => {
           const isOpen = openNum === s.num;
-          const isDimmed = hoveredStage && hoveredStage !== s.key;
           return (
             <button
               key={s.num}
               type="button"
-              className={`stage-btn${s.state === "live" ? " live" : ""}${isOpen ? " expanded" : ""}${isDimmed ? " dimmed" : ""}`}
+              className={`stage-btn${s.state === "live" ? " live" : ""}${isOpen ? " expanded" : ""}`}
               onClick={() => toggle(s.num)}
-              onMouseEnter={() => onHoverStage?.(s.key)}
-              onMouseLeave={() => onHoverStage?.(null)}
               aria-expanded={isOpen}
             >
               <div className="stage-head">

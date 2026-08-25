@@ -183,31 +183,42 @@ svg{ color:var(--text); }
   position:sticky; top:calc(var(--masthead-h) + var(--topbar-h));
   height:calc(100vh - var(--masthead-h) - var(--topbar-h)); overflow-y:auto;
   display:flex; border-left:1px solid var(--line); background:var(--surface);
-  width:232px; flex-shrink:0; transition:width .2s ease;
+  width:248px; flex-shrink:0; transition:width .2s ease;
 }
-/* Fully collapsed — nothing but the toggle/caret. No mini current-stage
-   glyph anymore: "collapsed" means collapsed, not "slightly smaller". */
-.timeline-rail.collapsed{ width:36px; overflow:hidden; flex-direction:column; }
+/* Fully collapsed — genuinely 0 width, not a thin leftover strip. The
+   toggle itself switches to a small floating button pinned to the
+   viewport instead of sitting inside the (now zero-width) rail, so
+   there's nothing left to show, scroll, or leave a stray bar behind. */
+.timeline-rail.collapsed{ width:0; min-width:0; border-left:none; overflow:visible; flex-direction:column; }
 .timeline-toggle{
   flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center;
   background:var(--surface-2); border:none; border-right:1px solid var(--line); cursor:pointer;
   color:var(--text-dim); align-self:flex-start; position:sticky; top:0;
 }
-.timeline-rail.collapsed .timeline-toggle{ border-right:none; border-bottom:1px solid var(--line); }
+.timeline-rail.collapsed .timeline-toggle{
+  position:fixed; top:calc(var(--masthead-h) + var(--topbar-h) + 14px); right:14px; z-index:5;
+  border:1px solid var(--line); border-radius:5px; box-shadow:0 4px 14px rgba(0,0,0,0.28);
+}
 .timeline-toggle:hover{ color:var(--accent); background:var(--accent-wash); }
 .timeline-body{ flex:1 1 auto; min-width:0; padding:18px 16px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:8px; }
-.timeline-node-icon{ position:relative; display:flex; align-items:center; justify-content:center; width:64px; height:54px; opacity:0.45; transition:opacity .2s; }
-.timeline-node-icon figure{ width:64px; height:54px; margin:0; display:flex; align-items:center; justify-content:center; }
-.timeline-node-icon svg{ width:100%; max-width:56px; height:auto; max-height:46px; display:block; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:10px; }
+.timeline-node-icon{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  width:80px; height:66px; opacity:0.45; border-radius:10px; transition:opacity .2s, background .2s;
+}
+.timeline-node-icon figure{ width:80px; height:66px; margin:0; display:flex; align-items:center; justify-content:center; }
+.timeline-node-icon svg{ width:100%; max-width:68px; height:auto; max-height:56px; display:block; }
 /* Bolder strokes specifically in the timeline — the same icon components
    render at their normal weight in Step 02's grid; this is a scoped
    override so the rail's smaller icons still read clearly at a glance. */
-.timeline-node-icon svg :is(rect, line, circle, path, polygon){ stroke-width:2.2; }
+.timeline-node-icon svg :is(rect, line, circle, path, polygon){ stroke-width:2.4; }
 .timeline-node.current .timeline-node-icon, .timeline-node.past .timeline-node-icon{ opacity:1; }
 .timeline-node.current .timeline-node-icon svg, .timeline-node.past .timeline-node-icon svg{ color:var(--accent); }
+/* "Current" reads as a solid colored chip, not an animated ring — calmer,
+   and doesn't fight the eye the way a pulsing/growing ring did. */
+.timeline-node.current .timeline-node-icon{ background:var(--accent-wash); }
 .timeline-node-label{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-top:2px; }
 .timeline-node-num{ font-family:"Space Mono", monospace; font-size:9px; color:var(--text-dim); }
 .timeline-node-title{ font-family:"Archivo", sans-serif; font-size:10.5px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
@@ -215,16 +226,6 @@ svg{ color:var(--text); }
 .timeline-node.past .timeline-node-title{ color:var(--text); }
 .timeline-connector{ width:1px; height:20px; background:var(--line-strong); margin:2px 0; }
 .timeline-node.past .timeline-connector{ background:var(--accent-dim); }
-
-.timeline-pulse{
-  position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--accent);
-  animation:timeline-pulse-ring 1.8s ease-out infinite;
-}
-@keyframes timeline-pulse-ring{
-  0%{ transform:scale(0.7); opacity:0.9; }
-  100%{ transform:scale(1.35); opacity:0; }
-}
-@media (prefers-reduced-motion: reduce){ .timeline-pulse{ animation:none; opacity:0.5; } }
 
 .timeline-foot{ margin-top:16px; padding-top:14px; border-top:1px dashed var(--line); font-size:10.5px; color:var(--text-dim); line-height:1.5; }
 
@@ -308,6 +309,19 @@ svg{ color:var(--text); }
 .track-status{ font-family:"Space Mono", monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; padding:2px 6px; border:1px solid var(--line-strong); color:var(--text-dim); }
 .track-status.live{ color:var(--accent); border-color:var(--accent); }
 .track-pick-hint{ margin:-16px 0 20px; font-size:12.5px; color:var(--text-dim); }
+
+/* Step 03's fallback when no track is picked yet — two big, equal-width
+   buttons spanning the full content width, impossible to miss. */
+.track-pick-big{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px; }
+.track-pick-big-btn{
+  display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;
+  padding:48px 32px; background:var(--surface); border:none; cursor:pointer; color:var(--text);
+  font:inherit; transition:background .15s ease;
+}
+.track-pick-big-btn:hover{ background:var(--surface-2); color:var(--accent); }
+.track-pick-big-name{ font-family:"Archivo", sans-serif; font-weight:800; font-size:20px; }
+.track-pick-big-sub{ font-size:12.5px; color:var(--text-dim); line-height:1.6; max-width:34ch; }
+@media (max-width: 640px){ .track-pick-big{ grid-template-columns:1fr; } }
 
 .shared-runtime{ border:1px solid var(--line); background:var(--surface); }
 .shared-runtime-head{ padding:10px 14px; font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); border-bottom:1px solid var(--line); }
@@ -580,7 +594,7 @@ svg{ color:var(--text); }
 .stage-btn{ display:block; width:100%; text-align:left; font:inherit; cursor:pointer; border:none; background:var(--surface); padding:20px 18px; opacity:1; transition:opacity .18s ease, background .15s ease; }
 .stage-btn.live{ box-shadow:inset 2px 0 0 var(--accent); }
 .stage-btn:hover{ background:var(--surface-2); }
-.stage-btn.dimmed{ opacity:0.4; }
+.stage-btn.dimmed{ opacity:0.62; }
 .stage-btn.expanded{ background:var(--surface-2); box-shadow:inset 2px 0 0 var(--accent), inset 0 -2px 0 var(--accent); }
 .stage-expand-hint{ margin-top:10px; font-family:"Space Mono", monospace; font-size:10px; color:var(--text-dim); letter-spacing:0.04em; text-transform:uppercase; display:flex; align-items:center; gap:5px; }
 .stage-btn.expanded .stage-expand-hint{ color:var(--accent); }

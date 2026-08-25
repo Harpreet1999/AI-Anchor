@@ -135,7 +135,7 @@ function StageGroup({ stageKey, hovered, onHover, children }) {
     <g
       onMouseEnter={() => onHover?.(stageKey)}
       onMouseLeave={() => onHover?.(null)}
-      style={{ opacity: dimmed ? 0.28 : 1, transition: "opacity .18s ease", cursor: onHover ? "pointer" : undefined }}
+      style={{ opacity: dimmed ? 0.5 : 1, transition: "opacity .18s ease", cursor: onHover ? "pointer" : undefined }}
     >
       {children}
     </g>

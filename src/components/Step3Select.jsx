@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Code1, DocumentCode } from "iconsax-react";
 import { BarGlyph, BookGlyph, CookGlyph } from "./diagrams.jsx";
 import { useDataset } from "../lib/useDataset.js";
 import StepNav from "./StepNav.jsx";
@@ -78,7 +79,7 @@ function DatasetCard({ m, track, selected, onSelectDataset, isPreviewing, onTogg
   );
 }
 
-export default function Step3Select({ track, selectedId, onSelectDataset, onBack }) {
+export default function Step3Select({ track, selectedId, onSelectDataset, onSelectTrack, onBack }) {
   const [previewId, setPreviewId] = useState(null);
   const [showAbout, setShowAbout] = useState(false);
   const [portfolioUnlocked, setPortfolioUnlocked] = useState(false);
@@ -96,6 +97,37 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onBack
     setPortfolioUnlocked(true);
     try { localStorage.setItem(PORTFOLIO_UNLOCK_KEY, "1"); } catch { /* non-fatal */ }
   };
+
+  // No track yet — the dataset cards below can't render at all without one
+  // (each one loads real chunk/embedding JSON keyed by track), so rather
+  // than let that fail, show the one thing actually needed to continue:
+  // a track picker, right here, big enough to not be missed.
+  if (!track) {
+    return (
+      <section className="sheet">
+        <div className="sheet-num">STEP 03</div>
+        <h2>Pick a track to continue</h2>
+        <p className="dek">
+          Datasets are chunked and embedded differently per track, so there's nothing to show
+          here until one's picked. Pick it here, or back in Step 01 — either way lands you back
+          on this page with the real dataset cards.
+        </p>
+        <div className="track-pick-big">
+          <button type="button" className="track-pick-big-btn" onClick={() => onSelectTrack?.("node")}>
+            <Code1 size={34} variant="Outline" color="currentColor" />
+            <span className="track-pick-big-name">Node.js</span>
+            <span className="track-pick-big-sub">Hand-rolled splitter · Xenova embeddings · cosine search, all client-side</span>
+          </button>
+          <button type="button" className="track-pick-big-btn" onClick={() => onSelectTrack?.("python")}>
+            <DocumentCode size={34} variant="Outline" color="currentColor" />
+            <span className="track-pick-big-name">Python + LangChain</span>
+            <span className="track-pick-big-sub">LangChain splitter · Sentence-Transformers · live ChromaDB retrieval</span>
+          </button>
+        </div>
+        <StepNav onBack={onBack} backLabel="How it works" />
+      </section>
+    );
+  }
 
   return (
     <section className="sheet">

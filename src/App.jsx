@@ -98,7 +98,7 @@ function App() {
   const handleSelectDataset = (id) => {
     setSelectedId(id);
     setProcessing(true);
-    setActiveStep(4);
+    attemptNavigate(4);
 
     clearTimeout(timerRef.current);
     // Paced reveal, not real processing time — the chunks are already
@@ -136,16 +136,17 @@ function App() {
         <div className="sheets">
           <Suspense fallback={<div className="step-loading" role="status" aria-live="polite">Loading step…</div>}>
             {activeStep === 1 && (
-              <Step1StackPicker track={track} onSelectTrack={setTrack} onNext={() => setActiveStep(2)} />
+              <Step1StackPicker track={track} onSelectTrack={setTrack} onNext={() => attemptNavigate(2)} />
             )}
             {activeStep === 2 && (
-              <Step2Intro onBack={() => setActiveStep(1)} onNext={() => setActiveStep(3)} />
+              <Step2Intro onBack={() => setActiveStep(1)} onNext={() => attemptNavigate(3)} />
             )}
             {activeStep === 3 && (
               <Step3Select
                 track={track}
                 selectedId={selectedId}
                 onSelectDataset={handleSelectDataset}
+                onSelectTrack={setTrack}
                 onBack={() => setActiveStep(2)}
               />
             )}
@@ -155,7 +156,7 @@ function App() {
                 selectedId={selectedId}
                 processing={processing}
                 onBack={() => setActiveStep(3)}
-                onNext={() => setActiveStep(5)}
+                onNext={() => attemptNavigate(5)}
               />
             )}
             {activeStep === 5 && (
@@ -163,7 +164,7 @@ function App() {
                 track={track}
                 selectedId={selectedId}
                 onBack={() => setActiveStep(4)}
-                onNext={() => setActiveStep(6)}
+                onNext={() => attemptNavigate(6)}
               />
             )}
             {activeStep === 6 && (
@@ -173,7 +174,7 @@ function App() {
                 onBack={() => setActiveStep(5)}
                 onNext={(data) => {
                   setRetrievalData(data);
-                  setActiveStep(7);
+                  attemptNavigate(7);
                 }}
               />
             )}
@@ -183,7 +184,7 @@ function App() {
                 selectedId={selectedId}
                 retrievalData={retrievalData}
                 onBack={() => setActiveStep(6)}
-                onNext={() => setActiveStep(8)}
+                onNext={() => attemptNavigate(8)}
               />
             )}
             {activeStep === 8 && (

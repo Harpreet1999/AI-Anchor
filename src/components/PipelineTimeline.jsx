@@ -56,7 +56,6 @@ export default function PipelineTimeline({ activeStep }) {
                 <div key={s.num} className={`timeline-node${isCurrent ? " current" : ""}${isPast ? " past" : ""}`}>
                   <div className="timeline-node-icon">
                     <s.Icon />
-                    {isCurrent && <span className="timeline-pulse" aria-hidden="true" />}
                   </div>
                   <div className="timeline-node-label">
                     <span className="timeline-node-num">{s.num}</span>

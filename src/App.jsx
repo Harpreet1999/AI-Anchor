@@ -26,18 +26,34 @@ const liveCount = STAGES.filter((s) => s.state === "live").length;
 // so far — not just "whatever number is highest". Steps beyond this are
 // visible in the sidebar/top bar (so the full shape of the flow stays in
 // view) but clicking them doesn't navigate; it explains what's missing.
-function computeMaxStep(track, selectedId, retrievalData) {
-  if (!track) return 1;
-  if (!selectedId) return 3;
-  if (!retrievalData) return 6;
-  return 8;
+//
+// Two rules combine, not one:
+//  - "Earned" progress from real prerequisites — but only where skipping
+//    one actually breaks something. Step 03 (Pick a Dataset) is the only
+//    one of these: it calls useDataset() for all three cards on render,
+//    which indexes into a per-track loader table — a null track throws
+//    immediately, it doesn't degrade gracefully. Every step after that
+//    (04-08) already renders a normal "nothing selected yet" placeholder
+//    when its data isn't there, so they don't need a hard technical gate.
+//  - "One step at a time" — whatever step comes right after wherever the
+//    visitor currently is should always be clickable, even before
+//    finishing the current one. Only jumping two-or-more steps past real
+//    progress is what's actually blocked.
+function computeMaxStep(activeStep, track, selectedId, retrievalData) {
+  let earned = 1;
+  if (track) earned = 3;
+  if (selectedId) earned = 6;
+  if (retrievalData) earned = 8;
+
+  const adjacent = activeStep + 1;
+  const hardCeiling = track ? 8 : 2; // Step 03+ needs a real track to render at all
+
+  return Math.min(hardCeiling, Math.max(earned, adjacent));
 }
 
-function lockReason(n, track, selectedId, retrievalData) {
-  if (n > 1 && !track) return "Pick a stack in Step 01 first.";
-  if (n > 3 && !selectedId) return "Pick a dataset in Step 03 first.";
-  if (n > 6 && !retrievalData) return "Run retrieval in Step 06 first.";
-  return "That step isn't reachable yet.";
+function lockReason(n, activeStep, track) {
+  if (n > 2 && !track) return "Pick a stack in Step 01 first.";
+  return `One step at a time — Step ${String(activeStep + 1).padStart(2, "0")} is next.`;
 }
 
 function App() {
@@ -64,7 +80,7 @@ function App() {
     else delete document.documentElement.dataset.track;
   }, [track]);
 
-  const maxStep = computeMaxStep(track, selectedId, retrievalData);
+  const maxStep = computeMaxStep(activeStep, track, selectedId, retrievalData);
 
   // Every nav click (sidebar, top bar) goes through here instead of
   // setActiveStep directly — jumping ahead of what's actually been done
@@ -74,7 +90,7 @@ function App() {
       setActiveStep(n);
       return;
     }
-    setLockedMsg(lockReason(n, track, selectedId, retrievalData));
+    setLockedMsg(lockReason(n, activeStep, track));
     clearTimeout(lockedTimerRef.current);
     lockedTimerRef.current = setTimeout(() => setLockedMsg(""), 3200);
   };

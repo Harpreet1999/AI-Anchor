@@ -49,7 +49,7 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
           <DocumentCode size={16} variant="Outline" color="currentColor" /> Python + LangChain <span className="track-status live">Live</span>
         </button>
       </div>
-      {!track && <p className="track-pick-hint">Pick a track above — the rest of the site is locked to it until you do.</p>}
+      {!track && <p className="track-pick-hint">Pick a track above — Step 03 onward is locked to it until you do (Step 02 is just an overview, so it's open either way).</p>}
 
       <div className="fig-frame" style={{ marginTop: 8 }}>
         <div className="fig-frame-inner">
@@ -100,7 +100,7 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
         </div>
       </div>
 
-      <StepNav onNext={onNext} nextLabel="How it works" nextDisabled={!track} />
+      <StepNav onNext={onNext} nextLabel="How it works" />
     </section>
   );
 }

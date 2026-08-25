@@ -1,3 +1,13 @@
+# A direct wheel URL, not just --extra-index-url + a version pin — pip
+# does NOT reliably prefer one index over another when both host a
+# same-named package ("torch"), so --extra-index-url alone silently
+# resolved the default GPU build anyway when this was tested (a 766MB
+# download, vs the real CPU-only wheel at 178MB) despite pointing at
+# PyTorch's CPU index. This exact URL is what actually installs the
+# small CPU-only build (verified: Content-Length 178655896 bytes) — it
+# targets cp311 / linux_x86_64 specifically to match this Dockerfile's
+# python:3.11-slim base image.
+torch @ https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp311-cp311-linux_x86_64.whl
 fastapi==0.141.1
 uvicorn[standard]==0.52.4
 sentence-transformers==6.0.0

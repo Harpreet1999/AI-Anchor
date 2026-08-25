@@ -6,6 +6,7 @@ const DATASETS = {
   career: "Portfolio Data",
   cars: "JDM Legends",
   sherlock: "Sherlock Holmes",
+  cookbook: "Boston Cooking-School Cook Book",
 };
 
 const SYSTEM_LINE = "SYSTEM: Answer the user's question using only the supplied evidence. Cite the source when relevant.";

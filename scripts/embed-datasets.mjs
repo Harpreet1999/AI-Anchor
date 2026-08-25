@@ -20,7 +20,7 @@ const ROOT = path.resolve(__dirname, "..");
 const PROCESSED = path.join(ROOT, "data", "processed");
 
 const MODEL_ID = "Xenova/all-MiniLM-L6-v2"; // ONNX export of the same all-MiniLM-L6-v2 model
-const FILES = ["portfolio.json", "cars-jdm-legends.json", "sherlock-holmes.json"];
+const FILES = ["portfolio.json", "cars-jdm-legends.json", "sherlock-holmes.json", "cookbook.json"];
 const BATCH_SIZE = 32;
 
 async function embedBatch(extractor, texts) {

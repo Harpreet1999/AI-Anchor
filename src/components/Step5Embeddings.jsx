@@ -1,18 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
 import CopyButton from "./CopyButton.jsx";
-import portfolioNode from "../../data/processed/portfolio.json";
-import carsNode from "../../data/processed/cars-jdm-legends.json";
-import sherlockNode from "../../data/processed/sherlock-holmes.json";
-import portfolioPy from "../../data-py/processed/portfolio.json";
-import carsPy from "../../data-py/processed/cars-jdm-legends.json";
-import sherlockPy from "../../data-py/processed/sherlock-holmes.json";
+import { useDataset } from "../lib/useDataset.js";
 import StepNav from "./StepNav.jsx";
-
-const BY_TRACK = {
-  node: { career: portfolioNode, cars: carsNode, sherlock: sherlockNode },
-  python: { career: portfolioPy, cars: carsPy, sherlock: sherlockPy },
-};
 
 // Vectors from both tracks are already normalized (unit length) at
 // embed-time, so a plain dot product IS the cosine similarity — no need
@@ -44,7 +34,7 @@ function EmbeddingStrip({ vector }) {
 }
 
 export default function Step5Embeddings({ track, selectedId, onBack, onNext }) {
-  const dataset = selectedId ? BY_TRACK[track][selectedId] : null;
+  const dataset = useDataset(track, selectedId);
   const [index, setIndex] = useState(0);
   const [showFull, setShowFull] = useState(false);
 
@@ -92,7 +82,14 @@ export default function Step5Embeddings({ track, selectedId, onBack, onNext }) {
         <div className="preview-placeholder">← Pick a dataset in Step 03 to see its embeddings here.</div>
       )}
 
-      {selectedId && (
+      {selectedId && !dataset && (
+        <div className="preview-processing" role="status" aria-live="polite">
+          <div className="spinner" aria-hidden="true" />
+          <div>Loading embeddings…</div>
+        </div>
+      )}
+
+      {selectedId && dataset && (
         <>
           <div className="embed-track-chip">
             <span className={`status${track === "node" ? " live" : ""}`}>{track === "node" ? "Node.js" : "Python"}</span>

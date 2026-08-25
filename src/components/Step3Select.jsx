@@ -1,47 +1,101 @@
-import { useState } from "react";
-import portfolioNode from "../../data/processed/portfolio.json";
-import carsNode from "../../data/processed/cars-jdm-legends.json";
-import sherlockNode from "../../data/processed/sherlock-holmes.json";
-import portfolioPy from "../../data-py/processed/portfolio.json";
-import carsPy from "../../data-py/processed/cars-jdm-legends.json";
-import sherlockPy from "../../data-py/processed/sherlock-holmes.json";
-import { ProseGlyph, BarGlyph, BookGlyph } from "./diagrams.jsx";
+import { useEffect, useState } from "react";
+import { BarGlyph, BookGlyph, CookGlyph } from "./diagrams.jsx";
+import { useDataset } from "../lib/useDataset.js";
 import StepNav from "./StepNav.jsx";
 
-const BY_TRACK = {
-  node: { career: portfolioNode, cars: carsNode, sherlock: sherlockNode },
-  python: { career: portfolioPy, cars: carsPy, sherlock: sherlockPy },
-};
+// The portfolio dataset is deliberately not one of the default three cards
+// below — it's real personal data, and defaulting to showing it off felt
+// like the wrong call for a portfolio piece. It's still fully built (same
+// chunking, same embeddings, same live retrieval as everything else) —
+// just gated behind a quiet, optional path further down the page.
+const PORTFOLIO_UNLOCK_KEY = "ai-anchor-portfolio-unlocked";
 
 // Static per-dataset copy (the "what it is" doesn't change between tracks —
 // only the chunk count does, since the two tracks split the same files
 // differently).
 const META = [
   {
-    id: "career",
-    tag: "01 / 03 — PROSE, PERSONAL",
-    from: "resume.md + the live portfolio site's own content.",
-    signifies: "the authentic anchor dataset — real writeups of what shipped, and why.",
-    Glyph: ProseGlyph,
-  },
-  {
     id: "cars",
-    tag: "02 / 03 — NUMERIC, VERIFIED",
+    tag: "01 / 03 — NUMERIC, VERIFIED",
     from: "web-verified specs for 8 icons — Supra, GT-R, RX-7, both Fairlady Z generations, NSX, Evo VI, WRX STI.",
     signifies: "real numeric fields on every chunk, built for the chart tool coming later.",
     Glyph: BarGlyph,
   },
   {
     id: "sherlock",
-    tag: "03 / 03 — NARRATIVE, PUBLIC DOMAIN",
+    tag: "02 / 03 — NARRATIVE, PUBLIC DOMAIN",
     from: "Project Gutenberg — Arthur Conan Doyle, 1892. Unambiguous public domain.",
-    signifies: "proof the pipeline generalizes — pure story retrieval, nothing like career facts or car specs.",
+    signifies: "proof the pipeline generalizes to pure story retrieval, nothing like flat specs.",
     Glyph: BookGlyph,
+  },
+  {
+    id: "cookbook",
+    tag: "03 / 03 — INSTRUCTIONAL, PUBLIC DOMAIN",
+    from: "Project Gutenberg — Fannie Merritt Farmer's Boston Cooking-School Cook Book, 1896.",
+    signifies: "a third shape entirely — recipes and technique, neither flat specs nor a story.",
+    Glyph: CookGlyph,
   },
 ];
 
+// Each card loads its own dataset independently (in parallel with the
+// others) instead of the page eagerly bundling all of them — the cookbook
+// alone is >10MB of embedded vectors per track.
+function DatasetCard({ m, track, selected, onSelectDataset, isPreviewing, onTogglePreview }) {
+  const d = useDataset(track, m.id);
+
+  return (
+    <div className={`dcard dcard-select${selected ? " selected" : ""}`}>
+      <m.Glyph />
+      <div className="tag">{m.tag}</div>
+      {!d ? (
+        <div className="dcard-loading">Loading…</div>
+      ) : (
+        <>
+          <h3>{d.displayName}</h3>
+          <p><b>From:</b> {m.from}</p>
+          <p><b>Signifies:</b> {m.signifies}</p>
+          <div className="stat"><span>CHUNKS ({track === "node" ? "Node.js" : "Python"})</span><b>{d.chunks.length}</b></div>
+
+          <button type="button" className="dcard-preview-toggle" onClick={onTogglePreview} aria-expanded={isPreviewing}>
+            {isPreviewing ? "▾ Hide a real chunk" : "▸ Peek at a real chunk"}
+          </button>
+          {isPreviewing && (() => {
+            const previewChunk = d.chunks[Math.floor(d.chunks.length / 3)];
+            return (
+              <div className="dcard-preview-body">
+                <span className="dcard-preview-title">{previewChunk.title}</span>
+                <p>{previewChunk.text.length > 220 ? previewChunk.text.slice(0, 220).trim() + "…" : previewChunk.text}</p>
+              </div>
+            );
+          })()}
+
+          <button type="button" className="dcard-cta-btn" onClick={() => onSelectDataset(m.id)}>
+            {selected ? "✓ Selected — see Step 04" : "Select this dataset →"}
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function Step3Select({ track, selectedId, onSelectDataset, onBack }) {
   const [previewId, setPreviewId] = useState(null);
+  const [showAbout, setShowAbout] = useState(false);
+  const [portfolioUnlocked, setPortfolioUnlocked] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(PORTFOLIO_UNLOCK_KEY) === "1") setPortfolioUnlocked(true);
+    } catch {
+      // localStorage unavailable (private browsing, blocked) — the unlock
+      // just won't persist across a reload, which is fine, not fatal.
+    }
+  }, []);
+
+  const unlockPortfolio = () => {
+    setPortfolioUnlocked(true);
+    try { localStorage.setItem(PORTFOLIO_UNLOCK_KEY, "1"); } catch { /* non-fatal */ }
+  };
 
   return (
     <section className="sheet">
@@ -54,40 +108,52 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onBack
       </p>
 
       <div className="dataset-grid">
-        {META.map((m) => {
-          const d = BY_TRACK[track][m.id];
-          const isPreviewing = previewId === m.id;
-          const previewChunk = d.chunks[Math.floor(d.chunks.length / 3)];
-          return (
-            <div key={m.id} className={`dcard dcard-select${selectedId === m.id ? " selected" : ""}`}>
-              <m.Glyph />
-              <div className="tag">{m.tag}</div>
-              <h3>{d.displayName}</h3>
-              <p><b>From:</b> {m.from}</p>
-              <p><b>Signifies:</b> {m.signifies}</p>
-              <div className="stat"><span>CHUNKS ({track === "node" ? "Node.js" : "Python"})</span><b>{d.chunks.length}</b></div>
+        {META.map((m) => (
+          <DatasetCard
+            key={m.id}
+            m={m}
+            track={track}
+            selected={selectedId === m.id}
+            onSelectDataset={onSelectDataset}
+            isPreviewing={previewId === m.id}
+            onTogglePreview={() => setPreviewId(previewId === m.id ? null : m.id)}
+          />
+        ))}
+      </div>
 
-              <button
-                type="button"
-                className="dcard-preview-toggle"
-                onClick={() => setPreviewId(isPreviewing ? null : m.id)}
-                aria-expanded={isPreviewing}
-              >
-                {isPreviewing ? "▾ Hide a real chunk" : "▸ Peek at a real chunk"}
-              </button>
-              {isPreviewing && (
-                <div className="dcard-preview-body">
-                  <span className="dcard-preview-title">{previewChunk.title}</span>
-                  <p>{previewChunk.text.length > 220 ? previewChunk.text.slice(0, 220).trim() + "…" : previewChunk.text}</p>
-                </div>
-              )}
-
-              <button type="button" className="dcard-cta-btn" onClick={() => onSelectDataset(m.id)}>
-                {selectedId === m.id ? "✓ Selected — see Step 04" : "Select this dataset →"}
-              </button>
-            </div>
-          );
-        })}
+      <div className="about-builder">
+        <button
+          type="button"
+          className="about-builder-toggle"
+          onClick={() => setShowAbout((v) => !v)}
+          aria-expanded={showAbout}
+        >
+          {showAbout ? "▾" : "▸"} About the person who built this
+        </button>
+        {showAbout && (
+          <div className="about-builder-body">
+            <p>
+              If you want to know more about the person who developed and crafted this project — his
+              work and portfolio — visit{" "}
+              <a href="https://harpreetsingh.xyz" target="_blank" rel="noopener noreferrer" onClick={unlockPortfolio}>
+                harpreetsingh.xyz
+              </a>{" "}
+              to see the portfolio in action. Once you've had a look, his portfolio unlocks here as a
+              fourth dataset — chunked, embedded, and retrievable exactly like the three above.
+            </p>
+            <button
+              type="button"
+              className="about-builder-select"
+              disabled={!portfolioUnlocked}
+              onClick={() => onSelectDataset("career")}
+              title={portfolioUnlocked ? undefined : "Visit harpreetsingh.xyz above first"}
+            >
+              {portfolioUnlocked
+                ? (selectedId === "career" ? "✓ Selected — see Step 04" : "Select Harpreet's portfolio as a dataset →")
+                : "🔒 Visit the site above to unlock this dataset"}
+            </button>
+          </div>
+        )}
       </div>
 
       <StepNav onBack={onBack} backLabel="How it works" />

@@ -1,26 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { pipeline } from "@huggingface/transformers";
-import portfolioNode from "../../data/processed/portfolio.json";
-import carsNode from "../../data/processed/cars-jdm-legends.json";
-import sherlockNode from "../../data/processed/sherlock-holmes.json";
 import retrievalDemo from "../../data-py/processed/retrieval-demo.json";
 import StepNav from "./StepNav.jsx";
 import RetrievalResults from "./RetrievalResults.jsx";
 import { rankChunks } from "../lib/retrieval.js";
 import { pyApiUrl } from "../lib/pyApi.js";
+import { useDataset } from "../lib/useDataset.js";
 
 const DATASETS = {
   career: "Portfolio Data",
   cars: "JDM Legends",
   sherlock: "Sherlock Holmes",
+  cookbook: "Boston Cooking-School Cook Book",
 };
 
 // The Python-track dataset ids don't match the app's short ids one-to-one
 // (the JSON files are named after the actual dataset, not the UI's short
-// "career"/"cars"/"sherlock" keys) — this is the same mapping Step3/4/5 use.
-const PY_DATASET_ID = { career: "portfolio", cars: "cars-jdm-legends", sherlock: "sherlock-holmes" };
-
-const NODE_DATA = { career: portfolioNode, cars: carsNode, sherlock: sherlockNode };
+// "career"/"cars"/"sherlock"/"cookbook" keys) — this is the same mapping
+// Step3/4/5 use.
+const PY_DATASET_ID = { career: "portfolio", cars: "cars-jdm-legends", sherlock: "sherlock-holmes", cookbook: "cookbook" };
 
 // A single embedding pipeline, loaded once and reused — matches the
 // caching pattern Step 08's generator already uses. Recreating this on
@@ -60,8 +58,10 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
   const searchName = isNode ? "Cosine similarity / in-memory index" : "ChromaDB (live, cosine)";
 
-  // Node: live free-text search against the real in-memory vectors.
-  const nodeDataset = useMemo(() => (selectedId ? NODE_DATA[selectedId] : null), [selectedId]);
+  // Node: live free-text search against the real in-memory vectors. Only
+  // fetched when the Node track is actually active — no point loading a
+  // multi-MB embedded dataset for a track that isn't in view.
+  const nodeDataset = useDataset("node", isNode ? selectedId : null);
   const [question, setQuestion] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);

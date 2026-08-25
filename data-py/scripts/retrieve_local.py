@@ -44,6 +44,10 @@ DEMO_QUESTIONS = {
         "How much French gold was in the bank cellar?",
         "Who is Irene Adler?",
     ],
+    "cookbook": [
+        "How long should you boil an egg to make it hard-boiled?",
+        "How do you make baking powder biscuits?",
+    ],
 }
 
 

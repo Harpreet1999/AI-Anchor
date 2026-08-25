@@ -307,6 +307,108 @@
           }
         ]
       }
+    ],
+    "cookbook": [
+      {
+        "question": "How long should you boil an egg to make it hard-boiled?",
+        "results": [
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-266",
+            "title": "boston-cooking-school-cookbook.txt — part 266",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Boiled Eggs\n\nHave ready a saucepan containing boiling water. Carefully put in with a\nspoon the number of eggs desired, covering them with water. Remove\nsaucepan to back of range, where water will not boil. Cook from six to\neight minutes if liked “soft-boiled,” forty to forty-five if liked\n“hard-boiled.” Eggs may be cooked by placing in cold water and allowing\nwater to heat gradually until the boiling-point is reached, when they\nwill be “soft-boiled.” In using hard-boiled eggs for making other\ndishes, when taken from the hot water they should be plunged into cold\nwater to prevent, if possible, discoloration of yolks.\n\nEggs perfectly cooked should be placed and kept in water at a uniform\ntemperature of 175° F.\n\n\n                         Dropped Eggs (Poached)",
+            "score": 0.7778714895248413,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-403",
+            "title": "boston-cooking-school-cookbook.txt — part 403",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Egg Balls I\n\n                       Yolks 2 “hard-boiled” eggs\n                       ⅛ teaspoon salt\n                       Few grains cayenne\n                       ½ teaspoon melted butter\n\nRub yolks through sieve, add seasonings, and moisten with raw egg yolk\nto make of consistency to handle. Shape in small balls, roll in flour,\nand sauté in butter. Serve in Brown Soup Stock, Consommé, or Mock Turtle\nSoup.\n\n\n                              Egg Balls II\n\n                   1 “hard-boiled” egg\n                   ⅛ teaspoon salt\n                   Few grains cayenne\n                   1 teaspoon heavy cream\n                   ¼ teaspoon finely chopped parsley\n\nRub yolk through a sieve, add white finely chopped, and remaining\ningredients. Add raw egg yolk to make mixture of right consistency to\nhandle. Shape in small balls, and poach in boiling water or stock.\n\n\n                              Egg Custard",
+            "score": 0.5699769258499146,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-265",
+            "title": "boston-cooking-school-cookbook.txt — part 265",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "White of egg contains albumen in its purest form. Albumen coagulates at\na temperature of from 134° to 160° F. Herein lies the importance of\ncooking eggs at a low temperature, thus rendering them easy of\ndigestion. Eggs cooked in boiling water are tough and horny, difficult\nof digestion, and should never be served.\n\nWhen eggs come from the market, they should be washed, and put away in a\ncold place.\n\n=Ways of Determining Freshness of Eggs.= I. Hold in front of candle\nflame in dark room, and the centre should look clear.\n\nII. Place in basin of cold water, and they should sink.\n\nIII. Place large end to the cheek, and a warmth should be felt.\n\n=Ways of Keeping Eggs.= I. Pack in sawdust, small end down.\n\nII. Keep in lime water.\n\nIII. From July to September a large number of eggs are packed, small\nends down, in cases having compartments, one for each egg, and kept in\ncold storage. Eggs are often kept in cold storage six months, and then\nsold as cooking eggs.",
+            "score": 0.5625851154327393,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-281",
+            "title": "boston-cooking-school-cookbook.txt — part 281",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Stuffed Eggs\n\nCut four “hard-boiled” eggs in halves crosswise; remove yolks, mash, and\nadd two tablespoons grated cheese, one teaspoon vinegar, one-fourth\nteaspoon mustard, and salt and cayenne to taste. Add enough melted\nbutter to make mixture of the right consistency to shape. Make in balls\nsize of original yolks, and refill whites. Arrange on a serving dish,\npour around one cup White Sauce, cover, and reheat.\n\n\n                         Stuffed Eggs in a Nest\n\nCut “hard-boiled” eggs in halves lengthwise. Remove yolks, and put\nwhites aside in pairs. Mash yolks, and add half the amount of devilled\nham and enough melted butter to make of consistency to shape. Make in\nballs size of original yolks, and refill whites. Form remainder of\nmixture into a nest. Arrange eggs in the nest, and pour over one cup\nWhite Sauce I. Sprinkle with buttered crumbs, and bake until crumbs are\nbrown.\n\n\n                            Eggs à la Sidney",
+            "score": 0.5440489649772644,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-91",
+            "title": "boston-cooking-school-cookbook.txt — part 91",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "TIME TABLES FOR COOKING\n\n                                Boiling",
+            "score": 0.5365721583366394,
+            "metadata": {}
+          }
+        ]
+      },
+      {
+        "question": "How do you make baking powder biscuits?",
+        "results": [
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-205",
+            "title": "boston-cooking-school-cookbook.txt — part 205",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Baking Powder Biscuit I\n\n                  2 cups flour\n                  4 teaspoons baking powder\n                  1 teaspoon salt\n                  1 tablespoon lard\n                  ¾ cup milk and water in equal parts\n                  1 tablespoon butter\n\nMix dry ingredients, and sift twice.\n\nWork in butter and lard with tips of fingers; add gradually the liquid,\nmixing with knife to a soft dough. It is impossible to determine the\nexact amount of liquid, owing to differences in flour. Toss on a floured\nboard, pat and roll lightly to one-half inch in thickness. Shape with a\nbiscuit-cutter. Place on buttered pan, and bake in hot oven twelve to\nfifteen minutes. If baked in too slow an oven, the gas will escape\nbefore it has done its work. Many obtain better results by using bread\nflour.\n\n\n                        Baking Powder Biscuit II",
+            "score": 0.7807897925376892,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-206",
+            "title": "boston-cooking-school-cookbook.txt — part 206",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Baking Powder Biscuit II\n\n                       2 cups flour\n                       4 teaspoons baking powder\n                       2 tablespoons butter\n                       ¾ cup milk\n                       ½ teaspoon salt\n\nMix and bake as Baking Powder Biscuit I.\n\n\n                           Emergency Biscuit\n\nUse recipe for Baking Powder Biscuit I or II, with the addition of more\nmilk, that mixture may be dropped from spoon without spreading. Drop by\nspoonfuls on a buttered pan, one-half inch apart. Brush over with milk,\nand bake in hot oven eight minutes.\n\n\n                    Fruit Rolls (Pin Wheel Biscuit)",
+            "score": 0.7464902400970459,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-193",
+            "title": "boston-cooking-school-cookbook.txt — part 193",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Add butter, sugar, and salt to milk; when lukewarm, add dissolved yeast\ncake, cinnamon, flour, and egg well beaten; when thoroughly mixed, add\nraisins, cover, and let rise over night. In morning, shape in forms of\nlarge biscuits, place in pan one inch apart, let rise, brush over with\nbeaten egg, and bake twenty minutes; cool, and with ornamental frosting\nmake a cross on top of each bun.\n\n\n                             Raised Muffins\n\n                          1 cup scalded milk\n                          1 cup boiling water\n                          2 tablespoons butter\n                          ¼ cup sugar\n                          ¾ teaspoon salt\n                          ¼ yeast cake\n                          1 egg\n                          4 cups flour",
+            "score": 0.7152049541473389,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-204",
+            "title": "boston-cooking-school-cookbook.txt — part 204",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Batters are termed thin or thick, according to their consistency.\n\nSponge is a batter to which yeast is added.\n\nDough differs from batter inasmuch as it is stiff enough to be handled.\n\n\n                              Cream Scones\n\n                        2 cups flour\n                        4 teaspoons baking power\n                        2 teaspoons sugar\n                        ½ teaspoon salt\n                        4 tablespoons butter\n                        2 eggs\n                        ⅓ cup cream\n\nMix and sift together flour, baking powder, sugar, and salt. Rub in\nbutter with tips of fingers; add eggs well beaten, and cream. Toss on a\nfloured board, pat, and roll to three-fourths inch in thickness. Cut in\nsquares, brush with white of egg, sprinkle with sugar, and bake in a hot\noven fifteen minutes.\n\n\n                        Baking Powder Biscuit I",
+            "score": 0.7081418037414551,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cookbook-boston-cooking-school-cookbook-166",
+            "title": "boston-cooking-school-cookbook.txt — part 166",
+            "source": "boston-cooking-school-cookbook.txt",
+            "section": "text",
+            "text": "Add boiling water to oats and let stand one hour; add molasses, salt,\nbutter, dissolved yeast cake, and flour; let rise, beat thoroughly, turn\ninto buttered bread pans, let rise again, and bake. By using one-half\ncup less flour, the dough is better suited for biscuits, but, being\nsoft, is difficult to handle. To make shaping of biscuits easy, take up\nmixture by spoonfuls, drop into plate of flour, and have palms of hands\nwell covered with flour before attempting to shape.\n\n\n                              Rye Biscuit\n\n                       1 cup boiling water\n                       1 cup rye flakes\n                       2 tablespoons butter\n                       ⅓ cup molasses\n                       1½ teaspoons salt\n                       1 yeast cake dissolved in\n                       1 cup lukewarm water\n                       Flour\n\nMake same as Rolled Oats Bread.\n\n\n                               Rye Bread",
+            "score": 0.697041392326355,
+            "metadata": {}
+          }
+        ]
+      }
     ]
   }
 }

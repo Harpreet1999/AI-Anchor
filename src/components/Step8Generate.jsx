@@ -7,6 +7,7 @@ const DATASETS = {
   career: "Portfolio Data",
   cars: "JDM Legends",
   sherlock: "Sherlock Holmes",
+  cookbook: "Boston Cooking-School Cook Book",
 };
 
 // Friendlier messages for the failure modes that actually happen, rather

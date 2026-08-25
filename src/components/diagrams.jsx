@@ -359,6 +359,21 @@ export function BookGlyph() {
   );
 }
 
+export function CookGlyph() {
+  return (
+    <figure role="img" aria-label="A recipe card beside a measuring spoon.">
+      <svg viewBox="0 0 120 40" width="100%" style={{ maxWidth: 110, height: 36 }}>
+        <rect x="10" y="4" width="62" height="32" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <line x1="18" y1="14" x2="58" y2="14" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+        <line x1="18" y1="21" x2="52" y2="21" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+        <line x1="18" y1="28" x2="44" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+        <circle cx="96" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <line x1="96" y1="19" x2="96" y2="34" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    </figure>
+  );
+}
+
 // A named-technology flowchart (not an abstract mechanism diagram like the
 // figures above) — one shared start, two labeled tool chains, one shared
 // end. The active track's chain is drawn in the accent color; the other

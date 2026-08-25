@@ -1,6 +1,6 @@
 {
   "datasetId": "portfolio",
-  "displayName": "Harpreet's Career",
+  "displayName": "Portfolio Data",
   "description": "Harpreet Singh's resume and full portfolio site — work history, projects, skills, certifications, achievements, and education. Ask about his AI Engineer work at Cognizant, the Agentic Grounding Platform, or anything else on his site.",
   "sourceFiles": [
     "data/sources/resume.md",

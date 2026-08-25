@@ -61,6 +61,16 @@ DATASETS = [
         ),
         "files": ["sherlock-holmes.txt"],
     },
+    {
+        "id": "cookbook",
+        "displayName": "The Boston Cooking-School Cook Book",
+        "description": (
+            "Fannie Merritt Farmer's 1896 cooking manual (public domain, Project Gutenberg) — "
+            "recipes and technique across 38 chapters, from eggs and soups to pastry and cake. "
+            "Ask how to make something, or what goes in it."
+        ),
+        "files": ["boston-cooking-school-cookbook.txt"],
+    },
 ]
 
 

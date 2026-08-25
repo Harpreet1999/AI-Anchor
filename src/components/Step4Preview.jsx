@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
-import portfolioNode from "../../data/processed/portfolio.json";
-import carsNode from "../../data/processed/cars-jdm-legends.json";
-import sherlockNode from "../../data/processed/sherlock-holmes.json";
-import portfolioPy from "../../data-py/processed/portfolio.json";
-import carsPy from "../../data-py/processed/cars-jdm-legends.json";
-import sherlockPy from "../../data-py/processed/sherlock-holmes.json";
 import resumeRaw from "../../data/sources/resume.md?raw";
 import carsRaw from "../../data/sources/cars-jdm-legends.md?raw";
 import sherlockRaw from "../../data/sources/sherlock-holmes.txt?raw";
+import cookbookRaw from "../../data/sources/boston-cooking-school-cookbook.txt?raw";
 import { excerptChars } from "../lib/mdExcerpt.js";
+import { useDataset } from "../lib/useDataset.js";
 import JsonBlock from "./JsonBlock.jsx";
 import CopyButton from "./CopyButton.jsx";
 import StepNav from "./StepNav.jsx";
@@ -18,21 +14,18 @@ const EXCERPT_LEN = 1800;
 
 // The raw source excerpt is identical either way — both tracks read the
 // same files (see data-py/README.md) — only the chunked/embedded output
-// differs per track.
+// differs per track. These are plain text (no embeddings), so they stay
+// cheap, static imports — only the embedded chunk JSON below is lazy.
 const RAW = {
   career: { fileName: "resume.md", raw: excerptChars(resumeRaw, "## Summary", EXCERPT_LEN) },
   cars: { fileName: "cars-jdm-legends.md", raw: excerptChars(carsRaw, "## Toyota Supra MK4 (A80) Turbo", EXCERPT_LEN) },
   sherlock: { fileName: "sherlock-holmes.txt", raw: excerptChars(sherlockRaw, "I. A SCANDAL IN BOHEMIA", EXCERPT_LEN) },
-};
-
-const BY_TRACK = {
-  node: { career: portfolioNode, cars: carsNode, sherlock: sherlockNode },
-  python: { career: portfolioPy, cars: carsPy, sherlock: sherlockPy },
+  cookbook: { fileName: "boston-cooking-school-cookbook.txt", raw: excerptChars(cookbookRaw, "Have ready a saucepan containing boiling water", EXCERPT_LEN) },
 };
 
 export default function Step4Preview({ track, selectedId, processing, onBack, onNext }) {
   const raw = selectedId ? RAW[selectedId] : null;
-  const dataset = selectedId ? BY_TRACK[track][selectedId] : null;
+  const dataset = useDataset(track, selectedId);
   const [index, setIndex] = useState(0);
 
   // Jump back to chunk 1 whenever a new dataset OR track is chosen — a
@@ -83,7 +76,14 @@ export default function Step4Preview({ track, selectedId, processing, onBack, on
         </div>
       )}
 
-      {selectedId && !processing && (
+      {selectedId && !processing && !dataset && (
+        <div className="preview-processing" role="status" aria-live="polite">
+          <div className="spinner" aria-hidden="true" />
+          <div>Loading <b>{raw.fileName}</b>'s chunks…</div>
+        </div>
+      )}
+
+      {selectedId && !processing && dataset && (
         <div className="wide-panes">
           <div className="pane">
             <div className="pane-head"><span>SOURCE</span><span>{raw.fileName}</span></div>
@@ -111,7 +111,7 @@ export default function Step4Preview({ track, selectedId, processing, onBack, on
         </div>
       )}
 
-      {selectedId && !processing && (
+      {selectedId && !processing && dataset && (
         <div className="viewer-note">
           <b>Why so many chunks?</b> Every dataset is forced into the same small, individually
           retrievable pieces — small enough that a question about one fact retrieves that fact,

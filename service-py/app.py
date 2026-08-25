@@ -41,6 +41,7 @@ DATASET_FILES = {
     "portfolio": "portfolio.json",
     "cars-jdm-legends": "cars-jdm-legends.json",
     "sherlock-holmes": "sherlock-holmes.json",
+    "cookbook": "cookbook.json",
 }
 
 app = FastAPI(title="AI Anchor — Python retrieval service")

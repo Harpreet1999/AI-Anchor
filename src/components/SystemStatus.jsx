@@ -56,9 +56,14 @@ export default function SystemStatus() {
           </div>
           {SERVICES.map((s) => {
             const st = status[s.id] || { phase: "checking", message: "Checking…" };
+            const isPending = st.phase === "checking" || st.phase === "waking";
             return (
               <div key={s.id} className="sys-status-row">
-                <span className={`sys-status-dot small ${st.phase}`} />
+                {isPending ? (
+                  <span className="status-spinner" aria-hidden="true" />
+                ) : (
+                  <span className={`sys-status-dot small ${st.phase}`} />
+                )}
                 <div className="sys-status-row-body">
                   <b>{s.label}</b>
                   <span>{st.message}{st.ms !== undefined ? ` · ${st.ms}ms` : ""}</span>

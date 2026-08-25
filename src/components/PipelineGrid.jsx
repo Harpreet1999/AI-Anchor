@@ -18,33 +18,33 @@ import LiveCheck from "./LiveCheck.jsx";
 // for the live position sidebar.
 export const STAGES = [
   {
-    num: "01", key: "source", title: "Source", cap: "Raw .md / .txt files a human can read top to bottom.", state: "live", Icon: SourceIcon,
+    num: "01", key: "source", title: "Source", gerund: "Sourcing", cap: "Raw .md / .txt files a human can read top to bottom.", state: "live", Icon: SourceIcon,
     detail: "Three fixed source files — a resume/portfolio, a car-spec sheet, and a public-domain short story collection — committed straight into the repo. No uploads, no scraping, nothing fetched at request time.",
     tech: [["Format", "Markdown / plain text"], ["Storage", "Committed to the repo"], ["Datasets", "3, fixed"]],
   },
   {
-    num: "02", key: "chunk", title: "Chunk", cap: "Split into small, individually-citable pieces.", state: "live", Icon: ChunkIcon,
+    num: "02", key: "chunk", title: "Chunk", gerund: "Chunking", cap: "Split into small, individually-citable pieces.", state: "live", Icon: ChunkIcon,
     detail: "Each source file is split into small, structurally-meaningful pieces — one chunk per real unit (a heading section, a car, a story paragraph) so a question about one fact retrieves that fact, not the whole file. Node and Python use genuinely different splitters, not the same logic renamed.",
     tech: [["Node.js", "Hand-rolled, structure-aware splitter"], ["Python", "LangChain RecursiveCharacterTextSplitter"]],
   },
   {
-    num: "03", key: "embed", title: "Embed & Index", cap: "Each chunk becomes a vector, computed once.", state: "live", Icon: EmbedIcon,
+    num: "03", key: "embed", title: "Embed & Index", gerund: "Embedding / Indexing", cap: "Each chunk becomes a vector, computed once.", state: "live", Icon: EmbedIcon,
     detail: "Every chunk is run through a real sentence-embedding model once, offline, and the resulting vectors are committed alongside the chunks. Same model family on both tracks, two different runtimes.",
     tech: [["Node.js", "Xenova/transformers.js (all-MiniLM-L6-v2)"], ["Python", "Sentence-Transformers (all-MiniLM-L6-v2)"], ["Dimensions", "384 per chunk"]],
   },
   {
-    num: "04", key: "retrieve", title: "Retrieve", cap: "Match a question to the closest chunks.", state: "live", Icon: RetrieveIcon,
+    num: "04", key: "retrieve", title: "Retrieve", gerund: "Retrieving", cap: "Match a question to the closest chunks.", state: "live", Icon: RetrieveIcon,
     detail: "Node embeds your question in the browser and ranks it against every chunk vector locally — zero network calls. Python sends the question to a small FastAPI service that embeds it server-side and queries a real, in-memory ChromaDB collection.",
     tech: [["Node.js", "Cosine similarity, fully client-side"], ["Python", "ChromaDB, live network call"]],
     check: { label: "Check Python retrieval service", serviceId: "py" },
   },
   {
-    num: "05", key: "augment", title: "Augment", cap: "Insert retrieved chunks into the prompt.", state: "live", Icon: AugmentIcon,
+    num: "05", key: "augment", title: "Augment", gerund: "Augmenting", cap: "Insert retrieved chunks into the prompt.", state: "live", Icon: AugmentIcon,
     detail: "The retrieved chunks are assembled into a single evidence block, numbered and source-tagged, and placed alongside the question — the exact context the model sees, nothing hidden.",
     tech: [["Shape", "System instruction + question + numbered evidence"], ["Runtime", "Plain JS, no LLM call yet"]],
   },
   {
-    num: "06", key: "generate", title: "Generate", cap: "Groq (GPT-OSS 120B) answers from that context, server-side.", state: "live", Icon: GenerateIcon,
+    num: "06", key: "generate", title: "Generate", gerund: "Generating", cap: "Groq (GPT-OSS 120B) answers from that context, server-side.", state: "live", Icon: GenerateIcon,
     detail: "The augmented prompt is sent to Groq's hosted GPT-OSS 120B, instructed to answer only from the supplied evidence and say so plainly — in its own words, not a fixed stock phrase — when the evidence doesn't cover the question. Your API key stays server-side.",
     tech: [["Model", "openai/gpt-oss-120b via Groq"], ["Key handling", "Server-side only, never sent to the browser"]],
     check: { label: "Check Groq LLM backend", serviceId: "groq" },
@@ -109,7 +109,7 @@ export default function PipelineGrid() {
               <div className="stage-detail-title">Stage {displayedStage.num} — {displayedStage.title}</div>
               <div className="stage-detail-grid">
                 <div>
-                  <h4>What {displayedStage.title} actually does</h4>
+                  <h4>{displayedStage.gerund}</h4>
                   <p>{displayedStage.detail}</p>
                   {displayedStage.check && <LiveCheck label={displayedStage.check.label} serviceId={displayedStage.check.serviceId} />}
                 </div>

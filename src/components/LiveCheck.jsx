@@ -44,7 +44,11 @@ export default function LiveCheck({ label, url, serviceId }) {
         </button>
         {st && st.phase !== "checking" && (
           <div className={`stage-live-result ${st.phase === "up" ? "up" : st.phase === "waking" ? "waking" : "down"}`}>
-            <span className={`sys-status-dot small ${st.phase}`} />
+            {st.phase === "waking" ? (
+              <span className="status-spinner" aria-hidden="true" />
+            ) : (
+              <span className={`sys-status-dot small ${st.phase}`} />
+            )}
             <span>{st.message}{st.ms !== undefined ? ` · ${st.ms}ms` : ""}</span>
           </div>
         )}

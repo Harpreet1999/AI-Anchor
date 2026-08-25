@@ -16,7 +16,10 @@ export default function Step7Augment({ track, selectedId, retrievalData, onBack,
   const question = retrievalData?.question || "No question has been retrieved yet.";
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
   const trackName = track === "node" ? "NODE.JS" : "PYTHON";
-  const [openIndex, setOpenIndex] = useState(results.length ? 0 : null);
+  // Every evidence item starts collapsed — used to auto-open the first
+  // one, which looked like an arbitrary pick to whichever chunk happened
+  // to rank #1 rather than a deliberate default.
+  const [openIndex, setOpenIndex] = useState(null);
   const [showFullPrompt, setShowFullPrompt] = useState(false);
 
   const fullPrompt = results.length

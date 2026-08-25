@@ -109,7 +109,7 @@ export default function PipelineGrid() {
               <div className="stage-detail-title">Stage {displayedStage.num} — {displayedStage.title}</div>
               <div className="stage-detail-grid">
                 <div>
-                  <h4>What's actually running</h4>
+                  <h4>What {displayedStage.title} actually does</h4>
                   <p>{displayedStage.detail}</p>
                   {displayedStage.check && <LiveCheck label={displayedStage.check.label} serviceId={displayedStage.check.serviceId} />}
                 </div>

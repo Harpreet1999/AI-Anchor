@@ -59,7 +59,6 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
           <span className="track-pick-big-sub">LangChain splitter · Sentence-Transformers · live ChromaDB retrieval</span>
         </button>
       </div>
-      {!track && <p className="track-pick-hint">Pick a track above — Step 03 onward is locked to it until you do (Step 02 is just an overview, so it's open either way).</p>}
 
       <div className="fig-frame" style={{ marginTop: 8 }}>
         <div className="fig-frame-inner">

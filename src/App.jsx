@@ -52,7 +52,7 @@ function computeMaxStep(activeStep, track, selectedId, retrievalData) {
 }
 
 function lockReason(n, activeStep, track) {
-  if (n > 2 && !track) return "Pick a stack in Step 01 first.";
+  if (n > 2 && !track) return "Go back to Step 01 and pick a stack first.";
   return `One step at a time — Step ${String(activeStep + 1).padStart(2, "0")} is next.`;
 }
 

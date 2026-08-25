@@ -55,7 +55,6 @@ function DatasetCard({ m, track, selected, onSelectDataset, isPreviewing, onTogg
           <h3>{d.displayName}</h3>
           <p><b>From:</b> {m.from}</p>
           <p><b>Signifies:</b> {m.signifies}</p>
-          <div className="stat"><span>CHUNKS ({track === "node" ? "Node.js" : "Python"})</span><b>{d.chunks.length}</b></div>
 
           <button type="button" className="dcard-preview-toggle" onClick={onTogglePreview} aria-expanded={isPreviewing}>
             {isPreviewing ? "▾ Hide a real chunk" : "▸ Peek at a real chunk"}

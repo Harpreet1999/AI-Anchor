@@ -23,8 +23,15 @@
          mount, not the head), so it was fighting that fix permanently. */
       html, body, #root{ min-height:100vh; }
       body{ margin:0; background:var(--boot-bg); }
+      /* height:100vh, not 100% — #root itself only has min-height:100vh
+         now (see the sticky-positioning fix above), so a percentage
+         height here would have nothing definite to resolve against and
+         this screen would collapse to its own content height instead of
+         the full viewport, pinning it to the top instead of centering
+         it. This element is temporary and never needs to grow past one
+         viewport, so an absolute unit sidesteps that entirely. */
       .boot-screen{
-        height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
         gap:14px; font-family:ui-sans-serif, system-ui, sans-serif; color:var(--boot-text);
       }
       .boot-mark{
@@ -35,6 +42,14 @@
       .boot-mark svg{ width:22px; height:22px; }
       .boot-title{ font-weight:700; font-size:15px; letter-spacing:0.01em; }
       .boot-sub{ font-family:ui-monospace, "SFMono-Regular", monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--boot-dim); }
+      /* A real (if simulated) loading bar — the actual completion signal
+         is React replacing this whole screen at mount, not this timer,
+         so it eases toward 92% and deliberately never claims 100% on its
+         own; the moment the real app is ready, this vanishes entirely
+         with it rather than briefly showing a false "100%". */
+      .boot-progress{ width:160px; height:3px; border-radius:2px; background:var(--boot-line); overflow:hidden; }
+      .boot-progress-fill{ width:0%; height:100%; background:var(--boot-text); border-radius:2px; }
+      .boot-pct{ font-family:ui-monospace, "SFMono-Regular", monospace; font-size:10px; color:var(--boot-dim); }
       @keyframes boot-pulse{ 0%,100%{ opacity:0.5; } 50%{ opacity:1; } }
       @media (prefers-reduced-motion: reduce){ .boot-mark{ animation:none; } }
     </style>
@@ -47,8 +62,27 @@
         </div>
         <div class="boot-title">AI Anchor</div>
         <div class="boot-sub">Loading the pipeline…</div>
+        <div class="boot-progress"><div class="boot-progress-fill" id="boot-progress-fill"></div></div>
+        <div class="boot-pct" id="boot-pct">0%</div>
       </div>
     </div>
+    <script>
+      // Simulated progress, not a real load signal — there's nothing to
+      // honestly measure yet at this point (no JS has run). Eases toward
+      // 92% and stops; the real "done" moment is React mounting and
+      // replacing this whole screen, not this bar reaching 100%.
+      (function () {
+        var pct = 0;
+        var fill = document.getElementById("boot-progress-fill");
+        var label = document.getElementById("boot-pct");
+        var timer = setInterval(function () {
+          pct += (92 - pct) * 0.12 + 0.4;
+          if (pct >= 92) { pct = 92; clearInterval(timer); }
+          if (fill) fill.style.width = pct + "%";
+          if (label) label.textContent = Math.round(pct) + "%";
+        }, 120);
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

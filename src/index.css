@@ -247,7 +247,7 @@ svg{ color:var(--text); }
 .timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 14px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:25px; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:34px; }
 /* Icon beside its label now, not stacked above it — shortens every row,
    so the whole list scrolls a lot less, and uses more of the rail's
    width instead of a narrow centered column with dead space either
@@ -256,17 +256,21 @@ svg{ color:var(--text); }
    ruled mark for each step, not just a bare icon floating in space. */
 .timeline-node-row{ position:relative; display:flex; align-items:center; gap:12px; }
 .timeline-node-row::before{
-  content:""; position:absolute; left:-40px; top:50%; width:40px; height:1px;
+  content:""; position:absolute; left:-49px; top:50%; width:49px; height:1px;
   background:var(--line-strong); transform:translateY(-50%);
 }
 .timeline-node.current .timeline-node-row::before, .timeline-node.past .timeline-node-row::before{ background:var(--accent); }
 /* The current step's tick ends in a small fading/pulsating dot at its
    far (leftmost) end, right at the rail's edge — a quiet "live" cue,
    deliberately just a soft opacity fade, not the growing/scaling ring
-   this app tried (and dropped, per feedback) on the icon itself earlier. */
+   this app tried (and dropped, per feedback) on the icon itself earlier.
+   Positioned by its own LEFT edge (not centered on the tick's endpoint)
+   so the whole dot sits inside the tick's span instead of straddling
+   the rail's clipping boundary — centering it there previously let half
+   of it get cut off by the rail's own overflow clip. */
 .timeline-node.current .timeline-node-row::after{
-  content:""; position:absolute; left:-40px; top:50%; width:7px; height:7px; border-radius:50%;
-  background:var(--accent); transform:translate(-50%, -50%); animation:timeline-dot-fade 1.7s ease-in-out infinite;
+  content:""; position:absolute; left:-49px; top:50%; width:11px; height:11px; border-radius:50%;
+  background:var(--accent); transform:translateY(-50%); animation:timeline-dot-fade 1.7s ease-in-out infinite;
 }
 @keyframes timeline-dot-fade{ 0%, 100%{ opacity:0.3; } 50%{ opacity:1; } }
 @media (prefers-reduced-motion: reduce){ .timeline-node.current .timeline-node-row::after{ animation:none; opacity:0.75; } }
@@ -373,7 +377,7 @@ svg{ color:var(--text); }
 .status{ font-family:"Space Mono", monospace; font-size:9.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-dim); }
 .status.live{ color:var(--accent); }
 .stage-btn figure{ height:64px; margin:14px 0 2px; display:flex; align-items:center; }
-.stage-btn h3{ font-size:14.5px; font-weight:700; margin-top:6px; }
+.stage-btn h3{ font-size:14.5px; font-weight:700; margin-top:6px; color:var(--accent); }
 .stage-btn p{ color:var(--text-dim); font-size:12.5px; line-height:1.55; margin-top:5px; }
 
 .flow-note{ margin-top:20px; padding:12px 16px; border-left:2px solid var(--accent); background:var(--surface); font-size:12.5px; color:var(--text-dim); line-height:1.6; }

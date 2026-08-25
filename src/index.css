@@ -230,20 +230,27 @@ svg{ color:var(--text); }
 .timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 14px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:14px; }
 /* Icon beside its label now, not stacked above it — shortens every row,
    so the whole list scrolls a lot less, and uses more of the rail's
    width instead of a narrow centered column with dead space either
-   side. */
-.timeline-node-row{ display:flex; align-items:center; gap:12px; }
+   side. Nudged right (the node's own padding-left above) off the rail's
+   edge, with a horizontal tick reaching back to that true edge — a
+   ruled mark for each step, not just a bare icon floating in space. */
+.timeline-node-row{ position:relative; display:flex; align-items:center; gap:12px; }
+.timeline-node-row::before{
+  content:""; position:absolute; left:-29px; top:50%; width:29px; height:1px;
+  background:var(--line-strong); transform:translateY(-50%);
+}
+.timeline-node.current .timeline-node-row::before, .timeline-node.past .timeline-node-row::before{ background:var(--accent); }
 /* Plain <svg> icons now (timelineIcons.jsx), not the <figure>-wrapped FIG.
    icons — each one's artwork is centered on its own viewBox already, so
    centering the box here is all that's needed; nothing drifts off-center. */
 .timeline-node-icon{
   position:relative; display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  width:48px; height:48px; opacity:0.45; border-radius:8px; transition:opacity .2s, background .2s;
+  width:60px; height:60px; opacity:0.45; border-radius:8px; transition:opacity .2s, background .2s;
 }
-.timeline-node-icon svg{ width:28px; height:28px; display:block; }
+.timeline-node-icon svg{ width:36px; height:36px; display:block; }
 /* Thin, deliberately — a CSS rule on the svg element itself won't win
    over each shape's own strokeWidth attribute, so this targets the
    shapes directly instead of relying on inheritance. */
@@ -266,7 +273,7 @@ svg{ color:var(--text); }
    under the icon's own center (half its 48px width, minus half the
    connector's own width), continuing the same vertical line the icon
    column used to sit on before the row layout. */
-.timeline-connector{ width:2px; height:32px; margin:0 0 0 23px; border-radius:1px; background:var(--line-strong); overflow:hidden; }
+.timeline-connector{ width:2px; height:32px; margin:0 0 0 29px; border-radius:1px; background:var(--line-strong); overflow:hidden; }
 .timeline-connector-fill{ width:100%; height:0; background:var(--accent); border-radius:1px; }
 .timeline-node.past .timeline-connector-fill{ height:100%; }
 .timeline-node.current .timeline-connector-fill{ height:50%; }
@@ -356,18 +363,20 @@ svg{ color:var(--text); }
 .track-pick-big{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px; }
 .track-pick-big-btn{
   display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
-  padding:30px 32px; background:var(--surface); border:none; cursor:pointer; color:var(--text);
+  padding:30px 32px; background:var(--surface); border:none; border-left:4px solid transparent; cursor:pointer; color:var(--text);
   font:inherit; transition:background .15s ease, box-shadow .15s ease;
 }
-/* Always tinted with its own brand color — yellow for Node, green for
-   Python — regardless of which (if either) is currently selected. Uses
-   the fixed --node-color / --python-color tokens, not --accent (which
-   only turns yellow/green once that track is the ACTIVE one), so both
-   read as their own color side by side even before a pick is made. */
-.track-pick-big-btn.node{ background:var(--node-wash); }
-.track-pick-big-btn.python{ background:var(--python-wash); }
-.track-pick-big-btn.node:hover, .track-pick-big-btn.node.active{ color:var(--node-color); }
-.track-pick-big-btn.python:hover, .track-pick-big-btn.python.active{ color:var(--python-color); }
+/* Matches the app's existing "active nav item" idiom (see .sheet-link.active
+   in the sidebar: a colored left border + a colored wash background +
+   colored label text) rather than a one-off solid fill — just applied
+   permanently here instead of only on selection, using the fixed
+   --node-color/--python-color tokens (not --accent, which only turns
+   yellow/green once that track is the SELECTED one) so both buttons read
+   as their own brand color side by side even before a pick is made. */
+.track-pick-big-btn.node{ border-left-color:var(--node-color); background:var(--node-wash); }
+.track-pick-big-btn.python{ border-left-color:var(--python-color); background:var(--python-wash); }
+.track-pick-big-btn.node .track-pick-big-name{ color:var(--node-color); }
+.track-pick-big-btn.python .track-pick-big-name{ color:var(--python-color); }
 .track-pick-big-btn.node.active{ box-shadow:inset 0 -3px 0 var(--node-color); }
 .track-pick-big-btn.python.active{ box-shadow:inset 0 -3px 0 var(--python-color); }
 .track-pick-big-name{ font-family:"Archivo", sans-serif; font-weight:800; font-size:20px; display:flex; align-items:center; gap:10px; }

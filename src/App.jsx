@@ -80,6 +80,16 @@ function App() {
     else delete document.documentElement.dataset.track;
   }, [track]);
 
+  // Steps swap in place (no real navigation, no page reload) — the
+  // browser has no reason to reset scroll on its own, so without this,
+  // whatever scroll position you'd reached on the previous step carries
+  // straight over. Landing on a brand new step already scrolled halfway
+  // down it (masthead cut off, jumping into mid-content) is exactly what
+  // that looks like.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeStep]);
+
   const maxStep = computeMaxStep(activeStep, track, selectedId, retrievalData);
 
   // Every nav click (sidebar, top bar) goes through here instead of

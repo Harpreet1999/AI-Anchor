@@ -41,7 +41,7 @@ DEMO_QUESTIONS = {
         "Tell me about the Honda NSX engine.",
     ],
     "sherlock-holmes": [
-        "What was stolen in the Red-Headed League?",
+        "How much French gold was in the bank cellar?",
         "Who is Irene Adler?",
     ],
 }

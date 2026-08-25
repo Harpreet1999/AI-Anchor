@@ -208,51 +208,51 @@
     ],
     "sherlock-holmes": [
       {
-        "question": "What was stolen in the Red-Headed League?",
+        "question": "How much French gold was in the bank cellar?",
         "results": [
           {
-            "chunkId": "sherlock-holmes-sherlock-holmes-79",
-            "title": "sherlock-holmes.txt — part 79",
+            "chunkId": "sherlock-holmes-sherlock-holmes-117",
+            "title": "sherlock-holmes.txt — part 117",
             "source": "sherlock-holmes.txt",
             "section": "text",
-            "text": "“‘Tell me all about it,’ said I.\n\n“‘Well,’ said he, showing me the advertisement, ‘you can see for\nyourself that the League has a vacancy, and there is the address where\nyou should apply for particulars. As far as I can make out, the League\nwas founded by an American millionaire, Ezekiah Hopkins, who was very\npeculiar in his ways. He was himself red-headed, and he had a great\nsympathy for all red-headed men; so, when he died, it was found that he\nhad left his enormous fortune in the hands of trustees, with\ninstructions to apply the interest to the providing of easy berths to\nmen whose hair is of that colour. From all I hear it is splendid pay\nand very little to do.’\n\n“‘But,’ said I, ‘there would be millions of red-headed men who would\napply.’",
-            "score": 0.5248391628265381,
+            "text": "“We have at least an hour before us,” he remarked, “for they can hardly\ntake any steps until the good pawnbroker is safely in bed. Then they\nwill not lose a minute, for the sooner they do their work the longer\ntime they will have for their escape. We are at present, Doctor—as no\ndoubt you have divined—in the cellar of the City branch of one of the\nprincipal London banks. Mr. Merryweather is the chairman of directors,\nand he will explain to you that there are reasons why the more daring\ncriminals of London should take a considerable interest in this cellar\nat present.”\n\n“It is our French gold,” whispered the director. “We have had several\nwarnings that an attempt might be made upon it.”\n\n“Your French gold?”",
+            "score": 0.5862981081008911,
             "metadata": {}
           },
           {
-            "chunkId": "sherlock-holmes-sherlock-holmes-94",
-            "title": "sherlock-holmes.txt — part 94",
+            "chunkId": "sherlock-holmes-sherlock-holmes-118",
+            "title": "sherlock-holmes.txt — part 118",
             "source": "sherlock-holmes.txt",
             "section": "text",
-            "text": "“No, no,” cried Holmes, shoving him back into the chair from which he\nhad half risen. “I really wouldn’t miss your case for the world. It is\nmost refreshingly unusual. But there is, if you will excuse my saying\nso, something just a little funny about it. Pray what steps did you\ntake when you found the card upon the door?”\n\n“I was staggered, sir. I did not know what to do. Then I called at the\noffices round, but none of them seemed to know anything about it.\nFinally, I went to the landlord, who is an accountant living on the\nground floor, and I asked him if he could tell me what had become of\nthe Red-headed League. He said that he had never heard of any such\nbody. Then I asked him who Mr. Duncan Ross was. He answered that the\nname was new to him.\n\n“‘Well,’ said I, ‘the gentleman at No. 4.’\n\n“‘What, the red-headed man?’\n\n“‘Yes.’",
-            "score": 0.4760094881057739,
+            "text": "“Your French gold?”\n\n“Yes. We had occasion some months ago to strengthen our resources and\nborrowed for that purpose 30,000 napoleons from the Bank of France. It\nhas become known that we have never had occasion to unpack the money,\nand that it is still lying in our cellar. The crate upon which I sit\ncontains 2,000 napoleons packed between layers of lead foil. Our\nreserve of bullion is much larger at present than is usually kept in a\nsingle branch office, and the directors have had misgivings upon the\nsubject.”\n\n“Which were very well justified,” observed Holmes. “And now it is time\nthat we arranged our little plans. I expect that within an hour matters\nwill come to a head. In the meantime Mr. Merryweather, we must put the\nscreen over that dark lantern.”\n\n“And sit in the dark?”",
+            "score": 0.5772581696510315,
             "metadata": {}
           },
           {
-            "chunkId": "sherlock-holmes-sherlock-holmes-74",
-            "title": "sherlock-holmes.txt — part 74",
+            "chunkId": "sherlock-holmes-sherlock-holmes-393",
+            "title": "sherlock-holmes.txt — part 393",
             "source": "sherlock-holmes.txt",
             "section": "text",
-            "text": "I took the paper from him and read as follows:\n\n“TO THE RED-HEADED LEAGUE: On account of the bequest of the late\nEzekiah Hopkins, of Lebanon, Pennsylvania, U.S.A., there is now another\nvacancy open which entitles a member of the League to a salary of £ 4 a\nweek for purely nominal services. All red-headed men who are sound in\nbody and mind and above the age of twenty-one years, are eligible.\nApply in person on Monday, at eleven o’clock, to Duncan Ross, at the\noffices of the League, 7 Pope’s Court, Fleet Street.”\n\n\n“What on earth does this mean?” I ejaculated after I had twice read\nover the extraordinary announcement.\n\nHolmes chuckled and wriggled in his chair, as was his habit when in\nhigh spirits. “It is a little off the beaten track, isn’t it?” said he.\n“And now, Mr. Wilson, off you go at scratch and tell us all about\nyourself, your household, and the effect which this advertisement had\nupon your fortunes. You will first make a note, Doctor, of the paper\nand the date.”",
-            "score": 0.46055102348327637,
+            "text": "Sherlock Holmes sat up with a whistle. “By Jove, Peterson!” said he,\n“this is treasure trove indeed. I suppose you know what you have got?”\n\n“A diamond, sir? A precious stone. It cuts into glass as though it were\nputty.”\n\n“It’s more than a precious stone. It is _the_ precious stone.”\n\n“Not the Countess of Morcar’s blue carbuncle!” I ejaculated.\n\n“Precisely so. I ought to know its size and shape, seeing that I have\nread the advertisement about it in _The Times_ every day lately. It is\nabsolutely unique, and its value can only be conjectured, but the\nreward offered of £ 1000 is certainly not within a twentieth part of\nthe market price.”\n\n“A thousand pounds! Great Lord of mercy!” The commissionaire plumped\ndown into a chair and stared from one to the other of us.\n\n“That is the reward, and I have reason to know that there are\nsentimental considerations in the background which would induce the\nCountess to part with half her fortune if she could but recover the\ngem.”",
+            "score": 0.4500916600227356,
             "metadata": {}
           },
           {
-            "chunkId": "sherlock-holmes-sherlock-holmes-126",
-            "title": "sherlock-holmes.txt — part 126",
+            "chunkId": "sherlock-holmes-sherlock-holmes-675",
+            "title": "sherlock-holmes.txt — part 675",
             "source": "sherlock-holmes.txt",
             "section": "text",
-            "text": "“I have had one or two little scores of my own to settle with Mr. John\nClay,” said Holmes. “I have been at some small expense over this\nmatter, which I shall expect the bank to refund, but beyond that I am\namply repaid by having had an experience which is in many ways unique,\nand by hearing the very remarkable narrative of the Red-headed League.”",
-            "score": 0.43536484241485596,
+            "text": "“‘MARY.’\n\n\n“What could she mean by that note, Mr. Holmes? Do you think it points\nto suicide?”\n\n“No, no, nothing of the kind. It is perhaps the best possible solution.\nI trust, Mr. Holder, that you are nearing the end of your troubles.”\n\n“Ha! You say so! You have heard something, Mr. Holmes; you have learned\nsomething! Where are the gems?”\n\n“You would not think £ 1000 apiece an excessive sum for them?”\n\n“I would pay ten.”\n\n“That would be unnecessary. Three thousand will cover the matter. And\nthere is a little reward, I fancy. Have you your cheque-book? Here is a\npen. Better make it out for £ 4000.”\n\nWith a dazed face the banker made out the required check. Holmes walked\nover to his desk, took out a little triangular piece of gold with three\ngems in it, and threw it down upon the table.\n\nWith a shriek of joy our client clutched it up.\n\n“You have it!” he gasped. “I am saved! I am saved!”",
+            "score": 0.42820656299591064,
             "metadata": {}
           },
           {
-            "chunkId": "sherlock-holmes-sherlock-holmes-78",
-            "title": "sherlock-holmes.txt — part 78",
+            "chunkId": "sherlock-holmes-sherlock-holmes-28",
+            "title": "sherlock-holmes.txt — part 28",
             "source": "sherlock-holmes.txt",
             "section": "text",
-            "text": "“‘Have you never heard of the League of the Red-headed Men?’ he asked\nwith his eyes open.\n\n“‘Never.’\n\n“‘Why, I wonder at that, for you are eligible yourself for one of the\nvacancies.’\n\n“‘And what are they worth?’ I asked.\n\n“‘Oh, merely a couple of hundred a year, but the work is slight, and it\nneed not interfere very much with one’s other occupations.’\n\n“Well, you can easily think that that made me prick up my ears, for the\nbusiness has not been over good for some years, and an extra couple of\nhundred would have been very handy.\n\n“‘Tell me all about it,’ said I.",
-            "score": 0.40065693855285645,
+            "text": "“There are three hundred pounds in gold and seven hundred in notes,” he\nsaid.\n\nHolmes scribbled a receipt upon a sheet of his note-book and handed it\nto him.\n\n“And Mademoiselle’s address?” he asked.\n\n“Is Briony Lodge, Serpentine Avenue, St. John’s Wood.”\n\nHolmes took a note of it. “One other question,” said he. “Was the\nphotograph a cabinet?”\n\n“It was.”\n\n“Then, good-night, your Majesty, and I trust that we shall soon have\nsome good news for you. And good-night, Watson,” he added, as the\nwheels of the royal brougham rolled down the street. “If you will be\ngood enough to call to-morrow afternoon at three o’clock I should like\nto chat this little matter over with you.”\n\n\nII.",
+            "score": 0.4089820384979248,
             "metadata": {}
           }
         ]

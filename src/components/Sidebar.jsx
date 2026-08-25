@@ -1,4 +1,4 @@
-import { Code1, InfoCircle, DocumentText, CodeCircle, Chart2, SearchNormal1 } from "iconsax-react";
+import { Code1, InfoCircle, DocumentText, CodeCircle, Chart2, SearchNormal1, Layer, Magicpen } from "iconsax-react";
 
 const STEPS = [
   { n: 1, no: "STEP 01", name: "Pick a Stack", Icon: Code1 },
@@ -7,6 +7,8 @@ const STEPS = [
   { n: 4, no: "STEP 04", name: "See It Chunked", Icon: CodeCircle },
   { n: 5, no: "STEP 05", name: "See the Embeddings", Icon: Chart2 },
   { n: 6, no: "STEP 06", name: "Plan Retrieval", Icon: SearchNormal1 },
+  { n: 7, no: "STEP 07", name: "Augment Context", Icon: Layer },
+  { n: 8, no: "STEP 08", name: "Generate Answer", Icon: Magicpen },
 ];
 
 export default function Sidebar({ active, onNavigate, liveCount, totalStages }) {

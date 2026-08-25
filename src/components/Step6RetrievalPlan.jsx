@@ -55,10 +55,10 @@ function PlanNode({ number, label, detail, active }) {
   );
 }
 
-export default function Step6RetrievalPlan({ track, selectedId, onBack }) {
+export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }) {
   const isNode = track === "node";
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
-  const searchName = isNode ? "Cosine similarity / in-memory index" : "Local ChromaDB collection";
+  const searchName = isNode ? "Cosine similarity / in-memory index" : "Sentence-Transformers vectors / in-memory demo";
   const dataset = useMemo(() => {
     if (!selectedId) return null;
     return BY_TRACK[track][selectedId];
@@ -118,7 +118,7 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack }) {
         <div className="retrieval-arrow" aria-hidden="true">→</div>
         <PlanNode number="02" label="Embed once" detail="Use the same MiniLM model as indexing." active />
         <div className="retrieval-arrow" aria-hidden="true">→</div>
-        <PlanNode number="03" label="Search index" detail={isNode ? "Score against the in-memory chunk vectors." : "Query the local Chroma collection."} active />
+        <PlanNode number="03" label="Search index" detail={isNode ? "Score against the in-memory chunk vectors." : "Score the precomputed Python vectors locally."} active />
         <div className="retrieval-arrow" aria-hidden="true">→</div>
         <PlanNode number="04" label="Top K evidence" detail="Return chunks, scores, and source IDs." active />
       </div>
@@ -131,7 +131,11 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack }) {
             id="retrieval-question"
             className="query-field"
             value={question}
-            onChange={(event) => setQuestion(event.target.value)}
+            onChange={(event) => {
+              setQuestion(event.target.value);
+              setResults([]);
+              setError("");
+            }}
             rows={4}
             placeholder={`Ask a precise question about ${datasetName}…`}
           />
@@ -144,14 +148,20 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack }) {
             <button
               type="button"
               className={`chunk-nav-btn topk-button${topK === 3 ? " active" : ""}`}
-              onClick={() => setTopK(3)}
+              onClick={() => {
+                setTopK(3);
+                setResults([]);
+              }}
             >
               3
             </button>
             <button
               type="button"
               className={`chunk-nav-btn topk-button${topK === 5 ? " active" : ""}`}
-              onClick={() => setTopK(5)}
+              onClick={() => {
+                setTopK(5);
+                setResults([]);
+              }}
             >
               5
             </button>
@@ -172,9 +182,9 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack }) {
             </>
           ) : (
             <>
-              <h3>One persistent collection per dataset.</h3>
-              <p>Python stores embeddings in a local Chroma collection and queries that collection with the same MiniLM model, returning nearest chunks with metadata and distance.</p>
-              <div className="index-specs"><span>STORE</span><b>ChromaDB collection</b><span>QUERY</span><b>similarity_search</b></div>
+              <h3>Python embeddings, same retrieval contract.</h3>
+              <p>The browser loads the Python track’s precomputed Sentence-Transformers vectors and ranks them locally, returning the same chunks, scores, and metadata as the Node path. ChromaDB remains available in the separate local Python script.</p>
+              <div className="index-specs"><span>VECTORS</span><b>Sentence-Transformers</b><span>OPTIONAL</span><b>ChromaDB script</b></div>
             </>
           )}
         </div>
@@ -182,7 +192,12 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack }) {
 
       <RetrievalResults results={results} loading={loading} />
 
-      <StepNav onBack={onBack} backLabel="See the embeddings" />
+      <StepNav
+        onBack={onBack}
+        backLabel="See the embeddings"
+        onNext={results.length ? () => onNext({ question: question.trim(), results }) : undefined}
+        nextLabel="Augment context"
+      />
     </section>
   );
 }

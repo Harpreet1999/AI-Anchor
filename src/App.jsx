@@ -8,6 +8,8 @@ import Step3Select from "./components/Step3Select.jsx";
 import Step4Preview from "./components/Step4Preview.jsx";
 import Step5Embeddings from "./components/Step5Embeddings.jsx";
 import Step6RetrievalPlan from "./components/Step6RetrievalPlan.jsx";
+import Step7Augment from "./components/Step7Augment.jsx";
+import Step8Generate from "./components/Step8Generate.jsx";
 import { STAGES } from "./components/PipelineGrid.jsx";
 
 const liveCount = STAGES.filter((s) => s.state === "live").length;
@@ -16,6 +18,7 @@ function App() {
   const [activeStep, setActiveStep] = useState(1);
   const [track, setTrack] = useState("node");
   const [selectedId, setSelectedId] = useState(null);
+  const [retrievalData, setRetrievalData] = useState(null);
   const [processing, setProcessing] = useState(false);
   const timerRef = useRef(null);
 
@@ -90,6 +93,27 @@ function App() {
               track={track}
               selectedId={selectedId}
               onBack={() => setActiveStep(5)}
+              onNext={(data) => {
+                setRetrievalData(data);
+                setActiveStep(7);
+              }}
+            />
+          )}
+          {activeStep === 7 && (
+            <Step7Augment
+              track={track}
+              selectedId={selectedId}
+              retrievalData={retrievalData}
+              onBack={() => setActiveStep(6)}
+              onNext={() => setActiveStep(8)}
+            />
+          )}
+          {activeStep === 8 && (
+            <Step8Generate
+              track={track}
+              selectedId={selectedId}
+              retrievalData={retrievalData}
+              onBack={() => setActiveStep(7)}
             />
           )}
         </div>

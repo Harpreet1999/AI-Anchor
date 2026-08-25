@@ -1,0 +1,312 @@
+{
+  "model": "all-MiniLM-L6-v2",
+  "generatedWith": "ChromaDB (local, cosine)",
+  "datasets": {
+    "portfolio": [
+      {
+        "question": "What did Harpreet work on at Cognizant?",
+        "results": [
+          {
+            "chunkId": "portfolio-portfolio-1",
+            "title": "portfolio.md — part 1",
+            "source": "portfolio.md",
+            "section": "text",
+            "text": "# Harpreet Singh — Portfolio Content (harpreetsingh.xyz)\n\n> Extracted from the live portfolio site. This is Harpreet's own content, reused here with his permission for his own second project.\n\n## Identity / Hero\n\n- Name: Harpreet Singh\n- Title: AI Engineer\n- Tagline: Building AI interfaces for enterprise software\n- Badges: AI Engineer, AI/ML, Fullstack Dev, FrontEnd - React, Power Platform\n- Company badge: @ Cognizant\n- Bio: \"I build front-end interfaces for agentic AI platforms, backed by enterprise automation experience. I care about turning complex AI systems into interfaces people actually trust.\"\n- Location: India — Timezone: IST (UTC +5:30)\n- Availability: Open to new opportunities — \"Open to full-time front-end / AI-interface engineering roles — happy to talk contract work too.\"",
+            "score": 0.317859947681427,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-portfolio-8",
+            "title": "portfolio.md — part 8",
+            "source": "portfolio.md",
+            "section": "text",
+            "text": "- **Client Recognition — Quarterly Excellence (x2)**, Cognizant client — won client recognition twice at quarterly review events, including personal recognition from the client's CEO.\n- **Google Code-In — Top 5 Finalist (2016)**, Google · KDE — open-source contribution.\n- **Published Research Article, Elsevier** — \"An outline on modern day applications of solid lubricants,\" published during the B.Tech.\n- **Student Council Member — Polytechnic Diploma** — ranked #2 state-level, #1 in batch at graduation.\n- **Cognizant Certified Frontline Leaders — People Leadership** — completed Cognizant's People Leadership program.\n- **Technical Extracurriculars — Thermax Storm Challenge & SolidWorks** — participated in the Thermax Storm Challenge; completed a certified SolidWorks course at Central Tool Room, Ludhiana (CAD/mechanical-design exposure outside the core curriculum).",
+            "score": 0.3033719062805176,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-portfolio-2",
+            "title": "portfolio.md — part 2",
+            "source": "portfolio.md",
+            "section": "text",
+            "text": "### Stats\n- 4+ — Years across 3 roles at Cognizant\n- 10+ — Projects shipped, prototype to production\n- 10+ — Professional certifications, Microsoft & AWS\n- 7 — Leadership & open-source credits\n- 800+ — Members on the community platform where he contributed as Tech Lead and management\n\n## About\n\nIntro: \"Harpreet Singh — AI Engineer, with a front end that showed up before the AI did. I spent my first couple of years administering Microsoft 365 and Power Platform inside a Life Sciences enterprise, which meant learning how a system actually gets used long before I ever touched what runs underneath it. That's the habit that carried over: agentic AI platforms and enterprise automation are the subject, but the interface — the part someone has to actually trust — is still where I start.\"",
+            "score": 0.2977781891822815,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-resume-1",
+            "title": "resume.md — part 1",
+            "source": "resume.md",
+            "section": "text",
+            "text": "# Harpreet Singh — Resume\n\nContact: erharpreet1999@gmail.com | +91 7986011683 | linkedin.com/in/Harpreet---Singh | github.com/Harpreet1999\n\n## Summary\n\nAI Engineer with 4+ years of experience delivering scalable enterprise applications. Transitioned from Power Platform development to taking sole ownership of React front-end architectures for cutting-edge AI interfaces. Adept at bridging user experiences with modern cloud integrations (AWS, Lambda) and committed to driving team success through advanced GitHub version control, CI/CD, and collaborative software development practices.\n\n## Work Experience",
+            "score": 0.2885516881942749,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-portfolio-6",
+            "title": "portfolio.md — part 6",
+            "source": "portfolio.md",
+            "section": "text",
+            "text": "- **Microsoft 365: Copilot Chat Explorer**, Microsoft Learn — Grounding, prompt basics, and where Copilot Chat sits inside the Microsoft 365 app suite.\n- **SharePoint / Power Platform Development — 201 (Intermediate) (SP-PP-201)**, Cognizant — Completed after ~6 months of structured internal SPFx / Power Apps / Power Automate practice, between the Microsoft fundamentals certs and production work.\n- **Scrum Foundation Professional Certification (SFPC)** — Scrum roles, ceremonies, and Agile team mechanics.\n- **Client Recognition Certification**, Cognizant — Awarded twice at quarterly client review events for staying aligned with client goals; personally recognized by the client's CEO.\n- **CTS Leadership Track — PA to Associate (CTS-L1)**, Cognizant — Leadership course for the Programmer Analyst → Associate transition.\n- **CTS Leadership Track — Associate to Senior Associate/Manager (CTS-L2)**, Cognizant — Leadership course for the Associate → Senior Associate → Manager transition.",
+            "score": 0.25903159379959106,
+            "metadata": {}
+          }
+        ]
+      },
+      {
+        "question": "What AWS certifications does Harpreet have?",
+        "results": [
+          {
+            "chunkId": "portfolio-resume-3",
+            "title": "resume.md — part 3",
+            "source": "resume.md",
+            "section": "text",
+            "text": "- Strengthened expertise in AWS Cloud, AI services, Streamlit, GitHub collaboration, CI/CD architecture, GitHub Copilot, Claude CLI, and modern AI development practices through project work and certified courses, with ongoing pursuit of Associate/Professional-level Generative AI, ML, and Cloud certifications.",
+            "score": 0.47493791580200195,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-resume-11",
+            "title": "resume.md — part 11",
+            "source": "resume.md",
+            "section": "text",
+            "text": "## Certifications / Achievements\n\n- Microsoft Certifications: Azure Fundamentals (AZ-900), Power Platform Fundamentals (PL-900), Artificial Intelligence Fundamentals (AI-900), GitHub Foundations (GH-900), GitHub Actions (GH-200), GitHub Copilot (GH-300), GitHub Administration (GH-100)\n- AWS Certifications: Cloud Practitioner (CLF-C02), AI Practitioner (AIF-C01)\n- SCRUM Foundation Professional Certification\n- Client recognition and certification for being the winner of the Quarterly Quizzo Competition\n- Cognizant Certified Frontline Leaders — People Leadership\n- Full stack development of a personal website — \"Globiz Technology\" — and \"Aimpress\" for an organization that was live and actively used\n- Top 5 Finalist in Google Code-In / GSOC, an international competition hosted by Google LLC for open source contribution to KDE\n- Corresponding author on a research article at Elsevier: \"An outline on modern day applications of solid lubricants\"\n\n## Education",
+            "score": 0.44470876455307007,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-resume-1",
+            "title": "resume.md — part 1",
+            "source": "resume.md",
+            "section": "text",
+            "text": "# Harpreet Singh — Resume\n\nContact: erharpreet1999@gmail.com | +91 7986011683 | linkedin.com/in/Harpreet---Singh | github.com/Harpreet1999\n\n## Summary\n\nAI Engineer with 4+ years of experience delivering scalable enterprise applications. Transitioned from Power Platform development to taking sole ownership of React front-end architectures for cutting-edge AI interfaces. Adept at bridging user experiences with modern cloud integrations (AWS, Lambda) and committed to driving team success through advanced GitHub version control, CI/CD, and collaborative software development practices.\n\n## Work Experience",
+            "score": 0.4438862204551697,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-resume-9",
+            "title": "resume.md — part 9",
+            "source": "resume.md",
+            "section": "text",
+            "text": "- **Front-End Development**: React.js, JavaScript, Vite, HTML5, CSS3, SCSS/SASS, Bootstrap, Responsive Web Design\n- **Back-End, APIs & Database**: Node.js, Express.js, REST APIs, PostgreSQL, Postman, AWS Lambda, MongoDB\n- **AI & Cloud Technologies**: Agentic AI Applications, AI Agent Interfaces (Streamlit and React-based), RAG, AWS (Lambda, S3, EC2), Microsoft Azure, AI/ML Technologies, Citrix Workspace\n- **Architecture & Development**: Application Architecture, Project Structuring, Feature Planning, API Integration, Front-End/Back-End Integration\n- **Version Control & AI Tools**: Git, GitHub, Jira, GH Actions (CI/CD), Agile/Scrum, Architecture Design, GitHub Copilot, Claude CLI, Antigravity IDE\n- **Leadership / Collaboration and Soft Skills**: Technical Leadership/Mentoring, Task Planning, Team Coordination/Training, Technical Communication, Collaborative Decision-Making, Problem Solving",
+            "score": 0.36430925130844116,
+            "metadata": {}
+          },
+          {
+            "chunkId": "portfolio-portfolio-11",
+            "title": "portfolio.md — part 11",
+            "source": "portfolio.md",
+            "section": "text",
+            "text": "**Leadership & Soft Skills** (tags): Technical Leadership & Mentoring, Task Planning, Team Coordination & Training, Technical Communication, Collaborative Decision-Making, Problem Solving\n\n## Work Experience\n\n### Associate — AI Engineer / Front-End Developer, Cognizant (Nov 2025 — Present)\nTags: React, Vite, AWS Lambda, AI Agents\n- Sole front-end developer of a React-based interface built from scratch for an internal AI agent-creation platform, including features for agent configuration in application grounding.\n- Migrated Streamlit prototypes to a native React UI and built AWS Lambda functions to move local processing to a serverless architecture, improving scalability and simplifying maintenance.\n- Owned the client-facing half of an AI case-evaluation agent — UI, backend integration, and the prototypes used in live demos.\nRelated projects: Agentic AI Grounding Platform, Case Evaluation Intelligence Agent. Related volunteering: Cognizant Certified Frontline Leaders.",
+            "score": 0.35417866706848145,
+            "metadata": {}
+          }
+        ]
+      }
+    ],
+    "cars-jdm-legends": [
+      {
+        "question": "Which car has the highest horsepower?",
+        "results": [
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-2",
+            "title": "cars-jdm-legends.md — part 2",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Nissan Skyline GT-R (R34)\n- Years: 1999–2002\n- Engine: RB26DETT, 2.6L twin-turbo inline-6\n- Horsepower: 276 hp (officially — capped by Japan's \"gentlemen's agreement\"; real output widely believed higher)\n- Torque: 293 lb-ft (392 Nm)\n- 0–60 mph: 4.7 s\n- Top speed: 156 mph (electronically limited)\n- Curb weight: 3,439 lb (V-Spec and Nür trims run heavier)\n- Drivetrain: ATTESA E-TS Pro AWD\n\n## Mazda RX-7 (FD3S)\n- Years: 1992–2002\n- Engine: 13B-REW, 1.3L twin-rotor sequential twin-turbo\n- Horsepower: 255 hp (JDM base) — up to 280 hp on the late Spirit R\n- Torque: 217 lb-ft\n- 0–60 mph: 4.9 s\n- Top speed: 155 mph (limited); Spirit R models to 161 mph\n- Curb weight: ~2,800 lb\n- Note: lightest car in this set, prized for 50/50 weight distribution.",
+            "score": 0.5747686624526978,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-1",
+            "title": "cars-jdm-legends.md — part 1",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "# JDM Legends — Spec Comparison (Dataset 2)\n\n> Verified via web search against published/enthusiast-site specs (August 2026). Where sources disagreed, the most commonly cited figure was used and noted. Treat 0–60 and top-speed figures as representative for the trim listed, not a single official factory number — these vary by market (JDM/US/EU), test methodology, and model year even for the same nameplate.\n\n## Toyota Supra MK4 (A80) Turbo\n- Years: 1993–2002\n- Engine: 2JZ-GTE, 3.0L twin-turbo inline-6\n- Horsepower: 321 hp\n- Torque: 315 lb-ft\n- 0–60 mph: 4.6 s\n- Top speed: 155 mph (electronically limited; unlimited US models observed near 177 mph)\n- Curb weight: 3,560 lb\n- Note: JDM output was understated under Japan's manufacturer horsepower agreement; export (US/EU) figures are generally considered closer to true output.",
+            "score": 0.5451608300209045,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-3",
+            "title": "cars-jdm-legends.md — part 3",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Nissan Fairlady Z / 300ZX (Z32) Twin Turbo\n- Years: 1989–2000 (JDM production; US sales ended 1996)\n- Engine: VG30DETT, 3.0L twin-turbo V6\n- Horsepower: 300 hp\n- Torque: 283 lb-ft\n- 0–60 mph: ~5.6–5.9 s (sources vary)\n- Top speed: 155 mph (limited)\n- Curb weight: 3,571 lb\n\n## Nissan Fairlady Z / 370Z (Z34)\n- Years: 2009–2020\n- Engine: VQ37VHR, 3.7L naturally aspirated V6\n- Horsepower: 324 hp standard / 350 hp (Nismo)\n- Torque: 268 lb-ft standard / 276 lb-ft (Nismo)\n- 0–60 mph: 5.1 s standard / 5.4 s (Nismo)\n- Curb weight: 3,333 lb standard\n- Drivetrain: naturally aspirated, no turbo — the outlier in this set alongside the NSX.",
+            "score": 0.5396550893783569,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-4",
+            "title": "cars-jdm-legends.md — part 4",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Honda NSX (NA1 / NA2)\n- Years: 1990–2005\n- Engine: NA1 — C30A 3.0L V6 VTEC; NA2 — C32B 3.2L V6 VTEC (both naturally aspirated)\n- Horsepower: 270 hp (NA1) / 276 hp (NA2)\n- Torque: 209 lb-ft (NA1) / 220 lb-ft (NA2)\n- 0–60 mph: 5.7 s (both generations)\n- Curb weight: 3,020 lb (NA1; NA2 similar)\n- Note: mid-engine, naturally aspirated — the only non-turbo/non-rotary car here besides the 370Z.\n\n## Mitsubishi Lancer Evolution VI (CP9A)\n- Years: 1999–2001\n- Engine: 4G63T, 2.0L turbo inline-4\n- Horsepower: 276 hp (280 PS)\n- Torque: 275 lb-ft\n- 0–60 mph: 4.4 s (GSR)\n- Top speed: 150 mph\n- Curb weight: 2,998 lb\n- Drivetrain: AWD, rally-bred",
+            "score": 0.5178353190422058,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-5",
+            "title": "cars-jdm-legends.md — part 5",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Subaru Impreza WRX STI (GC8) Version VI\n- Years: 1999–2000\n- Engine: EJ20, 2.0L turbo flat-4\n- Horsepower: 280 PS (~276 hp)\n- Torque: ~260 lb-ft (353 Nm)\n- 0–60 mph: 6.4 s\n- Curb weight: 2,800 lb (1,270 kg)\n- Drivetrain: AWD, rally-bred\n- Note: slowest 0–60 in this set despite similar power-to-weight peers — worth a look at why (gearing/AWD launch behavior of the era), a good real \"surprising data point\" for the chart demo.",
+            "score": 0.4976339340209961,
+            "metadata": {}
+          }
+        ]
+      },
+      {
+        "question": "Tell me about the Honda NSX engine.",
+        "results": [
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-4",
+            "title": "cars-jdm-legends.md — part 4",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Honda NSX (NA1 / NA2)\n- Years: 1990–2005\n- Engine: NA1 — C30A 3.0L V6 VTEC; NA2 — C32B 3.2L V6 VTEC (both naturally aspirated)\n- Horsepower: 270 hp (NA1) / 276 hp (NA2)\n- Torque: 209 lb-ft (NA1) / 220 lb-ft (NA2)\n- 0–60 mph: 5.7 s (both generations)\n- Curb weight: 3,020 lb (NA1; NA2 similar)\n- Note: mid-engine, naturally aspirated — the only non-turbo/non-rotary car here besides the 370Z.\n\n## Mitsubishi Lancer Evolution VI (CP9A)\n- Years: 1999–2001\n- Engine: 4G63T, 2.0L turbo inline-4\n- Horsepower: 276 hp (280 PS)\n- Torque: 275 lb-ft\n- 0–60 mph: 4.4 s (GSR)\n- Top speed: 150 mph\n- Curb weight: 2,998 lb\n- Drivetrain: AWD, rally-bred",
+            "score": 0.6653896570205688,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-7",
+            "title": "cars-jdm-legends.md — part 7",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "- [0-60specs.com — Nissan 370Z 0-60 Times](https://www.0-60specs.com/nissan/370z-0-60-times)\n- [encyCARpedia — Nissan 370Z (Z34) specs](https://www.encycarpedia.com/us/nissan/13-370z-coupe)\n- [encyCARpedia — Honda NSX (NA1) specs](https://www.encycarpedia.com/us/honda/91-nsx-na1-coupe)\n- [Project JDM — Honda NSX NA1/NA2 Complete Specifications](https://projectjdm.org/blog/nsx-na1-na2-specs)\n- [encyCARpedia — Mitsubishi Lancer Evolution VI (CP9A) specs](https://www.encycarpedia.com/us/mitsubishi/99-lancer-evolution-vi-sedan)\n- [auto-data.net — Mitsubishi Lancer Evolution VI 2.0 (280 Hp) 4WD](https://www.auto-data.net/en/mitsubishi-lancer-evolution-vi-2.0-280hp-4wd-15658)\n- [FastestLaps.com — Subaru Impreza WRX STI Version VI](https://fastestlaps.com/models/subaru-impreza-wrx-sti-version-vi)\n- [CarFromJapan — Subaru Impreza WRX STI Version VI specifications](https://carfromjapan.com/specifications/subaru/impreza/581780a92afaa2c4b287493a)",
+            "score": 0.624037504196167,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-2",
+            "title": "cars-jdm-legends.md — part 2",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Nissan Skyline GT-R (R34)\n- Years: 1999–2002\n- Engine: RB26DETT, 2.6L twin-turbo inline-6\n- Horsepower: 276 hp (officially — capped by Japan's \"gentlemen's agreement\"; real output widely believed higher)\n- Torque: 293 lb-ft (392 Nm)\n- 0–60 mph: 4.7 s\n- Top speed: 156 mph (electronically limited)\n- Curb weight: 3,439 lb (V-Spec and Nür trims run heavier)\n- Drivetrain: ATTESA E-TS Pro AWD\n\n## Mazda RX-7 (FD3S)\n- Years: 1992–2002\n- Engine: 13B-REW, 1.3L twin-rotor sequential twin-turbo\n- Horsepower: 255 hp (JDM base) — up to 280 hp on the late Spirit R\n- Torque: 217 lb-ft\n- 0–60 mph: 4.9 s\n- Top speed: 155 mph (limited); Spirit R models to 161 mph\n- Curb weight: ~2,800 lb\n- Note: lightest car in this set, prized for 50/50 weight distribution.",
+            "score": 0.4952409267425537,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-3",
+            "title": "cars-jdm-legends.md — part 3",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Nissan Fairlady Z / 300ZX (Z32) Twin Turbo\n- Years: 1989–2000 (JDM production; US sales ended 1996)\n- Engine: VG30DETT, 3.0L twin-turbo V6\n- Horsepower: 300 hp\n- Torque: 283 lb-ft\n- 0–60 mph: ~5.6–5.9 s (sources vary)\n- Top speed: 155 mph (limited)\n- Curb weight: 3,571 lb\n\n## Nissan Fairlady Z / 370Z (Z34)\n- Years: 2009–2020\n- Engine: VQ37VHR, 3.7L naturally aspirated V6\n- Horsepower: 324 hp standard / 350 hp (Nismo)\n- Torque: 268 lb-ft standard / 276 lb-ft (Nismo)\n- 0–60 mph: 5.1 s standard / 5.4 s (Nismo)\n- Curb weight: 3,333 lb standard\n- Drivetrain: naturally aspirated, no turbo — the outlier in this set alongside the NSX.",
+            "score": 0.487418532371521,
+            "metadata": {}
+          },
+          {
+            "chunkId": "cars-jdm-legends-cars-jdm-legends-5",
+            "title": "cars-jdm-legends.md — part 5",
+            "source": "cars-jdm-legends.md",
+            "section": "text",
+            "text": "## Subaru Impreza WRX STI (GC8) Version VI\n- Years: 1999–2000\n- Engine: EJ20, 2.0L turbo flat-4\n- Horsepower: 280 PS (~276 hp)\n- Torque: ~260 lb-ft (353 Nm)\n- 0–60 mph: 6.4 s\n- Curb weight: 2,800 lb (1,270 kg)\n- Drivetrain: AWD, rally-bred\n- Note: slowest 0–60 in this set despite similar power-to-weight peers — worth a look at why (gearing/AWD launch behavior of the era), a good real \"surprising data point\" for the chart demo.",
+            "score": 0.43369221687316895,
+            "metadata": {}
+          }
+        ]
+      }
+    ],
+    "sherlock-holmes": [
+      {
+        "question": "What was stolen in the Red-Headed League?",
+        "results": [
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-79",
+            "title": "sherlock-holmes.txt — part 79",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“‘Tell me all about it,’ said I.\n\n“‘Well,’ said he, showing me the advertisement, ‘you can see for\nyourself that the League has a vacancy, and there is the address where\nyou should apply for particulars. As far as I can make out, the League\nwas founded by an American millionaire, Ezekiah Hopkins, who was very\npeculiar in his ways. He was himself red-headed, and he had a great\nsympathy for all red-headed men; so, when he died, it was found that he\nhad left his enormous fortune in the hands of trustees, with\ninstructions to apply the interest to the providing of easy berths to\nmen whose hair is of that colour. From all I hear it is splendid pay\nand very little to do.’\n\n“‘But,’ said I, ‘there would be millions of red-headed men who would\napply.’",
+            "score": 0.5248391628265381,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-94",
+            "title": "sherlock-holmes.txt — part 94",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“No, no,” cried Holmes, shoving him back into the chair from which he\nhad half risen. “I really wouldn’t miss your case for the world. It is\nmost refreshingly unusual. But there is, if you will excuse my saying\nso, something just a little funny about it. Pray what steps did you\ntake when you found the card upon the door?”\n\n“I was staggered, sir. I did not know what to do. Then I called at the\noffices round, but none of them seemed to know anything about it.\nFinally, I went to the landlord, who is an accountant living on the\nground floor, and I asked him if he could tell me what had become of\nthe Red-headed League. He said that he had never heard of any such\nbody. Then I asked him who Mr. Duncan Ross was. He answered that the\nname was new to him.\n\n“‘Well,’ said I, ‘the gentleman at No. 4.’\n\n“‘What, the red-headed man?’\n\n“‘Yes.’",
+            "score": 0.4760094881057739,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-74",
+            "title": "sherlock-holmes.txt — part 74",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "I took the paper from him and read as follows:\n\n“TO THE RED-HEADED LEAGUE: On account of the bequest of the late\nEzekiah Hopkins, of Lebanon, Pennsylvania, U.S.A., there is now another\nvacancy open which entitles a member of the League to a salary of £ 4 a\nweek for purely nominal services. All red-headed men who are sound in\nbody and mind and above the age of twenty-one years, are eligible.\nApply in person on Monday, at eleven o’clock, to Duncan Ross, at the\noffices of the League, 7 Pope’s Court, Fleet Street.”\n\n\n“What on earth does this mean?” I ejaculated after I had twice read\nover the extraordinary announcement.\n\nHolmes chuckled and wriggled in his chair, as was his habit when in\nhigh spirits. “It is a little off the beaten track, isn’t it?” said he.\n“And now, Mr. Wilson, off you go at scratch and tell us all about\nyourself, your household, and the effect which this advertisement had\nupon your fortunes. You will first make a note, Doctor, of the paper\nand the date.”",
+            "score": 0.46055102348327637,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-126",
+            "title": "sherlock-holmes.txt — part 126",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“I have had one or two little scores of my own to settle with Mr. John\nClay,” said Holmes. “I have been at some small expense over this\nmatter, which I shall expect the bank to refund, but beyond that I am\namply repaid by having had an experience which is in many ways unique,\nand by hearing the very remarkable narrative of the Red-headed League.”",
+            "score": 0.43536484241485596,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-78",
+            "title": "sherlock-holmes.txt — part 78",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“‘Have you never heard of the League of the Red-headed Men?’ he asked\nwith his eyes open.\n\n“‘Never.’\n\n“‘Why, I wonder at that, for you are eligible yourself for one of the\nvacancies.’\n\n“‘And what are they worth?’ I asked.\n\n“‘Oh, merely a couple of hundred a year, but the work is slight, and it\nneed not interfere very much with one’s other occupations.’\n\n“Well, you can easily think that that made me prick up my ears, for the\nbusiness has not been over good for some years, and an extra couple of\nhundred would have been very handy.\n\n“‘Tell me all about it,’ said I.",
+            "score": 0.40065693855285645,
+            "metadata": {}
+          }
+        ]
+      },
+      {
+        "question": "Who is Irene Adler?",
+        "results": [
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-33",
+            "title": "sherlock-holmes.txt — part 33",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“I then lounged down the street and found, as I expected, that there\nwas a mews in a lane which runs down by one wall of the garden. I lent\nthe ostlers a hand in rubbing down their horses, and received in\nexchange twopence, a glass of half-and-half, two fills of shag tobacco,\nand as much information as I could desire about Miss Adler, to say\nnothing of half a dozen other people in the neighbourhood in whom I was\nnot in the least interested, but whose biographies I was compelled to\nlisten to.”\n\n“And what of Irene Adler?” I asked.",
+            "score": 0.7313057780265808,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-23",
+            "title": "sherlock-holmes.txt — part 23",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“But you can understand,” said our strange visitor, sitting down once\nmore and passing his hand over his high white forehead, “you can\nunderstand that I am not accustomed to doing such business in my own\nperson. Yet the matter was so delicate that I could not confide it to\nan agent without putting myself in his power. I have come _incognito_\nfrom Prague for the purpose of consulting you.”\n\n“Then, pray consult,” said Holmes, shutting his eyes once more.\n\n“The facts are briefly these: Some five years ago, during a lengthy\nvisit to Warsaw, I made the acquaintance of the well-known adventuress,\nIrene Adler. The name is no doubt familiar to you.”",
+            "score": 0.6785568594932556,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-34",
+            "title": "sherlock-holmes.txt — part 34",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“And what of Irene Adler?” I asked.\n\n“Oh, she has turned all the men’s heads down in that part. She is the\ndaintiest thing under a bonnet on this planet. So say the\nSerpentine-mews, to a man. She lives quietly, sings at concerts, drives\nout at five every day, and returns at seven sharp for dinner. Seldom\ngoes out at other times, except when she sings. Has only one male\nvisitor, but a good deal of him. He is dark, handsome, and dashing,\nnever calls less than once a day, and often twice. He is a Mr. Godfrey\nNorton, of the Inner Temple. See the advantages of a cabman as a\nconfidant. They had driven him home a dozen times from Serpentine-mews,\nand knew all about him. When I had listened to all they had to tell, I\nbegan to walk up and down near Briony Lodge once more, and to think\nover my plan of campaign.",
+            "score": 0.658836841583252,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-4",
+            "title": "sherlock-holmes.txt — part 4",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "instrument, or a crack in one of his own high-power lenses, would not\nbe more disturbing than a strong emotion in a nature such as his. And\nyet there was but one woman to him, and that woman was the late Irene\nAdler, of dubious and questionable memory.",
+            "score": 0.5948294401168823,
+            "metadata": {}
+          },
+          {
+            "chunkId": "sherlock-holmes-sherlock-holmes-136",
+            "title": "sherlock-holmes.txt — part 136",
+            "source": "sherlock-holmes.txt",
+            "section": "text",
+            "text": "“Ah,” said he, “I forgot that I had not seen you for some weeks. It is\na little souvenir from the King of Bohemia in return for my assistance\nin the case of the Irene Adler papers.”\n\n“And the ring?” I asked, glancing at a remarkable brilliant which\nsparkled upon his finger.\n\n“It was from the reigning family of Holland, though the matter in which\nI served them was of such delicacy that I cannot confide it even to\nyou, who have been good enough to chronicle one or two of my little\nproblems.”\n\n“And have you any on hand just now?” I asked with interest.",
+            "score": 0.5679392218589783,
+            "metadata": {}
+          }
+        ]
+      }
+    ]
+  }
+}

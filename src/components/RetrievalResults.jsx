@@ -3,19 +3,10 @@ import { useState } from "react";
 function ResultRow({ result, index, isOpen, onToggle }) {
   return (
     <div className="evidence-item">
-      <div
-        className="evidence-row"
-        onClick={onToggle}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            onToggle();
-          }
-        }}
-        role="button"
-        tabIndex={0}
-        aria-expanded={isOpen}
-      >
+      {/* Click-anywhere-on-row is a mouse convenience only — the real
+          <button> below is the one keyboard/screen-reader users operate,
+          so this row itself isn't a second, nested interactive control. */}
+      <div className="evidence-row" onClick={onToggle}>
         <div className="evidence-placeholder">
           <span className="evidence-rank">{String(index + 1).padStart(2, '0')}</span>
           <span>{(result.score * 100).toFixed(1)}%</span>

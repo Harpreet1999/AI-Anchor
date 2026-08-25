@@ -12,8 +12,10 @@ dist
 dist-ssr
 *.local
 
-# Python track (data-py) — the venv and caches are machine-local
+# Python track (data-py) — the venv, ChromaDB's local binary database, and
+# caches are all machine-local / regeneratable, not source
 data-py/.venv
+data-py/.chroma
 data-py/**/__pycache__
 *.pyc
 

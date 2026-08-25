@@ -89,14 +89,15 @@ svg{ color:var(--text); }
 .sys-status-dot{ flex-shrink:0; width:7px; height:7px; border-radius:50%; background:var(--text-dim); }
 .sys-status-trigger.up .sys-status-dot{ background:#3ECF6E; animation:sys-pulse-up 2.2s ease-out infinite; }
 .sys-status-trigger.down .sys-status-dot{ background:#E05B5B; animation:sys-pulse-down 1.6s ease-out infinite; }
-.sys-status-trigger.partial .sys-status-dot{ background:#E8B923; animation:sys-pulse-down 1.6s ease-out infinite; }
+.sys-status-trigger.partial .sys-status-dot, .sys-status-trigger.waking .sys-status-dot{ background:#E8B923; animation:sys-pulse-down 1.6s ease-out infinite; }
 .sys-status-trigger.up .sys-status-text{ color:#3ECF6E; }
 .sys-status-trigger.down .sys-status-text{ color:#E05B5B; }
-.sys-status-trigger.partial .sys-status-text{ color:#E8B923; }
+.sys-status-trigger.partial .sys-status-text, .sys-status-trigger.waking .sys-status-text{ color:#E8B923; }
 .sys-status-dot.small{ width:6px; height:6px; }
 .sys-status-dot.up{ background:#3ECF6E; }
 .sys-status-dot.down{ background:#E05B5B; }
 .sys-status-dot.checking{ background:var(--text-dim); }
+.sys-status-dot.waking{ background:#E8B923; animation:sys-pulse-down 1.6s ease-out infinite; }
 @keyframes sys-pulse-up{ 0%{ box-shadow:0 0 0 0 rgba(62,207,110,0.5); } 70%{ box-shadow:0 0 0 6px rgba(62,207,110,0); } 100%{ box-shadow:0 0 0 0 rgba(62,207,110,0); } }
 @keyframes sys-pulse-down{ 0%{ box-shadow:0 0 0 0 rgba(224,91,91,0.5); } 70%{ box-shadow:0 0 0 6px rgba(224,91,91,0); } 100%{ box-shadow:0 0 0 0 rgba(224,91,91,0); } }
 @media (prefers-reduced-motion: reduce){ .sys-status-dot{ animation:none !important; } }

@@ -466,6 +466,14 @@ export function StackFlowDiagram({ track }) {
 
         <text x={1105} y={172} textAnchor="middle" fontSize="8.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.55">shared — JS either way, no second runtime</text>
 
+        {/* Retrieve + Augment + Generate together are RAG — drawn as one
+            enclosing frame over that whole span, deliberately overlapping
+            the two lane boxes' Retrieve columns rather than trying to
+            avoid them, since Retrieve itself belongs to both this frame
+            and to each track's own chain. */}
+        <rect x={770} y={44} width={620} height={184} rx="8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeDasharray="5 4" className="accent-mark" opacity="0.85" />
+        <text x={1080} y={33} textAnchor="middle" fontSize="11" fontWeight="800" fontFamily="Space Mono, monospace" letterSpacing="0.1em" fill="currentColor" className="accent-mark">RAG</text>
+
         <defs>
           <marker id="stackArrow" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto">
             <polygon points="0 0,9 4,0 8" fill="currentColor" />

@@ -235,45 +235,51 @@ svg{ color:var(--text); }
    there's nothing left to show, scroll, or leave a stray bar behind. */
 .timeline-rail.collapsed{ width:0; min-width:0; border-left:none; overflow:visible; }
 .timeline-toggle{
-  flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; height:36px; display:flex; align-items:center; gap:7px; white-space:nowrap;
   background:var(--surface-2); border:none; border-bottom:1px solid var(--line); cursor:pointer;
   color:var(--text-dim); align-self:flex-start; position:sticky; top:0; z-index:2;
+  padding:0 13px; font:inherit; font-family:"Space Mono", monospace; font-size:10.5px; letter-spacing:0.03em;
 }
+.timeline-toggle-label{ white-space:nowrap; }
 .timeline-rail.collapsed .timeline-toggle{
   position:fixed; top:calc(var(--masthead-h) + var(--topbar-h) + 14px); right:14px; z-index:5;
-  border:1px solid var(--line); border-radius:5px; box-shadow:0 4px 14px rgba(0,0,0,0.28);
+  border:1px solid var(--line); border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,0.28);
+  padding:9px 15px 9px 13px;
 }
 .timeline-toggle:hover{ color:var(--accent); background:var(--accent-wash); }
 .timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 14px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:34px; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:87px; }
 /* Icon beside its label now, not stacked above it — shortens every row,
    so the whole list scrolls a lot less, and uses more of the rail's
    width instead of a narrow centered column with dead space either
-   side. Nudged right (the node's own padding-left above) off the rail's
-   edge, with a horizontal tick reaching back to that true edge — a
+   side. Nudged right (the node's own padding-left above) until the icon
+   sits at roughly the rail's own horizontal center, with a horizontal
+   tick reaching all the way back to the rail's true left edge — a
    ruled mark for each step, not just a bare icon floating in space. */
 .timeline-node-row{ position:relative; display:flex; align-items:center; gap:12px; }
 .timeline-node-row::before{
-  content:""; position:absolute; left:-49px; top:50%; width:49px; height:1px;
+  content:""; position:absolute; left:-102px; top:50%; width:102px; height:1px;
   background:var(--line-strong); transform:translateY(-50%);
 }
 .timeline-node.current .timeline-node-row::before, .timeline-node.past .timeline-node-row::before{ background:var(--accent); }
-/* The current step's tick ends in a small fading/pulsating dot at its
-   far (leftmost) end, right at the rail's edge — a quiet "live" cue,
-   deliberately just a soft opacity fade, not the growing/scaling ring
-   this app tried (and dropped, per feedback) on the icon itself earlier.
+/* The current step's tick ends in a solid, bigger dot at its far
+   (leftmost) end, right at the rail's edge — a quiet "live" cue,
+   deliberately just a gentle pulse (not the growing/scaling ring this
+   app tried, and dropped, on the icon itself earlier), and kept mostly
+   opaque throughout the cycle rather than fading toward transparent, so
+   it reads as a solid marker that's pulsing, not a blinking one.
    Positioned by its own LEFT edge (not centered on the tick's endpoint)
    so the whole dot sits inside the tick's span instead of straddling
    the rail's clipping boundary — centering it there previously let half
    of it get cut off by the rail's own overflow clip. */
 .timeline-node.current .timeline-node-row::after{
-  content:""; position:absolute; left:-49px; top:50%; width:11px; height:11px; border-radius:50%;
+  content:""; position:absolute; left:-102px; top:50%; width:14px; height:14px; border-radius:50%;
   background:var(--accent); transform:translateY(-50%); animation:timeline-dot-fade 1.7s ease-in-out infinite;
 }
-@keyframes timeline-dot-fade{ 0%, 100%{ opacity:0.3; } 50%{ opacity:1; } }
-@media (prefers-reduced-motion: reduce){ .timeline-node.current .timeline-node-row::after{ animation:none; opacity:0.75; } }
+@keyframes timeline-dot-fade{ 0%, 100%{ opacity:0.72; } 50%{ opacity:1; } }
+@media (prefers-reduced-motion: reduce){ .timeline-node.current .timeline-node-row::after{ animation:none; opacity:1; } }
 /* Plain <svg> icons now (timelineIcons.jsx), not the <figure>-wrapped FIG.
    icons — each one's artwork is centered on its own viewBox already, so
    centering the box here is all that's needed; nothing drifts off-center. */

@@ -60,12 +60,12 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
         </button>
       </div>
 
-      <div className="fig-frame" style={{ marginTop: 8 }}>
+      <div className="fig-frame" style={{ marginTop: 28 }}>
         <div className="fig-frame-inner">
           <StackFlowDiagram track={track} />
           <div className="fig-caption">
             {track ? (
-              <><span className="status live">Live</span> This is the currently-selected track</>
+              <><span className="status live">Live</span> RAG Pipeline — currently-selected track</>
             ) : (
               <span style={{ color: "var(--text-dim)" }}>Pick a track above to highlight its path through the pipeline</span>
             )}

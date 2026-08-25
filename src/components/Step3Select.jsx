@@ -18,7 +18,7 @@ const META = [
   {
     id: "cars",
     tag: "01 / 03 — NUMERIC, VERIFIED",
-    from: "web-verified specs for 63 real cars across 8 categories — JDM Legends, Porsche, Lamborghini, Koenigsegg, Muscle, Track & Hypercar, Luxury, Lowrider Culture.",
+    from: "web-verified specs for 63 real cars across 8 categories — JDM Legends, Porsche, Lamborghini, Koenigsegg, Muscle, Track & Hypercar, Luxury and Lowrider",
     signifies: "real numeric fields on every chunk, built for the chart tool coming later.",
     Glyph: BarGlyph,
   },

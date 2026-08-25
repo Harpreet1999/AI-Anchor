@@ -121,7 +121,12 @@ export default function Step4Preview({ track, selectedId, processing, onBack, on
 
       <StepNav
         onBack={onBack} backLabel="Choose a different dataset"
-        onNext={selectedId ? onNext : undefined} nextLabel="See the embeddings"
+        // Still a real, normal-looking button the whole time (never the
+        // dimmed :disabled state) — but while chunking/loading is still
+        // in flight, clicking it is a no-op instead of jumping ahead to
+        // embeddings for data that isn't actually ready yet.
+        onNext={selectedId ? (processing || !dataset ? () => {} : onNext) : undefined}
+        nextLabel="See the embeddings"
       />
     </section>
   );

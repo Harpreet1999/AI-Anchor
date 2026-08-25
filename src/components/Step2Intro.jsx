@@ -27,7 +27,7 @@ export default function Step2Intro({ onNext, onBack }) {
           <div className="fig-frame">
             <div className="fig-frame-inner">
               <RetrieveGenerateDiagram />
-              <div className="fig-caption"><span className="status">Planned</span> Retrieve → Augment → Generate</div>
+              <div className="fig-caption"><span className="status live">Live</span> Retrieve → Augment → Generate</div>
             </div>
           </div>
         </div>

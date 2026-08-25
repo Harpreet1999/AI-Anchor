@@ -44,13 +44,19 @@ DATASETS = [
     },
     {
         "id": "cars-jdm-legends",
-        "displayName": "JDM Legends — Spec Comparison",
+        "displayName": "Car Legends — Spec Comparison",
         "description": (
-            "Verified specs (horsepower, torque, 0-60, weight, production years) for 8 iconic "
-            "1990s-2000s Japanese sports cars, including both Fairlady Z generations. A numeric, "
-            "chartable dataset."
+            "Verified specs (horsepower, torque, 0-60, weight, production years) for 65 real "
+            "cars across 8 categories — JDM Legends, Porsche, Lamborghini, Koenigsegg, Muscle, "
+            "Track & Hypercar, Luxury, and Lowrider Culture. A numeric, chartable dataset."
         ),
-        "files": ["cars-jdm-legends.md"],                                                                                                           
+        "files": ["cars-jdm-legends.md"],
+        # No override — stays on the shared default (1000/120), same as
+        # before this file grew. LangChain's generic splitter will still
+        # fuse a couple of short car entries into one chunk here and there;
+        # that's an intentional contrast with Node's heading-based splitter,
+        # which always lands exactly one chunk per car (see the note at the
+        # top of scripts/build-datasets.mjs's buildCars()).
     },
     {
         "id": "sherlock-holmes",
@@ -70,6 +76,11 @@ DATASETS = [
             "Ask how to make something, or what goes in it."
         ),
         "files": ["boston-cooking-school-cookbook.txt"],
+        # Coarser than the 1000-char default (~500 chunks instead of
+        # ~1700) — a deliberate demo-scale decision, not a change in what
+        # the splitter does. Verified against the real text: 3000 chars
+        # lands at 490 chunks.
+        "chunk_size": 3000,
     },
 ]
 
@@ -81,7 +92,13 @@ def slugify(s: str) -> str:
 
 
 def build_dataset(model: SentenceTransformer, spec: dict) -> dict:
-    splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
+    # Per-dataset override, falling back to the shared default — only
+    # cookbook (and, if it ever needs one, cars) uses a non-default size;
+    # portfolio and sherlock-holmes stay on exactly the chunking they've
+    # always had.
+    chunk_size = spec.get("chunk_size", CHUNK_SIZE)
+    chunk_overlap = spec.get("chunk_overlap", CHUNK_OVERLAP)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 
     pieces = []  # [(source_file, piece_index, text)]
     for filename in spec["files"]:

@@ -299,6 +299,7 @@ function buildCars() {
       text,
       source: "cars-jdm-legends.md",
       metadata: {
+        category: get("Category"),
         engine: get("Engine"),
         horsepowerHp: firstNumber(get("Horsepower")),
         torqueLbFt: firstNumber(get("Torque")),
@@ -312,9 +313,9 @@ function buildCars() {
 
   return {
     datasetId: "cars-jdm-legends",
-    displayName: "JDM Legends — Spec Comparison",
+    displayName: "Car Legends — Spec Comparison",
     description:
-      "Verified specs (horsepower, torque, 0-60, weight, production years) for 8 iconic 1990s-2000s Japanese sports cars, including both Fairlady Z generations. A numeric, chartable dataset.",
+      "Verified specs (horsepower, torque, 0-60, weight, production years) for 63 real cars across 8 categories — JDM Legends, Porsche, Lamborghini, Koenigsegg, Muscle, Track & Hypercar, Luxury, and Lowrider Culture. A numeric, chartable dataset.",
     sourceFiles: ["data/sources/cars-jdm-legends.md"],
     chunks,
   };
@@ -414,7 +415,12 @@ function buildCookbook() {
   });
 
   const chunks = [];
-  const TARGET_LEN = 1200;
+  // 2800 chars/chunk (up from an earlier 1200) — deliberately coarser so
+  // the whole dataset lands around ~500 chunks instead of ~1270. This is
+  // purely a demo-scale decision (matches Sherlock's chunk count better,
+  // and shrinks the Python service's cold-start/RAM footprint), not a
+  // change in what the chunker actually does.
+  const TARGET_LEN = 2800;
   for (const chapter of chapters) {
     const paragraphs = chapter.text.split(/\n\s*\n/).filter((p) => p.trim());
     let buf = "";

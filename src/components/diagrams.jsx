@@ -380,8 +380,13 @@ export function CookGlyph() {
 // stays neutral, mirroring the live app-wide color swap.
 // A swim-lane backdrop for one track's row — turns "three floating boxes"
 // into "a labeled lane," and doubles as the active/inactive indicator so
-// the whole row reads as one track, not just its individual boxes.
-function Lane({ x, y, w, h, label, active }) {
+// the whole row reads as one track, not just its individual boxes. Each
+// lane is taller than the row of chain boxes it holds, and the label
+// sits in that extra space — above the boxes for the top (Node) lane,
+// below them for the bottom (Python) lane, lined up over the Embed
+// column — instead of at the lane's left edge, which used to sit right
+// where the entry arrow lands and get visually cut through by the curve.
+function Lane({ x, y, w, h, label, labelX, labelY, active }) {
   return (
     <g>
       <rect
@@ -391,8 +396,8 @@ function Lane({ x, y, w, h, label, active }) {
         stroke="currentColor" strokeWidth="1.2" opacity={active ? 0.9 : 0.4}
       />
       <text
-        x={x + 16} y={y + h / 2 + 4} fontSize="10.5" fontWeight="700"
-        fontFamily="Space Mono, monospace" letterSpacing="0.04em" fill="currentColor"
+        x={labelX} y={labelY} textAnchor="middle" fontSize="13" fontWeight="700"
+        fontFamily="Space Mono, monospace" letterSpacing="0.05em" fill="currentColor"
         className={active ? "accent-mark" : undefined} opacity={active ? 1 : 0.55}
       >{label}</text>
     </g>
@@ -415,39 +420,51 @@ export function StackFlowDiagram({ track }) {
   return (
     <figure
       role="img"
-      aria-label="A shared set of datasets branches sideways into a Node.js tool chain on top and a Python tool chain below it, each doing chunk, embed, and search left to right, converging back into one shared agent and LLM call."
+      aria-label="A shared set of datasets branches sideways into a Node.js tool chain on top and a Python tool chain below it, each doing chunk, embed, and retrieve left to right, converging into a shared augment step and then a shared generate step."
     >
-      <svg viewBox="0 0 1200 260" width="100%" style={{ display: "block", height: "auto" }}>
+      <svg viewBox="0 0 1410 290" width="100%" style={{ display: "block", height: "auto" }}>
         <text x="18" y="22" fontSize="11" fontFamily="Space Mono, monospace" letterSpacing="0.08em" fill="currentColor" opacity="0.45">FIG. 00</text>
 
         <rect x="16" y="98" width="110" height="56" rx="4" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.8" />
         <text x="71" y="130" textAnchor="middle" fontSize="10.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.8">3 DATASETS</text>
 
-        <Lane x={230} y={40} w={780} h={76} label="NODE.JS" active={nodeActive} />
-        <Lane x={230} y={152} w={780} h={76} label="PYTHON" active={pyActive} />
+        {/* Node's lane grew upward (extra room above its boxes), Python's
+            grew downward (extra room below) — the inner edges facing each
+            other, and everything between them (the arrows, the shared
+            Augment/Generate boxes), are untouched. */}
+        <Lane x={230} y={10} w={780} h={106} label="NODE" labelX={640} labelY={38} active={nodeActive} />
+        <Lane x={230} y={152} w={780} h={106} label="PYTHON" labelX={640} labelY={240} active={pyActive} />
 
         <FlowArrow x1={126} y1={116} x2={324} y2={78} bow={-34} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={126} y1={136} x2={324} y2={190} bow={34} markerId="stackArrow" strokeWidth={1.4} />
 
         <ChainBox x={330} y={58} w={170} h={44} label="Chunk" sub="Node.js splitter" active={nodeActive} />
         <ChainBox x={555} y={58} w={170} h={44} label="Embed" sub="Xenova (JS)" active={nodeActive} />
-        <ChainBox x={780} y={58} w={170} h={44} label="Search" sub="Cosine / Upstash" active={nodeActive} />
+        <ChainBox x={780} y={58} w={170} h={44} label="Retrieve" sub="Cosine / Upstash" active={nodeActive} />
 
         <ChainBox x={330} y={170} w={170} h={44} label="Chunk" sub="LangChain splitter" active={pyActive} />
         <ChainBox x={555} y={170} w={170} h={44} label="Embed" sub="Sentence-Transf." active={pyActive} />
-        <ChainBox x={780} y={170} w={170} h={44} label="Search" sub="ChromaDB" active={pyActive} />
+        <ChainBox x={780} y={170} w={170} h={44} label="Retrieve" sub="ChromaDB" active={pyActive} />
 
         <FlowArrow x1={500} y1={80} x2={555} y2={80} bow={-14} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={725} y1={80} x2={780} y2={80} bow={-14} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={500} y1={192} x2={555} y2={192} bow={14} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={725} y1={192} x2={780} y2={192} bow={14} markerId="stackArrow" strokeWidth={1.4} />
 
+        {/* Both lanes converge — augment and generate are shared, single
+            steps, not a forked pair, so they're drawn on the lane
+            midline instead of doubled top and bottom like the boxes
+            above. This is the part FIG. 00 used to skip straight past
+            with one vague "AGENT + LLM" box; now every one of the 6 real
+            pipeline stages (see Step 02) has its own labeled box here. */}
         <FlowArrow x1={950} y1={80} x2={1030} y2={116} bow={-26} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={950} y1={192} x2={1030} y2={136} bow={26} markerId="stackArrow" strokeWidth={1.4} />
 
-        <rect x="1030" y="98" width="140" height="56" rx="4" fill="currentColor" fillOpacity="0.06" stroke="currentColor" strokeWidth="1.6" />
-        <text x="1100" y="124" textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="Space Mono, monospace" fill="currentColor">AGENT + LLM</text>
-        <text x="1100" y="139" textAnchor="middle" fontSize="8.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.65">shared — JS either way</text>
+        <ChainBox x={1030} y={98} w={150} h={56} label="Augment" sub="Build the prompt" active={nodeActive || pyActive} />
+        <FlowArrow x1={1180} y1={126} x2={1230} y2={126} bow={-14} markerId="stackArrow" strokeWidth={1.4} />
+        <ChainBox x={1230} y={98} w={150} h={56} label="Generate" sub="Groq · GPT-OSS 120B" active={nodeActive || pyActive} />
+
+        <text x={1105} y={172} textAnchor="middle" fontSize="8.5" fontFamily="Space Mono, monospace" fill="currentColor" opacity="0.55">shared — JS either way, no second runtime</text>
 
         <defs>
           <marker id="stackArrow" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto">
@@ -457,9 +474,10 @@ export function StackFlowDiagram({ track }) {
       </svg>
       <figcaption className="sr-only">
         Both tracks start from the same three datasets. Node.js chunks with a hand-rolled splitter,
-        embeds with Xenova, and searches with cosine similarity or Upstash Vector. Python chunks
-        with LangChain, embeds with Sentence-Transformers, and searches with ChromaDB. Both
-        converge into the same shared agent orchestration and LLM call.
+        embeds with Xenova, and retrieves with cosine similarity or Upstash Vector. Python chunks
+        with LangChain, embeds with Sentence-Transformers, and retrieves with ChromaDB. Both
+        converge into a shared augment step that builds the prompt, then a shared generate step
+        that calls Groq's GPT-OSS 120B — the full six-stage pipeline, not just the first half.
       </figcaption>
     </figure>
   );

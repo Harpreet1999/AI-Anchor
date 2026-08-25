@@ -4,7 +4,7 @@ import StepNav from "./StepNav.jsx";
 
 const DATASETS = {
   career: "Portfolio Data",
-  cars: "JDM Legends",
+  cars: "Car Legends",
   sherlock: "Sherlock Holmes",
   cookbook: "Boston Cooking-School Cook Book",
 };
@@ -16,7 +16,11 @@ export default function Step7Augment({ track, selectedId, retrievalData, onBack,
   const question = retrievalData?.question || "No question has been retrieved yet.";
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
   const trackName = track === "node" ? "NODE.JS" : "PYTHON";
-  const [openIndex, setOpenIndex] = useState(results.length ? 0 : null);
+  // Every evidence item starts collapsed — used to auto-open the first
+  // one, which looked like an arbitrary pick to whichever chunk happened
+  // to rank #1 rather than a deliberate default.
+  const [openIndex, setOpenIndex] = useState(null);
+  const [showFullPrompt, setShowFullPrompt] = useState(false);
 
   const fullPrompt = results.length
     ? [
@@ -96,8 +100,17 @@ export default function Step7Augment({ track, selectedId, retrievalData, onBack,
 
           <div className="prompt-panel-foot">
             <span>{fullPrompt.length.toLocaleString()} characters sent to the model in Step 08</span>
-            <CopyButton getText={() => fullPrompt} label="Copy full prompt" />
+            <div className="prompt-panel-foot-actions">
+              <button type="button" className="copy-btn" onClick={() => setShowFullPrompt((v) => !v)} aria-expanded={showFullPrompt}>
+                {showFullPrompt ? "Hide full prompt" : "Show full prompt"}
+              </button>
+              <CopyButton getText={() => fullPrompt} label="Copy full prompt" />
+            </div>
           </div>
+
+          {showFullPrompt && (
+            <pre className="chunk-block full-prompt-block">{fullPrompt}</pre>
+          )}
         </div>
       ) : (
         <div className="retrieval-panel prompt-panel">

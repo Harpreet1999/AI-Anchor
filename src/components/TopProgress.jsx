@@ -9,20 +9,24 @@ const STEPS = [
   { n: 8, name: "Generate Answer" },
 ];
 
-export default function TopProgress({ active, onNavigate }) {
+// `maxStep` is optional — omitting it (or passing Infinity) leaves every
+// block clickable, same as before this existed.
+export default function TopProgress({ active, onNavigate, maxStep = Infinity }) {
   const pct = Math.round((active / STEPS.length) * 100);
 
   return (
     <div className="topprogress">
       <div className="progress-blocks">
         {STEPS.map((s) => {
-          const state = s.n < active ? "done" : s.n === active ? "current" : "upcoming";
+          const locked = s.n > maxStep;
+          const state = locked ? "locked" : s.n < active ? "done" : s.n === active ? "current" : "upcoming";
           return (
             <button
               key={s.n}
               className={`progress-block ${state}`}
               onClick={() => onNavigate(s.n)}
               aria-current={state === "current" ? "step" : undefined}
+              title={locked ? "Not reachable yet — click for why" : undefined}
             >
               <span className="progress-no">{String(s.n).padStart(2, "0")}</span>
               <span className="progress-name">{s.name}</span>

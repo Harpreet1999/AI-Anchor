@@ -13,7 +13,7 @@ const ROWS = [
   { stage: "Embeddings", shared: false, node: ["Xenova (transformers.js)", "all-MiniLM-L6-v2, runs once locally — $0, one language"], python: ["Sentence-Transformers", "Same model, the industry-standard Python runtime for it"] },
   { stage: "Vector Search", shared: false, node: ["Cosine similarity / Upstash Vector", "No server needed at this scale — fits a stateless deploy"], python: ["ChromaDB", "A real vector DB, run locally for comparison"] },
   { stage: "Orchestration", shared: true, both: ["LangChain.js + LangGraph.js", "Kept in JS either way — no second runtime on the deployed app"] },
-  { stage: "Live LLM Call", shared: true, both: ["Groq or Gemini Flash", "The only part with a real per-query cost — kept on a free tier"] },
+  { stage: "Live LLM Call", shared: true, both: ["Groq — GPT-OSS 120B", "Free tier, fastest available inference — the only part that isn't fully $0 by construction, kept on a free tier by design"] },
 ];
 
 export default function Step1StackPicker({ track, onSelectTrack, onNext }) {

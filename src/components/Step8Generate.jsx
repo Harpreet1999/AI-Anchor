@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { pipeline } from "@huggingface/transformers";
 import StepNav from "./StepNav.jsx";
 
 const DATASETS = {
@@ -8,24 +7,19 @@ const DATASETS = {
   sherlock: "Sherlock Holmes",
 };
 
-const MODEL_ID = "Xenova/flan-t5-small";
-let generatorPromise;
-
-function loadGenerator() {
-  generatorPromise ||= pipeline("text2text-generation", MODEL_ID);
-  return generatorPromise;
-}
-
-function buildPrompt(question, results) {
-  const evidence = results.map((result, index) => (
-    `[${index + 1}] ${result.title} | ${result.source}\n${result.text}`
-  )).join("\n\n");
-
-  return `Answer the question using only the evidence. Keep the answer concise and mention the source when possible.\n\nQuestion: ${question}\n\nEvidence:\n${evidence}`;
+// Friendlier messages for the failure modes that actually happen, rather
+// than one generic "something went wrong".
+function describeError(status, message) {
+  if (status === 0) return "Couldn't reach the backend. Is it running? (npm run dev:api, or npm run dev:full to start both together.)";
+  if (status === 500 && /GROQ_API_KEY/i.test(message || "")) return "The backend has no Groq API key configured yet. Add GROQ_API_KEY to .env (see .env.example) and restart the API server.";
+  if (status === 401 || status === 403) return "Groq rejected the API key. Double-check the key in .env is correct and active.";
+  if (status === 429) return "Rate limited by Groq's free tier. Wait a moment and try again.";
+  return message || "Generation failed.";
 }
 
 export default function Step8Generate({ track, selectedId, retrievalData, onBack }) {
   const [answer, setAnswer] = useState("");
+  const [model, setModel] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const results = retrievalData?.results || [];
@@ -39,15 +33,20 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
     setError("");
 
     try {
-      const generator = await loadGenerator();
-      const output = await generator(buildPrompt(question, results), {
-        max_new_tokens: 120,
-        do_sample: false,
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, results }),
       });
-      setAnswer(output[0]?.generated_text?.trim() || "The model returned no answer.");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw Object.assign(new Error(data.error || "Generation failed"), { status: res.status });
+      }
+      setAnswer(data.answer || "The model returned no answer.");
+      setModel(data.model || "");
     } catch (generationError) {
       console.error(generationError);
-      setError("Generation failed. The local model could not load in the browser.");
+      setError(describeError(generationError.status ?? 0, generationError.message));
     } finally {
       setLoading(false);
     }
@@ -61,13 +60,16 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
         <span className="status live">LIVE · {trackName} PATH</span>
       </div>
       <p className="dek">
-        The local instruction model receives the question and retrieved chunks from Step 07. Its answer is generated in the browser, with no hosted API or application key.
+        The question and retrieved chunks from Step 07 are sent to a small backend, which calls
+        Groq (GPT-OSS 120B) with your API key kept server-side — never exposed in the browser.
+        The model is instructed to answer only from the evidence, and to say so plainly if the
+        evidence doesn't contain the answer.
       </p>
 
       <div className="retrieval-context">
         <span className="status live">{trackName}</span>
         <span>Collection: <b>{datasetName}</b></span>
-        <span>Model: <b>{MODEL_ID}</b></span>
+        <span>Model: <b>{model || "Groq · openai/gpt-oss-120b"}</b></span>
       </div>
 
       <div className="generation-layout">
@@ -77,12 +79,12 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
         </div>
         <div className="retrieval-panel generation-question">
           <div className="retrieval-panel-head"><span>GROUNDING</span><span>{results.length} CHUNKS</span></div>
-          <p>Only the retrieved evidence is sent to the local model.</p>
+          <p>Only the retrieved evidence is sent to the model — no outside knowledge allowed.</p>
         </div>
       </div>
 
       <div className="retrieval-panel answer-panel">
-        <div className="retrieval-panel-head"><span>GENERATED ANSWER</span><span>{loading ? "GENERATING…" : "LOCAL MODEL"}</span></div>
+        <div className="retrieval-panel-head"><span>GENERATED ANSWER</span><span>{loading ? "GENERATING…" : "GROQ"}</span></div>
         <div className={`answer-body${answer ? " ready" : ""}`}>
           {answer || "Run generation to produce a grounded answer."}
         </div>
@@ -93,7 +95,8 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
       </div>
 
       <div className="augment-note">
-        <b>What this proves:</b> the final answer is produced from a traceable retrieval context, not from an unrelated free-form prompt.
+        <b>What this proves:</b> the final answer is produced from a traceable retrieval context by
+        a real hosted model — not a browser-side placeholder, and not free-form guessing.
       </div>
 
       <StepNav onBack={onBack} backLabel="See augmented context" />

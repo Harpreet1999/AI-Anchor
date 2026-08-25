@@ -15,7 +15,7 @@ export const STAGES = [
   { num: "03", title: "Embed & Index", cap: "Each chunk becomes a vector, computed once.", state: "live", Icon: EmbedIcon },
   { num: "04", title: "Retrieve", cap: "Match a question to the closest chunks.", state: "live", Icon: RetrieveIcon },
   { num: "05", title: "Augment", cap: "Insert retrieved chunks into the prompt.", state: "live", Icon: AugmentIcon },
-  { num: "06", title: "Generate", cap: "The local model answers from that context.", state: "next", Icon: GenerateIcon },
+  { num: "06", title: "Generate", cap: "Groq (GPT-OSS 120B) answers from that context, server-side.", state: "live", Icon: GenerateIcon },
 ];
 
 const STATUS_LABEL = { live: "Live", next: "Next up", planned: "Planned" };
@@ -37,10 +37,10 @@ export default function PipelineGrid() {
         ))}
       </div>
       <div className="flow-note">
-        <b>What's actually true right now</b> — every chunk in every dataset has a real
-        384-dimension embedding (stage 03), computed by both tracks — Xenova (JS) for Node,
-        Sentence-Transformers for Python, same underlying model. Matching a question to the
-        closest chunks (stage 04) and augmentation (stage 05) are now live; generation (stage 06) is next.
+        <b>What's actually true right now</b> — the full pipeline is live end to end. Every chunk
+        has a real embedding (stage 03, both tracks). Retrieval (04) and augmentation (05) run for
+        real. Generation (06) calls Groq (GPT-OSS 120B) through a small backend, instructed to
+        answer only from the retrieved evidence and say plainly when it can't.
       </div>
     </>
   );

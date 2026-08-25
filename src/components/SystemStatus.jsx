@@ -2,24 +2,58 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown2, Refresh2 } from "iconsax-react";
 import { pyApiUrl } from "../lib/pyApi.js";
 
+// A service on free hosting can take 100+ seconds to wake from cold —
+// far longer than makes sense to block a status check on. So this
+// doesn't just wait-then-give-up once: it makes one quick check, and if
+// that fails, keeps retrying itself every 10s in the background (inside
+// checkEndpoint, not via a second overlapping interval out here) for up
+// to WAKE_BUDGET_MS before actually reporting "down". A cold service
+// reads "waking up" (true) rather than "unreachable" (misleading), and
+// the panel updates the moment it actually answers, not on the next
+// idle-cadence tick.
 const POLL_MS = 30000;
-const TIMEOUT_MS = 6000;
+const QUICK_TIMEOUT_MS = 6000; // first attempt — fast path for an already-warm service
+const WAKE_BUDGET_MS = 130000; // total time a cold start is allowed before we call it actually down
 
-async function checkEndpoint(url) {
+async function fetchWithTimeout(url, timeoutMs) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  const started = performance.now();
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
-    const started = performance.now();
     const res = await fetch(url, { signal: controller.signal });
     const ms = Math.round(performance.now() - started);
-    clearTimeout(timeout);
     const data = await res.json().catch(() => ({}));
-    if (res.ok && data.ok) return { phase: "up", message: data.model ? `Live — ${data.model}` : "Live", ms };
-    return { phase: "down", message: data.message || `Returned an error (${res.status}).`, ms };
-  } catch (err) {
-    const timedOut = err.name === "AbortError";
-    return { phase: "down", message: timedOut ? "Timed out." : "Couldn't reach it — may be waking up from idle." };
+    return { ok: res.ok && data.ok, status: res.status, data, ms };
+  } finally {
+    clearTimeout(timeout);
   }
+}
+
+async function checkEndpoint(url, { onWaking } = {}) {
+  // Fast path: most checks hit an already-warm service and should feel
+  // instant, not wait out a multi-second budget for no reason.
+  try {
+    const r = await fetchWithTimeout(url, QUICK_TIMEOUT_MS);
+    if (r.ok) return { phase: "up", message: r.data.model ? `Live — ${r.data.model}` : "Live", ms: r.ms };
+    return { phase: "down", message: r.data.message || `Returned an error (${r.status}).`, ms: r.ms };
+  } catch {
+    // Didn't answer in 6s — genuinely could be a cold start, not
+    // necessarily broken. Say so, then keep trying with patience instead
+    // of immediately reporting a false "down".
+    onWaking?.();
+  }
+
+  const deadline = performance.now() + WAKE_BUDGET_MS;
+  while (performance.now() < deadline) {
+    try {
+      const r = await fetchWithTimeout(url, 10000);
+      if (r.ok) return { phase: "up", message: r.data.model ? `Live — ${r.data.model}` : "Live", ms: r.ms };
+      return { phase: "down", message: r.data.message || `Returned an error (${r.status}).`, ms: r.ms };
+    } catch {
+      // still nothing — loop and try again until the wake budget runs out
+    }
+  }
+  return { phase: "down", message: `Still hadn't answered after ${Math.round(WAKE_BUDGET_MS / 1000)}s — likely actually down, not just slow to wake.` };
 }
 
 const SERVICES = [
@@ -41,11 +75,33 @@ export default function SystemStatus() {
   const timerRef = useRef(null);
   const rootRef = useRef(null);
 
+  // Guards against a slow (up to ~2 minute) in-flight check overlapping
+  // with the next scheduled poll — only one round of checks runs at a
+  // time, each service hammered with one request at a time, not several
+  // stacked retry loops in parallel.
+  const inFlightRef = useRef(false);
+
   const runCheck = useCallback(async () => {
+    if (inFlightRef.current) return;
+    inFlightRef.current = true;
     setChecking(true);
-    const results = await Promise.all(SERVICES.map((s) => checkEndpoint(s.url)));
+    const results = await Promise.all(
+      SERVICES.map((s) =>
+        checkEndpoint(s.url, {
+          // Flip to an honest "waking up" reading the moment the fast
+          // path fails, rather than leaving the old stale reading up for
+          // the ~2 minutes the patient retry can take.
+          onWaking: () =>
+            setStatus((prev) => ({
+              ...prev,
+              [s.id]: { phase: "waking", message: "Not answering yet — likely waking up from idle. Retrying…" },
+            })),
+        })
+      )
+    );
     setStatus(Object.fromEntries(SERVICES.map((s, i) => [s.id, results[i]])));
     setChecking(false);
+    inFlightRef.current = false;
   }, []);
 
   useEffect(() => {
@@ -65,7 +121,8 @@ export default function SystemStatus() {
   }, [open]);
 
   const upCount = SERVICES.filter((s) => status[s.id]?.phase === "up").length;
-  const overallPhase = upCount === SERVICES.length ? "up" : upCount === 0 ? "down" : "partial";
+  const anyWaking = SERVICES.some((s) => status[s.id]?.phase === "waking");
+  const overallPhase = upCount === SERVICES.length ? "up" : upCount > 0 ? "partial" : anyWaking ? "waking" : "down";
   const overallLabel = `${upCount}/${SERVICES.length} live`;
 
   return (

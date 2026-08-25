@@ -1,4 +1,5 @@
 import { Ship } from "iconsax-react";
+import BackendStatus from "./BackendStatus.jsx";
 
 export default function Masthead() {
   return (
@@ -10,8 +11,9 @@ export default function Masthead() {
         <div className="eyebrow">RAG Demonstration Project — Data Layer</div>
         <h1 className="masthead-title">AI Anchor</h1>
       </div>
+      <BackendStatus />
       <p className="masthead-dek">
-        A RAG pipeline drawn and explained like an engineering blueprint — 
+        A RAG pipeline drawn and explained like an engineering blueprint —
       </p>
     </header>
   );

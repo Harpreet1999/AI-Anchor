@@ -77,6 +77,54 @@ svg{ color:var(--text); }
   .masthead-dek{ display:none; }
 }
 
+/* ---------- Backend status: a very subtle live/dead indicator, honest
+   about what it's actually checking (a real Groq round-trip, not a ping) ---------- */
+.backend-status{
+  flex-shrink:0; display:flex; align-items:center; gap:8px;
+  font-family:"Space Mono", monospace; font-size:10.5px; letter-spacing:0.04em;
+  text-transform:uppercase; color:var(--text-dim);
+  padding-left:20px; margin-left:8px; border-left:1px solid var(--line);
+  max-width:220px;
+}
+.backend-status-dot{
+  flex-shrink:0; width:7px; height:7px; border-radius:50%;
+  background:var(--text-dim); box-shadow:0 0 0 0 transparent;
+}
+.backend-status.checking .backend-status-dot{ background:var(--text-dim); }
+.backend-status.up .backend-status-dot{
+  background:#3ECF6E; box-shadow:0 0 0 0 rgba(62,207,110,0.55);
+  animation:backend-pulse-up 2.2s ease-out infinite;
+}
+.backend-status.down .backend-status-dot{
+  background:#E05B5B; box-shadow:0 0 0 0 rgba(224,91,91,0.55);
+  animation:backend-pulse-down 1.6s ease-out infinite;
+}
+.backend-status.up .backend-status-text{ color:#3ECF6E; }
+.backend-status.down .backend-status-text{ color:#E05B5B; }
+.backend-status-detail{
+  color:var(--text-dim); font-size:9.5px; white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis; text-transform:none; letter-spacing:0;
+}
+@keyframes backend-pulse-up{
+  0%{ box-shadow:0 0 0 0 rgba(62,207,110,0.5); }
+  70%{ box-shadow:0 0 0 6px rgba(62,207,110,0); }
+  100%{ box-shadow:0 0 0 0 rgba(62,207,110,0); }
+}
+@keyframes backend-pulse-down{
+  0%{ box-shadow:0 0 0 0 rgba(224,91,91,0.55); }
+  70%{ box-shadow:0 0 0 6px rgba(224,91,91,0); }
+  100%{ box-shadow:0 0 0 0 rgba(224,91,91,0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .backend-status.up .backend-status-dot, .backend-status.down .backend-status-dot{ animation:none; }
+}
+@media (max-width: 1100px){
+  .backend-status-detail{ display:none; }
+}
+@media (max-width: 760px){
+  .backend-status{ display:none; }
+}
+
 /* ---------- Top progress bar: blocked steps + a percentage gauge, sticky ---------- */
 .topprogress{
   position:sticky; top:var(--masthead-h); z-index:10; height:var(--topbar-h);

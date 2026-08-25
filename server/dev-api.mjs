@@ -4,18 +4,26 @@
 // Uses the exact same generateAnswer() the real Vercel function
 // (api/generate.js) uses — no separate logic to keep in sync.
 import { createServer } from "node:http";
-import { generateAnswer } from "../api/_lib/groq.mjs";
+import { generateAnswer, checkHealth } from "../api/_lib/groq.mjs";
 
 const PORT = process.env.API_PORT || 8787;
 
 const server = createServer((req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
     res.writeHead(204);
     res.end();
+    return;
+  }
+
+  if (req.method === "GET" && req.url === "/api/health") {
+    checkHealth(process.env.GROQ_API_KEY).then((result) => {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(result));
+    });
     return;
   }
 

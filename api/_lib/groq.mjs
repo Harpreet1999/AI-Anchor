@@ -18,6 +18,32 @@ Rules:
 - If the evidence does not contain the answer, respond with exactly this sentence and nothing else: "Not found in the retrieved sources."
 - Never invent names, relationships, numbers, or facts that are not explicitly present in the evidence text.`;
 
+// A cheap, real health check — not a ping that just says "the server is
+// up." Actually confirms the configured key works against Groq (the
+// models list endpoint costs no tokens), so "Live" means "a generation
+// would actually succeed right now," not just "the process is running."
+export async function checkHealth(apiKey) {
+  if (!apiKey) {
+    return { ok: false, message: "GROQ_API_KEY is not configured on the backend." };
+  }
+  try {
+    const res = await fetch("https://api.groq.com/openai/v1/models", {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (res.status === 401 || res.status === 403) {
+      return { ok: false, message: "Groq rejected the API key — it may be invalid, revoked, or expired." };
+    }
+    if (!res.ok) {
+      return { ok: false, message: `Groq API returned an unexpected error (${res.status}).` };
+    }
+    return { ok: true, model: MODEL };
+  } catch (err) {
+    const timedOut = err.name === "TimeoutError" || err.name === "AbortError";
+    return { ok: false, message: timedOut ? "Groq API timed out." : `Could not reach Groq: ${err.message}` };
+  }
+}
+
 export async function generateAnswer({ question, results, apiKey }) {
   if (!apiKey) {
     const err = new Error("Server is missing GROQ_API_KEY.");

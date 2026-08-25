@@ -118,7 +118,7 @@ function canonicalSection(tag) {
 }
 
 // ---------------------------------------------------------------------------
-// Dataset 1: Portfolio ("Harpreet's Career")
+// Dataset 1: Portfolio ("Portfolio Data")
 // ---------------------------------------------------------------------------
 function buildPortfolio() {
   const chunks = [];
@@ -266,7 +266,7 @@ function buildPortfolio() {
 
   return {
     datasetId: "portfolio",
-    displayName: "Harpreet's Career",
+    displayName: "Portfolio Data",
     description:
       "Harpreet Singh's resume and full portfolio site — work history, projects, skills, certifications, achievements, and education. Ask about his AI Engineer work at Cognizant, the Agentic Grounding Platform, or anything else on his site.",
     sourceFiles: ["data/sources/resume.md", "data/sources/portfolio.md"],
@@ -383,12 +383,80 @@ function buildSherlock() {
 }
 
 // ---------------------------------------------------------------------------
+// Dataset 4: The Boston Cooking-School Cook Book (Project Gutenberg) — a
+// third, structurally distinct shape: neither flat numeric specs (cars)
+// nor narrative prose (Sherlock), but recipes and technique grouped by
+// chapter. Same paragraph-grouping strategy as Sherlock, split on chapter
+// boundaries instead of story boundaries.
+// ---------------------------------------------------------------------------
+function buildCookbook() {
+  const raw = readSrc("boston-cooking-school-cookbook.txt").replace(/\r\n/g, "\n");
+  const startIdx = raw.indexOf("*** START OF");
+  const endIdx = raw.indexOf("*** END OF");
+  const bodyStart = raw.indexOf("\n", startIdx) + 1;
+  const body = raw.slice(bodyStart, endIdx);
+
+  // Chapter headings are a centered "CHAPTER I" line immediately followed
+  // by the all-caps chapter name on its own line (e.g. "EGGS", "SOUPS
+  // WITHOUT STOCK") — distinct from the table-of-contents entries, which
+  // use "I. FOOD" / "XIV. VEAL" shorthand and never say the word "CHAPTER".
+  const chapterRe = /^[ \t]*CHAPTER\s+[IVXLC]+[ \t]*\n+[ \t]*([A-ZÀ-Ý][A-ZÀ-Ý:,'’ \-]{2,60})[ \t]*$/gm;
+  const marks = [];
+  let m;
+  while ((m = chapterRe.exec(body)) !== null) {
+    marks.push({ index: m.index, title: m[1].trim().replace(/\s+/g, " ") });
+  }
+
+  const chapters = marks.map((mark, i) => {
+    const start = mark.index;
+    const end = i + 1 < marks.length ? marks[i + 1].index : body.length;
+    return { title: mark.title, text: body.slice(start, end).trim() };
+  });
+
+  const chunks = [];
+  const TARGET_LEN = 1200;
+  for (const chapter of chapters) {
+    const paragraphs = chapter.text.split(/\n\s*\n/).filter((p) => p.trim());
+    let buf = "";
+    let part = 1;
+    const flush = () => {
+      if (!buf.trim()) return;
+      chunks.push({
+        id: `cookbook-${slug(chapter.title)}-${part}`,
+        section: "recipe_chapter",
+        title: chapter.title,
+        text: buf.trim(),
+        source: "boston-cooking-school-cookbook.txt",
+        metadata: { chapter: chapter.title, part },
+      });
+      part += 1;
+      buf = "";
+    };
+    for (const p of paragraphs) {
+      if (buf.length + p.length > TARGET_LEN && buf) flush();
+      buf += (buf ? "\n\n" : "") + p;
+    }
+    flush();
+  }
+
+  return {
+    datasetId: "cookbook",
+    displayName: "The Boston Cooking-School Cook Book",
+    description:
+      "Fannie Merritt Farmer's 1896 cooking manual (public domain, Project Gutenberg) — recipes and technique across 38 chapters, from eggs and soups to pastry and cake. Ask how to make something, or what goes in it.",
+    sourceFiles: ["data/sources/boston-cooking-school-cookbook.txt"],
+    chunks,
+  };
+}
+
+// ---------------------------------------------------------------------------
 function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const datasets = [
     ["portfolio.json", buildPortfolio()],
     ["cars-jdm-legends.json", buildCars()],
     ["sherlock-holmes.json", buildSherlock()],
+    ["cookbook.json", buildCookbook()],
   ];
   for (const [filename, data] of datasets) {
     fs.writeFileSync(path.join(OUT, filename), JSON.stringify(data, null, 2), "utf8");

@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import TopProgress from "./components/TopProgress.jsx";
-import Step1Intro from "./components/Step1Intro.jsx";
-import Step2Select from "./components/Step2Select.jsx";
-import Step3Preview from "./components/Step3Preview.jsx";
+import Masthead from "./components/Masthead.jsx";
+import Step1StackPicker from "./components/Step1StackPicker.jsx";
+import Step2Intro from "./components/Step2Intro.jsx";
+import Step3Select from "./components/Step3Select.jsx";
+import Step4Preview from "./components/Step4Preview.jsx";
+import Step5Embeddings from "./components/Step5Embeddings.jsx";
+import Step6RetrievalPlan from "./components/Step6RetrievalPlan.jsx";
+import Step7Augment from "./components/Step7Augment.jsx";
+import Step8Generate from "./components/Step8Generate.jsx";
 import { STAGES } from "./components/PipelineGrid.jsx";
 
 const liveCount = STAGES.filter((s) => s.state === "live").length;
@@ -12,15 +18,23 @@ function App() {
   const [activeStep, setActiveStep] = useState(1);
   const [track, setTrack] = useState("node");
   const [selectedId, setSelectedId] = useState(null);
+  const [retrievalData, setRetrievalData] = useState(null);
   const [processing, setProcessing] = useState(false);
   const timerRef = useRef(null);
 
   useEffect(() => () => clearTimeout(timerRef.current), []);
 
+  // The selected track recolors the whole app (accent swaps yellow <-> green)
+  // until manually switched back — a root-level attribute, not local state,
+  // since it has to reach every component's CSS custom properties.
+  useEffect(() => {
+    document.documentElement.dataset.track = track;
+  }, [track]);
+
   const handleSelectDataset = (id) => {
     setSelectedId(id);
     setProcessing(true);
-    setActiveStep(3);
+    setActiveStep(4);
 
     clearTimeout(timerRef.current);
     // Paced reveal, not real processing time — the chunks are already
@@ -33,6 +47,7 @@ function App() {
 
   return (
     <>
+      <Masthead />
       <TopProgress active={activeStep} onNavigate={setActiveStep} />
       <div className="layout">
         <Sidebar
@@ -42,21 +57,63 @@ function App() {
           totalStages={STAGES.length}
         />
         <div className="sheets">
-          {activeStep === 1 && <Step1Intro onNext={() => setActiveStep(2)} />}
+          {activeStep === 1 && (
+            <Step1StackPicker track={track} onSelectTrack={setTrack} onNext={() => setActiveStep(2)} />
+          )}
           {activeStep === 2 && (
-            <Step2Select
-              selectedId={selectedId}
-              track={track}
-              onSelectTrack={setTrack}
-              onSelectDataset={handleSelectDataset}
-              onBack={() => setActiveStep(1)}
-            />
+            <Step2Intro onBack={() => setActiveStep(1)} onNext={() => setActiveStep(3)} />
           )}
           {activeStep === 3 && (
-            <Step3Preview
+            <Step3Select
+              track={track}
+              selectedId={selectedId}
+              onSelectDataset={handleSelectDataset}
+              onBack={() => setActiveStep(2)}
+            />
+          )}
+          {activeStep === 4 && (
+            <Step4Preview
+              track={track}
               selectedId={selectedId}
               processing={processing}
-              onBack={() => setActiveStep(2)}
+              onBack={() => setActiveStep(3)}
+              onNext={() => setActiveStep(5)}
+            />
+          )}
+          {activeStep === 5 && (
+            <Step5Embeddings
+              track={track}
+              selectedId={selectedId}
+              onBack={() => setActiveStep(4)}
+              onNext={() => setActiveStep(6)}
+            />
+          )}
+          {activeStep === 6 && (
+            <Step6RetrievalPlan
+              track={track}
+              selectedId={selectedId}
+              onBack={() => setActiveStep(5)}
+              onNext={(data) => {
+                setRetrievalData(data);
+                setActiveStep(7);
+              }}
+            />
+          )}
+          {activeStep === 7 && (
+            <Step7Augment
+              track={track}
+              selectedId={selectedId}
+              retrievalData={retrievalData}
+              onBack={() => setActiveStep(6)}
+              onNext={() => setActiveStep(8)}
+            />
+          )}
+          {activeStep === 8 && (
+            <Step8Generate
+              track={track}
+              selectedId={selectedId}
+              retrievalData={retrievalData}
+              onBack={() => setActiveStep(7)}
             />
           )}
         </div>

@@ -42,12 +42,13 @@ export default function PipelineTimeline({ activeStep }) {
     <aside className={`timeline-rail${collapsed ? " collapsed" : ""}`} aria-label="Live pipeline position">
       <button type="button" className="timeline-toggle" onClick={toggle} aria-expanded={!collapsed} title={collapsed ? "Show pipeline timeline" : "Hide pipeline timeline"}>
         <ArrowRight2 size={13} variant="Outline" color="currentColor" style={{ transform: collapsed ? "rotate(180deg)" : undefined, transition: "transform .15s" }} />
+        <span className="timeline-toggle-label">{collapsed ? "View Timeline" : "Hide Timeline"}</span>
       </button>
 
       {!collapsed && (
         <div className="timeline-body">
           <div className="timeline-head">
-            <span>LIVE POSITION</span>
+            <span>VISUAL TIMELINE</span>
           </div>
           <div className="timeline-track">
             {STAGES.map((s, i) => {

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Code1, DocumentCode } from "iconsax-react";
 import { BarGlyph, BookGlyph, CookGlyph } from "./diagrams.jsx";
 import { useDataset } from "../lib/useDataset.js";
@@ -18,7 +19,7 @@ const META = [
   {
     id: "cars",
     tag: "01 / 03 — NUMERIC, VERIFIED",
-    from: "web-verified specs for 63 real cars across 8 categories — JDM Legends, Porsche, Lamborghini, Koenigsegg, Muscle, Track & Hypercar, Luxury, Lowrider Culture.",
+    from: "web-verified specs for 63 real cars across 8 categories — JDM Legends, Muscle, Track & Hypercar, Luxury, Lowrider and more.",
     signifies: "real numeric fields on every chunk, built for the chart tool coming later.",
     Glyph: BarGlyph,
   },
@@ -38,10 +39,107 @@ const META = [
   },
 ];
 
+// Loaded on demand (dynamic import), only when someone actually opens a
+// dataset's preview — not bundled eagerly into this step, since the raw
+// text for these four files (especially the cookbook) is genuinely large.
+// The career dataset is chunked from two files, not one (see
+// scripts/build-datasets.mjs), so its preview shows both — showing only
+// half of what actually gets embedded would be its own small overclaim.
+async function loadRawFile(id) {
+  if (id === "career") {
+    const [resume, portfolio] = await Promise.all([
+      import("../../data/sources/resume.md?raw"),
+      import("../../data/sources/portfolio.md?raw"),
+    ]);
+    return `# resume.md\n\n${resume.default}\n\n\n# portfolio.md\n\n${portfolio.default}`;
+  }
+  const loaders = {
+    cars: () => import("../../data/sources/cars-jdm-legends.md?raw"),
+    sherlock: () => import("../../data/sources/sherlock-holmes.txt?raw"),
+    cookbook: () => import("../../data/sources/boston-cooking-school-cookbook.txt?raw"),
+  };
+  const load = loaders[id];
+  return load ? (await load()).default : "";
+}
+
+const FILE_LABELS = {
+  cars: "cars-jdm-legends.md",
+  sherlock: "sherlock-holmes.txt",
+  cookbook: "boston-cooking-school-cookbook.txt",
+  career: "resume.md + portfolio.md",
+};
+
+// A full-page stop before anything is actually selected — the real,
+// complete, unmodified source file, not an excerpt — so "selecting a
+// dataset" means having actually seen what's about to be chunked and
+// embedded, not clicking a card and trusting it sight-unseen.
+function DatasetPreviewModal({ title, fileLabel, loading, raw, error, onConfirm, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    // A genuine full-screen takeover — lock the page behind it so it
+    // can't be scrolled while this is up, same as it would if this were
+    // its own route rather than an overlay.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  // Rendered straight onto document.body, not in place — the app's own
+  // layout (.layout) is its own stacking context with a z-index lower
+  // than the sticky top bar's, so no z-index set from inside it could
+  // ever paint above that bar (the same class of bug the boot screen hit
+  // earlier for the same reason). A portal escapes that entirely.
+  return createPortal(
+    <div
+      className="dataset-preview-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Full source file preview — ${fileLabel}`}
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="dataset-preview-modal">
+        <div className="dataset-preview-head">
+          <div>
+            <div className="dataset-preview-title">{title}</div>
+            <div className="dataset-preview-file">{fileLabel}</div>
+          </div>
+          <button type="button" className="dataset-preview-close" onClick={onClose} aria-label="Close preview">✕</button>
+        </div>
+        <div className="dataset-preview-body">
+          {loading ? (
+            <div className="dcard-loading">Loading the real file…</div>
+          ) : error ? (
+            <div className="dcard-loading">{error}</div>
+          ) : (
+            <pre>{raw}</pre>
+          )}
+        </div>
+        <div className="dataset-preview-foot">
+          <p>
+            The complete, unmodified source file — every word above is exactly what gets split
+            into chunks and embedded next. Nothing here was trimmed for this preview.
+          </p>
+          <div className="dataset-preview-actions">
+            <button type="button" className="step-nav-btn" onClick={onClose}>Cancel</button>
+            <button type="button" className="step-nav-btn next" onClick={onConfirm} disabled={loading || !!error}>
+              Confirm selection →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 // Each card loads its own dataset independently (in parallel with the
 // others) instead of the page eagerly bundling all of them — the cookbook
 // alone is >10MB of embedded vectors per track.
-function DatasetCard({ m, track, selected, onSelectDataset, isPreviewing, onTogglePreview }) {
+function DatasetCard({ m, track, selected, onSelectDataset, onOpenPreview, isPreviewing, onTogglePreview }) {
   const d = useDataset(track, m.id);
 
   return (
@@ -69,7 +167,16 @@ function DatasetCard({ m, track, selected, onSelectDataset, isPreviewing, onTogg
             );
           })()}
 
-          <button type="button" className="dcard-cta-btn" onClick={() => onSelectDataset(m.id)}>
+          <button
+            type="button"
+            className="dcard-cta-btn"
+            // Already selected: jump straight back to Step 04, same as
+            // before. Not yet selected: this is the FIRST time selecting
+            // it means anything, so it opens the full-file preview instead
+            // of kicking off chunking/embedding immediately — confirming
+            // there is the actual point where selection happens now.
+            onClick={() => (selected ? onSelectDataset(m.id) : onOpenPreview(m.id, d.displayName))}
+          >
             {selected ? "✓ Selected — see Step 04" : "Select this dataset →"}
           </button>
         </>
@@ -83,6 +190,16 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onSele
   const [showAbout, setShowAbout] = useState(false);
   const [portfolioUnlocked, setPortfolioUnlocked] = useState(false);
 
+  // The full-file confirm modal — separate from `previewId` above, which
+  // is the small inline "peek at a real chunk" toggle on each card. This
+  // one gates the actual selection: nothing gets chunked/embedded until
+  // its Confirm button is clicked.
+  const [pendingSelect, setPendingSelect] = useState(null); // { id, title } | null
+  const [pendingRaw, setPendingRaw] = useState(null);
+  const [pendingLoading, setPendingLoading] = useState(false);
+  const [pendingError, setPendingError] = useState(null);
+  const loadTokenRef = useRef(0);
+
   useEffect(() => {
     try {
       if (localStorage.getItem(PORTFOLIO_UNLOCK_KEY) === "1") setPortfolioUnlocked(true);
@@ -91,6 +208,36 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onSele
       // just won't persist across a reload, which is fine, not fatal.
     }
   }, []);
+
+  const openPreview = (id, title) => {
+    const token = ++loadTokenRef.current;
+    setPendingSelect({ id, title });
+    setPendingRaw(null);
+    setPendingError(null);
+    setPendingLoading(true);
+    loadRawFile(id)
+      .then((text) => {
+        if (loadTokenRef.current !== token) return; // a newer preview opened meanwhile
+        setPendingRaw(text);
+        setPendingLoading(false);
+      })
+      .catch(() => {
+        if (loadTokenRef.current !== token) return;
+        setPendingError("Couldn't load this file for preview right now.");
+        setPendingLoading(false);
+      });
+  };
+
+  const closePreview = () => {
+    loadTokenRef.current += 1; // invalidate any load still in flight
+    setPendingSelect(null);
+  };
+
+  const confirmPreview = () => {
+    if (!pendingSelect) return;
+    onSelectDataset(pendingSelect.id);
+    closePreview();
+  };
 
   const unlockPortfolio = () => {
     setPortfolioUnlocked(true);
@@ -146,6 +293,7 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onSele
             track={track}
             selected={selectedId === m.id}
             onSelectDataset={onSelectDataset}
+            onOpenPreview={openPreview}
             isPreviewing={previewId === m.id}
             onTogglePreview={() => setPreviewId(previewId === m.id ? null : m.id)}
           />
@@ -176,7 +324,11 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onSele
               type="button"
               className="about-builder-select"
               disabled={!portfolioUnlocked}
-              onClick={() => onSelectDataset("career")}
+              onClick={() =>
+                selectedId === "career"
+                  ? onSelectDataset("career")
+                  : openPreview("career", "Harpreet's Résumé & Portfolio")
+              }
               title={portfolioUnlocked ? undefined : "Visit harpreetsingh.xyz above first"}
             >
               {portfolioUnlocked
@@ -188,6 +340,18 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onSele
       </div>
 
       <StepNav onBack={onBack} backLabel="How it works" />
+
+      {pendingSelect && (
+        <DatasetPreviewModal
+          title={pendingSelect.title}
+          fileLabel={FILE_LABELS[pendingSelect.id]}
+          loading={pendingLoading}
+          raw={pendingRaw}
+          error={pendingError}
+          onConfirm={confirmPreview}
+          onClose={closePreview}
+        />
+      )}
     </section>
   );
 }

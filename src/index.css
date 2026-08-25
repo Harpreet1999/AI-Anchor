@@ -1,4 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+/* Heading font only (h1-h3 and every other spot below that used to say
+   "Archivo") — the body font stays Work Sans, monospace labels stay
+   Space Mono, both untouched. Archivo itself was dropped from the
+   Google Fonts import above, since nothing references it anymore.
+   Self-hosted, not on Google Fonts — the patched files come straight from
+   ryanoasis/nerd-fonts' own release, shipped there only as .otf (no
+   .woff2 build), so that's what's served here too rather than a
+   hand-converted copy of unclear provenance. Only Regular/Bold are
+   shipped; the handful of spots that ask for 600/800/900 fall back to
+   the browser's own nearest-weight matching against these two rather
+   than pulling in more multi-megabyte files for marginal difference. */
+@font-face{
+  font-family:"GeistMono Nerd Font";
+  src:url("/fonts/GeistMonoNerdFont-Regular.otf") format("opentype");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"GeistMono Nerd Font";
+  src:url("/fonts/GeistMonoNerdFont-Bold.otf") format("opentype");
+  font-weight:700; font-style:normal; font-display:swap;
+}
 
 :root{
   --bg:#1B1E1D; --surface:#222624; --surface-2:#292E2B;
@@ -99,7 +121,7 @@ body::before{
   opacity:0.16;
 }
 
-h1,h2,h3{ font-family:"Archivo", ui-sans-serif, sans-serif; margin:0; text-wrap:balance; }
+h1,h2,h3{ font-family:"GeistMono Nerd Font", ui-sans-serif, sans-serif; margin:0; text-wrap:balance; }
 .mono{ font-family:"Space Mono", ui-monospace, monospace; }
 .eyebrow{ font-family:"Space Mono", monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); }
 svg{ color:var(--text); }
@@ -164,11 +186,27 @@ svg{ color:var(--text); }
 .sys-status-recheck:hover{ opacity:0.75; }
 .sys-status-recheck:disabled{ opacity:0.5; cursor:default; }
 .spin-icon{ animation:spin 0.9s linear infinite; }
-.sys-status-row{ display:flex; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line); align-items:flex-start; }
+/* A real round progress ring for the Groq LLM / ChromaDB rows — always
+   present (never swapped out for a plain dot), so its own state carries
+   the meaning: a spinning partial arc while pending, and once resolved,
+   a complete, un-animated ring — solid green when actually confirmed
+   live, solid red when not — read at a glance without needing the text
+   next to it. */
+.status-ring{
+  flex-shrink:0; width:13px; height:13px; margin-top:3px; border-radius:50%;
+  border:2px solid var(--line-strong); box-sizing:border-box;
+}
+.status-ring.checking, .status-ring.waking{
+  border-top-color:var(--accent); animation:spin 0.8s linear infinite;
+}
+.status-ring.up{ border-color:#3ECF6E; }
+.status-ring.down{ border-color:#E05B5B; }
+@media (prefers-reduced-motion: reduce){ .status-ring{ animation:none !important; } }
+.sys-status-row{ display:flex; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line); align-items:flex-start; justify-content:space-between; }
 .sys-status-row:last-of-type{ border-bottom:none; }
 .sys-status-row .sys-status-dot{ margin-top:4px; }
 .sys-status-row-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
-.sys-status-row-body b{ font-family:"Archivo", sans-serif; font-size:12px; font-weight:700; }
+.sys-status-row-body b{ font-family:"GeistMono Nerd Font", sans-serif; font-size:12px; font-weight:700; }
 .sys-status-row-body span{ font-size:11px; color:var(--text-dim); line-height:1.5; word-break:break-word; }
 .sys-status-panel-foot{ padding:10px 14px; font-size:10.5px; color:var(--text-dim); line-height:1.5; background:var(--surface-2); }
 @media (max-width: 760px){
@@ -183,17 +221,24 @@ svg{ color:var(--text); }
 }
 .progress-blocks{ display:flex; flex:1 1 auto; min-height:0; }
 .progress-block{
-  flex:1 1 0; display:flex; align-items:center; justify-content:center; gap:10px;
+  flex:1 1 0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
   font:inherit; cursor:pointer; background:var(--surface-2); color:var(--text-dim);
   border:none; border-right:1px solid var(--line); border-bottom:3px solid transparent;
 }
 .progress-block:last-child{ border-right:none; }
+.progress-block-main{ display:flex; align-items:center; gap:10px; }
 .progress-no{ font-family:"Space Mono", monospace; font-size:12px; }
-.progress-name{ font-family:"Archivo", sans-serif; font-weight:700; font-size:12.5px; letter-spacing:0.01em; }
+.progress-name{ font-family:"GeistMono Nerd Font", sans-serif; font-weight:700; font-size:12.5px; letter-spacing:0.01em; }
+/* Each segment carries its own running percentage right underneath it —
+   not one lone number off in the corner of the whole bar, which gave no
+   sense of where any single step actually sat in the overall run. */
+.progress-block-pct{ font-family:"Space Mono", monospace; font-size:9.5px; letter-spacing:0.02em; color:var(--text-dim); margin-top:1px; }
 .progress-block.done{ background:var(--accent-wash); color:var(--text); border-bottom-color:var(--accent-dim); }
 .progress-block.done .progress-no{ color:var(--accent); }
-.progress-block.current{ background:var(--bg); color:var(--text); border-bottom-color:var(--accent); }
-.progress-block.current .progress-no{ color:var(--accent); }
+.progress-block.done .progress-block-pct{ color:var(--accent); opacity:0.8; }
+.progress-block.current{ background:var(--accent-wash); color:var(--text); border-bottom-color:var(--accent); }
+.progress-block.current .progress-no, .progress-block.current .progress-name{ color:var(--accent); }
+.progress-block.current .progress-block-pct{ color:var(--accent); }
 .progress-block.upcoming{ color:var(--text-dim); }
 .progress-block.upcoming .progress-no{ opacity:0.6; }
 .progress-block.locked{ color:var(--text-dim); opacity:0.45; cursor:pointer; }
@@ -206,7 +251,6 @@ svg{ color:var(--text); }
 .progress-fill{ height:100%; background:var(--accent); transition:width 0.3s ease; }
 @media (prefers-reduced-motion: reduce){ .progress-fill{ transition:none; } }
 .progress-tick{ position:absolute; top:-2px; width:1px; height:9px; background:var(--bg); }
-.progress-pct{ font-family:"Space Mono", monospace; font-size:11px; color:var(--accent); min-width:34px; text-align:right; }
 
 .layout{ position:relative; z-index:1; display:grid; grid-template-columns:216px 1fr auto; min-height:calc(100vh - var(--masthead-h) - var(--topbar-h)); }
 
@@ -223,9 +267,9 @@ svg{ color:var(--text); }
      body — and the icon column centered inside it — spans and centers
      against the rail's FULL width, not width-minus-toggle. */
   display:flex; flex-direction:column; border-left:1px solid var(--line); background:var(--surface);
-  width:264px; flex-shrink:0; transition:width .2s ease;
+  width:211px; flex-shrink:0; transition:width .2s ease;
   /* Scrolling still works (overflow-y:auto above) — just without the
-     visible scrollbar chrome, which read as clutter in a 248px rail. */
+     visible scrollbar chrome, which read as clutter in a narrow rail. */
   scrollbar-width:none; -ms-overflow-style:none;
 }
 .timeline-rail::-webkit-scrollbar{ display:none; }
@@ -235,53 +279,66 @@ svg{ color:var(--text); }
    there's nothing left to show, scroll, or leave a stray bar behind. */
 .timeline-rail.collapsed{ width:0; min-width:0; border-left:none; overflow:visible; }
 .timeline-toggle{
-  flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+  /* Full width when expanded (not just sized to fit its own icon+label) —
+     align-self:stretch instead of flex-start, so the whole bar reads as
+     the rail's header rather than a small button floating in the corner. */
+  flex-shrink:0; height:36px; display:flex; align-items:center; gap:7px; white-space:nowrap;
   background:var(--surface-2); border:none; border-bottom:1px solid var(--line); cursor:pointer;
-  color:var(--text-dim); align-self:flex-start; position:sticky; top:0; z-index:2;
+  color:var(--text-dim); align-self:stretch; width:100%; position:sticky; top:0; z-index:2;
+  padding:0 13px; font:inherit; font-family:"Space Mono", monospace; font-size:10.5px; letter-spacing:0.03em;
 }
+.timeline-toggle-label{ white-space:nowrap; }
 .timeline-rail.collapsed .timeline-toggle{
   position:fixed; top:calc(var(--masthead-h) + var(--topbar-h) + 14px); right:14px; z-index:5;
-  border:1px solid var(--line); border-radius:5px; box-shadow:0 4px 14px rgba(0,0,0,0.28);
+  width:auto; border:1px solid var(--line); border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,0.28);
+  padding:9px 15px 9px 13px;
 }
 .timeline-toggle:hover{ color:var(--accent); background:var(--accent-wash); }
-.timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 14px; }
+.timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 10px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:34px; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; padding-left:48px; }
 /* Icon beside its label now, not stacked above it — shortens every row,
    so the whole list scrolls a lot less, and uses more of the rail's
    width instead of a narrow centered column with dead space either
-   side. Nudged right (the node's own padding-left above) off the rail's
-   edge, with a horizontal tick reaching back to that true edge — a
-   ruled mark for each step, not just a bare icon floating in space. */
-.timeline-node-row{ position:relative; display:flex; align-items:center; gap:12px; }
+   side. Nudged right (the node's own padding-left above), with a
+   horizontal tick reaching all the way back to the rail's true left
+   edge — a ruled mark for each step, not just a bare icon floating in
+   space. Not pushed all the way to the rail's exact center — at this
+   width, doing that would leave too little room for the label text
+   beside it — but the rail's own width (now 80% of its original, up
+   from 70%) buys back a little of that room, so the shift is a bit
+   more generous than before. */
+.timeline-node-row{ position:relative; display:flex; align-items:center; gap:10px; }
 .timeline-node-row::before{
-  content:""; position:absolute; left:-49px; top:50%; width:49px; height:1px;
+  content:""; position:absolute; left:-63px; top:50%; width:63px; height:1px;
   background:var(--line-strong); transform:translateY(-50%);
 }
 .timeline-node.current .timeline-node-row::before, .timeline-node.past .timeline-node-row::before{ background:var(--accent); }
-/* The current step's tick ends in a small fading/pulsating dot at its
-   far (leftmost) end, right at the rail's edge — a quiet "live" cue,
-   deliberately just a soft opacity fade, not the growing/scaling ring
-   this app tried (and dropped, per feedback) on the icon itself earlier.
+/* The current step's tick ends in a solid, bigger dot at its far
+   (leftmost) end, right at the rail's edge — a quiet "live" cue,
+   deliberately just a gentle pulse (not the growing/scaling ring this
+   app tried, and dropped, on the icon itself earlier), and kept mostly
+   opaque throughout the cycle rather than fading toward transparent, so
+   it reads as a solid marker that's pulsing, not a blinking one.
    Positioned by its own LEFT edge (not centered on the tick's endpoint)
    so the whole dot sits inside the tick's span instead of straddling
    the rail's clipping boundary — centering it there previously let half
    of it get cut off by the rail's own overflow clip. */
 .timeline-node.current .timeline-node-row::after{
-  content:""; position:absolute; left:-49px; top:50%; width:11px; height:11px; border-radius:50%;
+  content:""; position:absolute; left:-63px; top:50%; width:14px; height:14px; border-radius:50%;
   background:var(--accent); transform:translateY(-50%); animation:timeline-dot-fade 1.7s ease-in-out infinite;
 }
-@keyframes timeline-dot-fade{ 0%, 100%{ opacity:0.3; } 50%{ opacity:1; } }
-@media (prefers-reduced-motion: reduce){ .timeline-node.current .timeline-node-row::after{ animation:none; opacity:0.75; } }
+@keyframes timeline-dot-fade{ 0%, 100%{ opacity:0.72; } 50%{ opacity:1; } }
+@media (prefers-reduced-motion: reduce){ .timeline-node.current .timeline-node-row::after{ animation:none; opacity:1; } }
 /* Plain <svg> icons now (timelineIcons.jsx), not the <figure>-wrapped FIG.
    icons — each one's artwork is centered on its own viewBox already, so
    centering the box here is all that's needed; nothing drifts off-center. */
 .timeline-node-icon{
   position:relative; display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  width:60px; height:60px; opacity:0.45; border-radius:8px; transition:opacity .2s, background .2s;
+  width:59px; height:59px; opacity:0.45; border-radius:8px; transition:opacity .2s, background .2s;
 }
-.timeline-node-icon svg{ width:36px; height:36px; display:block; }
+.timeline-node-icon svg{ width:37px; height:37px; display:block; }
 /* Thin, deliberately — a CSS rule on the svg element itself won't win
    over each shape's own strokeWidth attribute, so this targets the
    shapes directly instead of relying on inheritance. */
@@ -293,7 +350,7 @@ svg{ color:var(--text); }
 .timeline-node.current .timeline-node-icon{ background:var(--accent-wash); }
 .timeline-node-label{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; }
 .timeline-node-num{ font-family:"Space Mono", monospace; font-size:9px; color:var(--text-dim); }
-.timeline-node-title{ font-family:"Archivo", sans-serif; font-size:11px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
+.timeline-node-title{ font-family:"GeistMono Nerd Font", sans-serif; font-size:11px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
 .timeline-node.current .timeline-node-title{ color:var(--accent); }
 .timeline-node.past .timeline-node-title{ color:var(--text); }
 /* A real progress-bar segment, not a plain hairline — an unfilled track
@@ -304,7 +361,7 @@ svg{ color:var(--text); }
    under the icon's own center (half its 48px width, minus half the
    connector's own width), continuing the same vertical line the icon
    column used to sit on before the row layout. */
-.timeline-connector{ width:2px; height:32px; margin:0 0 0 29px; border-radius:1px; background:var(--line-strong); overflow:hidden; }
+.timeline-connector{ width:2px; height:32px; margin:0 0 0 28.5px; border-radius:1px; background:var(--line-strong); overflow:hidden; }
 .timeline-connector-fill{ width:100%; height:0; background:var(--accent); border-radius:1px; }
 .timeline-node.past .timeline-connector-fill{ height:100%; }
 .timeline-node.current .timeline-connector-fill{ height:50%; }
@@ -322,7 +379,7 @@ svg{ color:var(--text); }
   height:calc(100vh - var(--masthead-h) - var(--topbar-h)); overflow-y:auto;
 }
 .sidebar-head{ padding:0 18px 20px; border-bottom:1px solid var(--line); margin-bottom:12px; }
-.sidebar-head .proj{ font-family:"Archivo", sans-serif; font-weight:900; font-size:16px; letter-spacing:-0.01em; }
+.sidebar-head .proj{ font-family:"GeistMono Nerd Font", sans-serif; font-weight:900; font-size:16px; letter-spacing:-0.01em; }
 .sidebar-head .sub{ font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); margin-top:4px; }
 .sheet-link{
   display:flex; align-items:center; gap:10px; padding:12px 18px; text-decoration:none; color:var(--text-dim);
@@ -331,7 +388,7 @@ svg{ color:var(--text); }
 }
 .sheet-link-icon{ flex-shrink:0; display:flex; opacity:0.7; }
 .sheet-link .no{ font-family:"Space Mono", monospace; font-size:10.5px; display:block; color:var(--text-dim); }
-.sheet-link .name{ font-family:"Archivo", sans-serif; font-weight:600; font-size:13.5px; color:var(--text); margin-top:2px; }
+.sheet-link .name{ font-family:"GeistMono Nerd Font", sans-serif; font-weight:600; font-size:13.5px; color:var(--text); margin-top:2px; }
 .sheet-link.active{ border-left-color:var(--accent); background:var(--accent-wash); }
 .sheet-link.active .no{ color:var(--accent); }
 .sheet-link.active .sheet-link-icon{ opacity:1; color:var(--accent); }
@@ -363,7 +420,7 @@ svg{ color:var(--text); }
 .sheet{ padding:64px 56px; }
 .sheet-num{ font-family:"Space Mono", monospace; font-size:11px; color:var(--text-dim); border:1px solid var(--line-strong); display:inline-block; padding:3px 9px; margin-bottom:16px; }
 .sheet h2{ font-size:clamp(24px, 3vw, 34px); font-weight:800; letter-spacing:-0.01em; }
-.sheet .dek{ color:var(--text-dim); font-size:14.5px; line-height:1.65; max-width:62ch; margin-top:14px; }
+.sheet .dek{ color:var(--text-dim); font-size:14.5px; line-height:1.65; margin-top:14px; }
 
 .fig-cols{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:36px; }
 .fig-col{ background:var(--surface); padding:12px; }
@@ -404,7 +461,7 @@ svg{ color:var(--text); }
 }
 .track-pick-big-btn:hover{ background:var(--surface-2); color:var(--accent); }
 .track-pick-big-btn.active{ background:var(--surface-2); color:var(--accent); box-shadow:inset 0 -3px 0 var(--accent); }
-.track-pick-big-name{ font-family:"Archivo", sans-serif; font-weight:800; font-size:20px; display:flex; align-items:center; gap:10px; }
+.track-pick-big-name{ font-family:"GeistMono Nerd Font", sans-serif; font-weight:800; font-size:20px; display:flex; align-items:center; gap:10px; }
 .track-pick-big-sub{ font-size:12.5px; color:var(--text-dim); line-height:1.6; max-width:34ch; }
 @media (max-width: 640px){ .track-pick-big{ grid-template-columns:1fr; } }
 
@@ -413,7 +470,7 @@ svg{ color:var(--text); }
 .shared-runtime-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); }
 .shared-runtime-col{ background:var(--surface); padding:14px; }
 .shared-runtime-stage{ font-family:"Space Mono", monospace; font-size:9.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
-.shared-runtime-col b{ font-family:"Archivo", sans-serif; font-size:13px; font-weight:700; display:block; }
+.shared-runtime-col b{ font-family:"GeistMono Nerd Font", sans-serif; font-size:13px; font-weight:700; display:block; }
 .shared-runtime-col p{ margin:6px 0 0; font-size:12px; color:var(--text-dim); line-height:1.5; }
 @media (max-width: 640px){ .shared-runtime-grid{ grid-template-columns:1fr; } }
 
@@ -424,9 +481,9 @@ svg{ color:var(--text); }
   letter-spacing:0.05em; text-transform:uppercase; color:var(--text-dim);
 }
 .stack-head.active{ color:var(--accent); }
-.stack-label{ background:var(--surface); padding:14px; font-family:"Archivo", sans-serif; font-weight:700; font-size:13px; display:flex; align-items:center; }
+.stack-label{ background:var(--surface); padding:14px; font-family:"GeistMono Nerd Font", sans-serif; font-weight:700; font-size:13px; display:flex; align-items:center; }
 .stack-cell{ background:var(--surface); padding:14px; }
-.stack-cell b{ font-family:"Archivo", sans-serif; font-size:13px; font-weight:700; display:block; }
+.stack-cell b{ font-family:"GeistMono Nerd Font", sans-serif; font-size:13px; font-weight:700; display:block; }
 .stack-cell p{ margin:6px 0 0; font-size:12px; color:var(--text-dim); line-height:1.5; }
 .stack-cell.active{ box-shadow:inset 2px 0 0 var(--accent); background:var(--surface-2); }
 .stack-cell.active b{ color:var(--accent); }
@@ -488,6 +545,58 @@ svg{ color:var(--text); }
 .about-builder-select:not(:disabled):hover{ border-color:var(--accent); color:var(--accent); }
 .about-builder-select:disabled{ opacity:0.6; cursor:not-allowed; }
 
+/* ---------- Dataset preview modal: the real file, in full, before
+   selection means anything — a deliberate stop between clicking a card
+   and actually kicking off chunking/embedding. Portaled straight onto
+   document.body (see the component) and given a z-index well above the
+   sticky top bar's (10) and the sidebar/timeline's own stacking, so
+   nothing in the app can ever paint over it. A genuine popup — sized to
+   the content, not the viewport — with the actual page still visible
+   (just dimmed and blurred) behind it, not a full-screen takeover. */
+.dataset-preview-overlay{
+  position:fixed; inset:0; z-index:1000;
+  background:rgba(10,10,8,0.55); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center; padding:40px;
+}
+.dataset-preview-modal{
+  width:100%; max-width:880px; max-height:calc(100vh - 80px);
+  display:flex; flex-direction:column; background:var(--surface);
+  border:1px solid var(--line-strong); border-radius:10px; overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,0.45);
+}
+.dataset-preview-head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  padding:18px 22px; border-bottom:1px solid var(--line); flex-shrink:0;
+}
+.dataset-preview-title{ font-family:"GeistMono Nerd Font", sans-serif; font-weight:800; font-size:16px; }
+.dataset-preview-file{ font-family:"Space Mono", monospace; font-size:11px; color:var(--text-dim); margin-top:4px; }
+.dataset-preview-close{
+  flex-shrink:0; font-size:15px; line-height:1; cursor:pointer; background:none;
+  border:1px solid var(--line-strong); color:var(--text-dim); width:30px; height:30px;
+}
+.dataset-preview-close:hover{ color:var(--text); border-color:var(--accent); }
+.dataset-preview-body{
+  flex:1 1 auto; min-height:0; overflow-y:auto; padding:20px 22px; background:var(--surface-2);
+  /* Thin, not gone — this is a long real document, so a scroll affordance
+     still matters, it just shouldn't be the thick default OS bar. */
+  scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent;
+}
+.dataset-preview-body::-webkit-scrollbar{ width:7px; }
+.dataset-preview-body::-webkit-scrollbar-track{ background:transparent; }
+.dataset-preview-body::-webkit-scrollbar-thumb{ background:var(--line-strong); border-radius:4px; }
+.dataset-preview-body::-webkit-scrollbar-thumb:hover{ background:var(--text-dim); }
+.dataset-preview-body pre{
+  margin:0; font-family:"Space Mono", monospace; font-size:11.5px; line-height:1.65;
+  color:var(--text); white-space:pre-wrap; word-break:break-word;
+}
+.dataset-preview-foot{ padding:16px 22px; border-top:1px solid var(--line); flex-shrink:0; }
+.dataset-preview-foot p{ margin:0 0 14px; font-size:12px; color:var(--text-dim); line-height:1.6; }
+.dataset-preview-actions{ display:flex; justify-content:flex-end; gap:10px; }
+@media (max-width: 700px){
+  .dataset-preview-overlay{ padding:0; }
+  .dataset-preview-modal{ max-width:none; max-height:100vh; height:100vh; border:none; border-radius:0; }
+}
+
 /* ---------- Step 03: full-page source-vs-indexed ---------- */
 .preview-placeholder{
   margin-top:28px; padding:32px; border:1px dashed var(--line-strong); text-align:center;
@@ -523,7 +632,7 @@ svg{ color:var(--text); }
    bottom corners, plus the ← / → keys, walk every real chunk in the file ---------- */
 .chunk-nav{ display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-top:1px solid var(--line); background:var(--surface); }
 .chunk-nav-btn{
-  font-family:"Archivo", sans-serif; font-weight:700; font-size:12.5px;
+  font-family:"GeistMono Nerd Font", sans-serif; font-weight:700; font-size:12.5px;
   display:inline-flex; align-items:center; gap:6px;
   padding:7px 12px; cursor:pointer; background:var(--surface-2); color:var(--text); border:1px solid var(--line-strong);
 }
@@ -537,7 +646,7 @@ svg{ color:var(--text); }
   font-family:"Space Mono", monospace; font-size:11.5px; color:var(--text-dim);
 }
 .embed-card{ margin-top:16px; border:1px solid var(--line); background:var(--surface); padding:20px; }
-.embed-card-head{ display:flex; justify-content:space-between; align-items:baseline; font-family:"Archivo", sans-serif; font-weight:700; font-size:14px; }
+.embed-card-head{ display:flex; justify-content:space-between; align-items:baseline; font-family:"GeistMono Nerd Font", sans-serif; font-weight:700; font-size:14px; }
 .embed-card-head .chunk-nav-pos{ font-family:"Space Mono", monospace; font-weight:400; }
 .embed-chunk-text{ margin:10px 0 18px; font-size:13px; color:var(--text-dim); line-height:1.6; }
 .embed-strip{ width:100%; height:64px; display:block; color:var(--text); }
@@ -571,14 +680,14 @@ svg{ color:var(--text); }
 .retrieval-node{ min-height:112px; padding:14px; border:1px solid var(--line); background:var(--surface); display:flex; align-items:flex-start; gap:10px; }
 .retrieval-node.active{ border-color:var(--accent-dim); background:var(--accent-wash); }
 .retrieval-node-num{ font-family:"Space Mono", monospace; font-size:11px; color:var(--accent); }
-.retrieval-node b{ display:block; font-family:"Archivo", sans-serif; font-size:13px; }
+.retrieval-node b{ display:block; font-family:"GeistMono Nerd Font", sans-serif; font-size:13px; }
 .retrieval-node small{ display:block; margin-top:7px; color:var(--text-dim); font-size:11.5px; line-height:1.45; }
 .retrieval-arrow{ display:flex; align-items:center; justify-content:center; font-family:"Space Mono", monospace; color:var(--accent); }
 .retrieval-layout{ display:grid; grid-template-columns:1.25fr 0.95fr; gap:20px; margin-top:20px; }
 .retrieval-panel{ border:1px solid var(--line); background:var(--surface); }
 .retrieval-panel-head{ display:flex; justify-content:space-between; gap:16px; padding:10px 14px; border-bottom:1px solid var(--line); font-family:"Space Mono", monospace; font-size:10.5px; letter-spacing:0.05em; color:var(--text-dim); }
 .query-panel{ padding-bottom:16px; }
-.query-label{ display:block; margin:16px 16px 7px; font-family:"Archivo", sans-serif; font-size:12px; font-weight:700; }
+.query-label{ display:block; margin:16px 16px 7px; font-family:"GeistMono Nerd Font", sans-serif; font-size:12px; font-weight:700; }
 .query-field{ margin:0 16px; padding:13px; min-height:180px; border:1px dashed var(--line-strong); color:var(--text-dim); font-size:13px; line-height:1.5; background:var(--bg); width:calc(100% - 32px); box-sizing:border-box; resize:vertical; }
 .query-meta,.index-specs{ display:grid; grid-template-columns:auto 1fr; gap:7px 14px; margin:14px 16px 0; font-family:"Space Mono", monospace; font-size:10.5px; }
 .query-meta span,.index-specs span{ color:var(--text-dim); }
@@ -617,6 +726,13 @@ svg{ color:var(--text); }
 .evidence-detail-head{ display:flex; justify-content:space-between; align-items:center; font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
 .evidence-detail p{ margin:0; white-space:pre-wrap; }
 .retrieval-note{ margin:0; padding:12px 16px; color:var(--text-dim); font-size:12px; line-height:1.6; }
+/* A live "something's actually happening right now" cue — the button
+   label while waking/searching, and the cold-start explanation note —
+   instead of both sitting in the same flat dim gray as everything else
+   on the page. */
+.loading-pulse{ color:var(--accent); animation:loading-pulse-fade 1.4s ease-in-out infinite; }
+@keyframes loading-pulse-fade{ 0%, 100%{ opacity:0.5; } 50%{ opacity:1; } }
+@media (prefers-reduced-motion: reduce){ .loading-pulse{ animation:none; opacity:0.9; } }
 .retrieval-note b{ color:var(--text); }
 .augment-layout{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px; }
 .augment-question{ min-height:112px; }
@@ -640,7 +756,17 @@ svg{ color:var(--text); }
 .prompt-evidence-text{ margin:0 16px 14px; padding:12px 14px; border:1px solid var(--line); background:var(--bg); color:var(--text-dim); font-size:12px; line-height:1.65; white-space:pre-wrap; }
 .prompt-panel-foot{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 16px; font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); }
 .prompt-panel-foot-actions{ display:flex; gap:8px; }
-.full-prompt-block{ margin:0 16px 16px; white-space:pre-wrap; word-break:break-word; font-size:11.5px; line-height:1.6; max-height:420px; overflow-y:auto; }
+.full-prompt-block{
+  margin:0 16px 16px; white-space:pre-wrap; word-break:break-word; font-size:11.5px;
+  line-height:1.6; max-height:420px; overflow-y:auto;
+  /* Same thin, minimized scrollbar as the dataset preview popup's body —
+     not the thick default OS bar. */
+  scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent;
+}
+.full-prompt-block::-webkit-scrollbar{ width:7px; }
+.full-prompt-block::-webkit-scrollbar-track{ background:transparent; }
+.full-prompt-block::-webkit-scrollbar-thumb{ background:var(--line-strong); border-radius:4px; }
+.full-prompt-block::-webkit-scrollbar-thumb:hover{ background:var(--text-dim); }
 .augment-note{ margin-top:20px; padding:12px 16px; border-left:2px solid var(--accent); background:var(--accent-wash); color:var(--text-dim); font-size:12px; line-height:1.6; }
 .augment-note b{ color:var(--text); }
 .generation-layout{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px; }
@@ -705,16 +831,17 @@ svg{ color:var(--text); }
 .stage-detail p{ font-size:12.5px; color:var(--text-dim); line-height:1.65; margin:0; }
 .stage-live-check{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--line-strong); }
 .stage-live-check-btn{
-  display:inline-flex; align-items:center; gap:7px; font-family:"Archivo", sans-serif; font-weight:700; font-size:12px;
+  display:inline-flex; align-items:center; gap:7px; font-family:"GeistMono Nerd Font", sans-serif; font-weight:700; font-size:12px;
   background:var(--surface); border:1px solid var(--line-strong); color:var(--text); padding:8px 14px; cursor:pointer;
 }
 .stage-live-check-btn:hover:not(:disabled){ border-color:var(--accent); color:var(--accent); }
 .stage-live-check-btn:disabled{ opacity:0.6; cursor:default; }
-.stage-live-result{ margin-top:10px; display:flex; align-items:flex-start; gap:8px; font-size:12px; line-height:1.5; }
-.stage-live-result .sys-status-dot{ margin-top:4px; }
+.stage-live-result{ margin-top:10px; display:flex; align-items:flex-start; justify-content:space-between; gap:8px; font-size:12px; line-height:1.5; }
+.stage-live-result .status-ring{ margin-top:4px; }
 .stage-live-result.up{ color:#3ECF6E; }
 .stage-live-result.down{ color:#E05B5B; }
 .stage-live-result.waking{ color:#E8B923; }
+.stage-live-result.checking{ color:var(--text-dim); }
 @media (max-width: 900px){
   .stage-detail-grid{ grid-template-columns:1fr; }
 }
@@ -722,7 +849,7 @@ svg{ color:var(--text); }
 /* ---------- Step navigation (Back / Next between screens) ---------- */
 .step-nav{ display:flex; justify-content:space-between; align-items:center; margin-top:48px; padding-top:24px; border-top:1px solid var(--line); }
 .step-nav-btn{
-  font-family:"Archivo", sans-serif; font-weight:700; font-size:13.5px; letter-spacing:0.01em;
+  font-family:"GeistMono Nerd Font", sans-serif; font-weight:700; font-size:13.5px; letter-spacing:0.01em;
   padding:11px 18px; cursor:pointer; background:var(--surface); color:var(--text); border:1px solid var(--line-strong);
   display:inline-flex; align-items:center; gap:8px;
 }

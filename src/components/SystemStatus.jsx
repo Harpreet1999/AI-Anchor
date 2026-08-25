@@ -58,11 +58,11 @@ export default function SystemStatus() {
             const st = status[s.id] || { phase: "checking", message: "Checking…" };
             return (
               <div key={s.id} className="sys-status-row">
-                <span className={`sys-status-dot small ${st.phase}`} />
                 <div className="sys-status-row-body">
                   <b>{s.label}</b>
                   <span>{st.message}{st.ms !== undefined ? ` · ${st.ms}ms` : ""}</span>
                 </div>
+                <span className={`status-ring ${st.phase}`} aria-hidden="true" />
               </div>
             );
           })}

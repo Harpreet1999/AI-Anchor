@@ -35,19 +35,20 @@ export default function LiveCheck({ label, url, serviceId }) {
   };
 
   if (serviceId && shared) {
-    const st = shared.status[serviceId];
-    const isChecking = shared.checking && (!st || st.phase === "checking" || st.phase === "waking");
+    const st = shared.status[serviceId] || { phase: "checking", message: "Checking…" };
+    const isChecking = shared.checking && (st.phase === "checking" || st.phase === "waking");
     return (
       <div className="stage-live-check">
         <button type="button" className="stage-live-check-btn" onClick={shared.runCheck} disabled={isChecking}>
           {isChecking ? "Checking…" : label}
         </button>
-        {st && st.phase !== "checking" && (
-          <div className={`stage-live-result ${st.phase === "up" ? "up" : st.phase === "waking" ? "waking" : "down"}`}>
-            <span className={`sys-status-dot small ${st.phase}`} />
-            <span>{st.message}{st.ms !== undefined ? ` · ${st.ms}ms` : ""}</span>
-          </div>
-        )}
+        {/* Always shown, not just once a result lands — the ring itself
+            carries the "still checking" meaning (a spinning arc) so this
+            row never has to disappear and reappear. */}
+        <div className={`stage-live-result ${st.phase}`}>
+          <span>{st.message}{st.ms !== undefined ? ` · ${st.ms}ms` : ""}</span>
+          <span className={`status-ring ${st.phase}`} aria-hidden="true" />
+        </div>
       </div>
     );
   }

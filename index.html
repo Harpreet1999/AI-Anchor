@@ -8,9 +8,11 @@
     <!-- Inline, dependency-free boot skeleton: paints instantly (no
          waiting on the JS bundle, React, or the Google Fonts import in
          index.css) so the first thing a visitor sees is never a blank
-         page. React's createRoot(...).render() replaces #root's contents
-         wholesale on mount, so this is automatically swapped out the
-         moment the real app is ready — nothing to clean up. -->
+         page. Lives OUTSIDE #root (a sibling, not a child) specifically
+         so React mounting into #root — instant or not — never touches
+         it; its own script below owns its full lifecycle (a real
+         0->100% animated fill, a short hold, then a fade), independent
+         of how fast the actual app loads underneath it. -->
     <style>
       :root{ --boot-bg:#1B1E1D; --boot-text:#E9E7DE; --boot-dim:#8B9088; --boot-line:#3A403C; }
       @media (prefers-color-scheme: light){
@@ -23,17 +25,17 @@
          mount, not the head), so it was fighting that fix permanently. */
       html, body, #root{ min-height:100vh; }
       body{ margin:0; background:var(--boot-bg); }
-      /* height:100vh, not 100% — #root itself only has min-height:100vh
-         now (see the sticky-positioning fix above), so a percentage
-         height here would have nothing definite to resolve against and
-         this screen would collapse to its own content height instead of
-         the full viewport, pinning it to the top instead of centering
-         it. This element is temporary and never needs to grow past one
-         viewport, so an absolute unit sidesteps that entirely. */
+      /* Fixed, full-viewport overlay — not part of #root's normal flow —
+         so it sits on top of the real app regardless of #root's own
+         height/scroll state, and fading it out never has to fight
+         anything React is doing underneath. */
       .boot-screen{
-        height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        position:fixed; inset:0; z-index:9999; background:var(--boot-bg);
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
         gap:14px; font-family:ui-sans-serif, system-ui, sans-serif; color:var(--boot-text);
+        opacity:1; transition:opacity 420ms ease;
       }
+      .boot-screen.boot-hidden{ opacity:0; pointer-events:none; }
       .boot-mark{
         width:44px; height:44px; border-radius:8px; border:1.5px solid var(--boot-line);
         display:flex; align-items:center; justify-content:center;
@@ -42,45 +44,93 @@
       .boot-mark svg{ width:22px; height:22px; }
       .boot-title{ font-weight:700; font-size:15px; letter-spacing:0.01em; }
       .boot-sub{ font-family:ui-monospace, "SFMono-Regular", monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--boot-dim); }
-      /* A real (if simulated) loading bar — the actual completion signal
-         is React replacing this whole screen at mount, not this timer,
-         so it eases toward 92% and deliberately never claims 100% on its
-         own; the moment the real app is ready, this vanishes entirely
-         with it rather than briefly showing a false "100%". */
       .boot-progress{ width:160px; height:3px; border-radius:2px; background:var(--boot-line); overflow:hidden; }
       .boot-progress-fill{ width:0%; height:100%; background:var(--boot-text); border-radius:2px; }
       .boot-pct{ font-family:ui-monospace, "SFMono-Regular", monospace; font-size:10px; color:var(--boot-dim); }
       @keyframes boot-pulse{ 0%,100%{ opacity:0.5; } 50%{ opacity:1; } }
-      @media (prefers-reduced-motion: reduce){ .boot-mark{ animation:none; } }
+      @media (prefers-reduced-motion: reduce){ .boot-mark{ animation:none; } .boot-screen{ transition:none; } }
     </style>
   </head>
   <body>
-    <div id="root">
-      <div class="boot-screen" role="status" aria-label="Loading AI Anchor">
-        <div class="boot-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M12 3a3 3 0 100 6 3 3 0 000-6zM5 12H3a9 9 0 0018 0h-2M5 12a7 7 0 0014 0" /></svg>
-        </div>
-        <div class="boot-title">AI Anchor</div>
-        <div class="boot-sub">Loading the pipeline…</div>
-        <div class="boot-progress"><div class="boot-progress-fill" id="boot-progress-fill"></div></div>
-        <div class="boot-pct" id="boot-pct">0%</div>
+    <div id="boot-screen" class="boot-screen" role="status" aria-label="Loading AI Anchor">
+      <div class="boot-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M12 3a3 3 0 100 6 3 3 0 000-6zM5 12H3a9 9 0 0018 0h-2M5 12a7 7 0 0014 0" /></svg>
       </div>
+      <div class="boot-title">AI Anchor</div>
+      <div class="boot-sub">Loading the pipeline…</div>
+      <div class="boot-progress"><div class="boot-progress-fill" id="boot-progress-fill"></div></div>
+      <div class="boot-pct" id="boot-pct">0%</div>
     </div>
+    <div id="root"></div>
     <script>
-      // Simulated progress, not a real load signal — there's nothing to
-      // honestly measure yet at this point (no JS has run). Eases toward
-      // 92% and stops; the real "done" moment is React mounting and
-      // replacing this whole screen, not this bar reaching 100%.
+      // Two phases, not one blind timer:
+      //  1. FAST_MS: a real 0->90% climb, shown even on a connection fast
+      //     enough that the real app would otherwise have appeared
+      //     instantly — half of what this used to be, since a genuinely
+      //     fast load doesn't need 2 full seconds of ceremony.
+      //  2. If main.jsx's 'app-ready' signal (see that file) hasn't
+      //     fired by the time phase 1 ends, this does NOT fake its way
+      //     to 100% — it creeps slowly toward (never reaching) 99%
+      //     instead, an honest "still waiting" cue, until the real
+      //     signal arrives and finishes the job in one quick snap to
+      //     100%, a short hold, then the fade. A load that's actually
+      //     stuck reads as stuck, on purpose — not papered over.
       (function () {
+        var FAST_MS = 850; // time to reach ~90% on a normal load
+        var HOLD_MS = 220; // pause at 100% before fading
+        var FADE_MS = 420; // matches the CSS transition above
+        var start = null;
         var pct = 0;
+        var appReady = false;
+        var done = false;
         var fill = document.getElementById("boot-progress-fill");
         var label = document.getElementById("boot-pct");
-        var timer = setInterval(function () {
-          pct += (92 - pct) * 0.12 + 0.4;
-          if (pct >= 92) { pct = 92; clearInterval(timer); }
-          if (fill) fill.style.width = pct + "%";
-          if (label) label.textContent = Math.round(pct) + "%";
-        }, 120);
+        var screen = document.getElementById("boot-screen");
+
+        function setPct(p) {
+          pct = p;
+          if (fill) fill.style.width = p + "%";
+          if (label) label.textContent = Math.round(p) + "%";
+        }
+
+        function reveal() {
+          if (done || !screen) return;
+          done = true;
+          setPct(100);
+          setTimeout(function () {
+            screen.classList.add("boot-hidden");
+            setTimeout(function () {
+              screen.style.display = "none";
+            }, FADE_MS);
+          }, HOLD_MS);
+        }
+
+        window.addEventListener("app-ready", function () {
+          appReady = true;
+          if (start !== null && performance.now() - start >= FAST_MS) reveal();
+          // else: still in the fast phase, frame() below will catch the
+          // flag once it crosses FAST_MS and reveal from there — no need
+          // to double-fire.
+        });
+
+        function frame(now) {
+          if (done) return;
+          if (start === null) start = now;
+          var elapsed = now - start;
+          if (elapsed < FAST_MS) {
+            setPct((elapsed / FAST_MS) * 90);
+          } else if (appReady) {
+            reveal();
+            return;
+          } else {
+            // Real app not ready yet — slow, asymptotic creep instead of
+            // finishing on a schedule that isn't true.
+            setPct(Math.min(99, pct + 0.05));
+          }
+          requestAnimationFrame(frame);
+        }
+
+        requestAnimationFrame(frame);
       })();
     </script>
     <script type="module" src="/src/main.jsx"></script>

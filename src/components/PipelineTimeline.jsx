@@ -56,12 +56,14 @@ export default function PipelineTimeline({ activeStep }) {
               const Icon = TIMELINE_ICON_BY_KEY[s.key];
               return (
                 <div key={s.num} className={`timeline-node${isCurrent ? " current" : ""}${isPast ? " past" : ""}`}>
-                  <div className="timeline-node-icon">
-                    <Icon />
-                  </div>
-                  <div className="timeline-node-label">
-                    <span className="timeline-node-num">{s.num}</span>
-                    <span className="timeline-node-title">{s.title}</span>
+                  <div className="timeline-node-row">
+                    <div className="timeline-node-icon">
+                      <Icon />
+                    </div>
+                    <div className="timeline-node-label">
+                      <span className="timeline-node-num">{s.num}</span>
+                      <span className="timeline-node-title">{s.title}</span>
+                    </div>
                   </div>
                   {i < STAGES.length - 1 && (
                     <div className="timeline-connector" aria-hidden="true">

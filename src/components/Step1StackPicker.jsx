@@ -38,7 +38,7 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
       <div className="track-pick-big" role="tablist" aria-label="Processing track">
         <button
           type="button"
-          className={`track-pick-big-btn${track === "node" ? " active" : ""}`}
+          className={`track-pick-big-btn node${track === "node" ? " active" : ""}`}
           role="tab"
           aria-selected={track === "node"}
           onClick={() => onSelectTrack("node")}
@@ -49,7 +49,7 @@ export default function Step1StackPicker({ track, onSelectTrack, onNext }) {
         </button>
         <button
           type="button"
-          className={`track-pick-big-btn${track === "python" ? " active" : ""}`}
+          className={`track-pick-big-btn python${track === "python" ? " active" : ""}`}
           role="tab"
           aria-selected={track === "python"}
           onClick={() => onSelectTrack("python")}

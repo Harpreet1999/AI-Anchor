@@ -113,12 +113,12 @@ export default function Step3Select({ track, selectedId, onSelectDataset, onSele
           on this page with the real dataset cards.
         </p>
         <div className="track-pick-big">
-          <button type="button" className="track-pick-big-btn" onClick={() => onSelectTrack?.("node")}>
+          <button type="button" className="track-pick-big-btn node" onClick={() => onSelectTrack?.("node")}>
             <Code1 size={34} variant="Outline" color="currentColor" />
             <span className="track-pick-big-name">Node.js</span>
             <span className="track-pick-big-sub">Hand-rolled splitter · Xenova embeddings · cosine search, all client-side</span>
           </button>
-          <button type="button" className="track-pick-big-btn" onClick={() => onSelectTrack?.("python")}>
+          <button type="button" className="track-pick-big-btn python" onClick={() => onSelectTrack?.("python")}>
             <DocumentCode size={34} variant="Outline" color="currentColor" />
             <span className="track-pick-big-name">Python + LangChain</span>
             <span className="track-pick-big-sub">LangChain splitter · Sentence-Transformers · live ChromaDB retrieval</span>

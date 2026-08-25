@@ -51,8 +51,25 @@
 :root[data-track="python"][data-theme="light"]{ --accent:#1F8A44; --accent-dim:#B9E6C7; --accent-wash:rgba(31,138,68,0.10); }
 :root[data-track="python"][data-theme="dark"]{ --accent:#3ECF6E; --accent-dim:#1F6B3A; --accent-wash:rgba(62,207,110,0.14); }
 
+/* Fixed Node/Python brand colors — NOT gated by [data-track], unlike
+   --accent above (which only turns yellow/green once that track is the
+   one actually selected). These back the track-picker buttons, which
+   need to show both colors at once, side by side, regardless of which
+   (if either) is currently picked. */
+:root{ --node-color:#E8B923; --node-wash:rgba(232,185,35,0.12); --python-color:#3ECF6E; --python-wash:rgba(62,207,110,0.14); }
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){ --node-color:#A67C0A; --node-wash:rgba(166,124,10,0.10); --python-color:#1F8A44; --python-wash:rgba(31,138,68,0.10); }
+}
+:root[data-theme="light"]{ --node-color:#A67C0A; --node-wash:rgba(166,124,10,0.10); --python-color:#1F8A44; --python-wash:rgba(31,138,68,0.10); }
+:root[data-theme="dark"]{ --node-color:#E8B923; --node-wash:rgba(232,185,35,0.12); --python-color:#3ECF6E; --python-wash:rgba(62,207,110,0.14); }
+
 *{ box-sizing:border-box; }
 html, body, #root{ height:100%; }
+/* Scrolling stays fully functional (mouse wheel, keys, drag) — this only
+   hides the visible scrollbar chrome, project-wide, not just the
+   timeline rail (which already had its own copy of this). */
+html{ scrollbar-width:none; -ms-overflow-style:none; }
+html::-webkit-scrollbar{ display:none; }
 body{ margin:0; background:var(--bg); color:var(--text); font-family:"Work Sans", ui-sans-serif, system-ui, sans-serif; font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased; }
 
 /* real section-view cross-hatch — two diagonal line families crossing,
@@ -174,7 +191,7 @@ svg{ color:var(--text); }
 .progress-tick{ position:absolute; top:-2px; width:1px; height:9px; background:var(--bg); }
 .progress-pct{ font-family:"Space Mono", monospace; font-size:11px; color:var(--accent); min-width:34px; text-align:right; }
 
-.layout{ position:relative; z-index:1; display:grid; grid-template-columns:260px 1fr auto; min-height:calc(100vh - var(--masthead-h) - var(--topbar-h)); }
+.layout{ position:relative; z-index:1; display:grid; grid-template-columns:216px 1fr auto; min-height:calc(100vh - var(--masthead-h) - var(--topbar-h)); }
 
 /* ---------- Timeline rail: a live, collapsible read of which real
    pipeline stage the current step maps to — the same 6 stage icons Step
@@ -189,7 +206,7 @@ svg{ color:var(--text); }
      body — and the icon column centered inside it — spans and centers
      against the rail's FULL width, not width-minus-toggle. */
   display:flex; flex-direction:column; border-left:1px solid var(--line); background:var(--surface);
-  width:248px; flex-shrink:0; transition:width .2s ease;
+  width:264px; flex-shrink:0; transition:width .2s ease;
   /* Scrolling still works (overflow-y:auto above) — just without the
      visible scrollbar chrome, which read as clutter in a 248px rail. */
   scrollbar-width:none; -ms-overflow-style:none;
@@ -210,18 +227,23 @@ svg{ color:var(--text); }
   border:1px solid var(--line); border-radius:5px; box-shadow:0 4px 14px rgba(0,0,0,0.28);
 }
 .timeline-toggle:hover{ color:var(--accent); background:var(--accent-wash); }
-.timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 16px; }
+.timeline-body{ flex:1 1 auto; min-width:0; width:100%; padding:18px 14px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:2px; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; padding-bottom:2px; }
+/* Icon beside its label now, not stacked above it — shortens every row,
+   so the whole list scrolls a lot less, and uses more of the rail's
+   width instead of a narrow centered column with dead space either
+   side. */
+.timeline-node-row{ display:flex; align-items:center; gap:12px; }
 /* Plain <svg> icons now (timelineIcons.jsx), not the <figure>-wrapped FIG.
    icons — each one's artwork is centered on its own viewBox already, so
    centering the box here is all that's needed; nothing drifts off-center. */
 .timeline-node-icon{
-  position:relative; display:flex; align-items:center; justify-content:center;
-  width:72px; height:72px; opacity:0.45; border-radius:10px; transition:opacity .2s, background .2s;
+  position:relative; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  width:48px; height:48px; opacity:0.45; border-radius:8px; transition:opacity .2s, background .2s;
 }
-.timeline-node-icon svg{ width:46px; height:46px; display:block; }
+.timeline-node-icon svg{ width:28px; height:28px; display:block; }
 /* Thin, deliberately — a CSS rule on the svg element itself won't win
    over each shape's own strokeWidth attribute, so this targets the
    shapes directly instead of relying on inheritance. */
@@ -231,17 +253,20 @@ svg{ color:var(--text); }
 /* "Current" reads as a solid colored chip, not an animated ring — calmer,
    and doesn't fight the eye the way a pulsing/growing ring did. */
 .timeline-node.current .timeline-node-icon{ background:var(--accent-wash); }
-.timeline-node-label{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-top:2px; }
+.timeline-node-label{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; }
 .timeline-node-num{ font-family:"Space Mono", monospace; font-size:9px; color:var(--text-dim); }
-.timeline-node-title{ font-family:"Archivo", sans-serif; font-size:10.5px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
+.timeline-node-title{ font-family:"Archivo", sans-serif; font-size:11px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
 .timeline-node.current .timeline-node-title{ color:var(--accent); }
 .timeline-node.past .timeline-node-title{ color:var(--text); }
 /* A real progress-bar segment, not a plain hairline — an unfilled track
    plus a fill that's either solid (this segment's fully behind you) or
    half-filled (you're mid-way, at the current node above it). Thin
    (close to the icon strokes) but tall, so it still reads as its own
-   element without the earlier thick/short bar look. */
-.timeline-connector{ width:2px; height:44px; margin:0; border-radius:1px; background:var(--line-strong); overflow:hidden; }
+   element without the earlier thick/short bar look. Offset to hang
+   under the icon's own center (half its 48px width, minus half the
+   connector's own width), continuing the same vertical line the icon
+   column used to sit on before the row layout. */
+.timeline-connector{ width:2px; height:32px; margin:0 0 0 23px; border-radius:1px; background:var(--line-strong); overflow:hidden; }
 .timeline-connector-fill{ width:100%; height:0; background:var(--accent); border-radius:1px; }
 .timeline-node.past .timeline-connector-fill{ height:100%; }
 .timeline-node.current .timeline-connector-fill{ height:50%; }
@@ -258,11 +283,11 @@ svg{ color:var(--text); }
   position:sticky; top:calc(var(--masthead-h) + var(--topbar-h));
   height:calc(100vh - var(--masthead-h) - var(--topbar-h)); overflow-y:auto;
 }
-.sidebar-head{ padding:0 24px 20px; border-bottom:1px solid var(--line); margin-bottom:12px; }
+.sidebar-head{ padding:0 18px 20px; border-bottom:1px solid var(--line); margin-bottom:12px; }
 .sidebar-head .proj{ font-family:"Archivo", sans-serif; font-weight:900; font-size:16px; letter-spacing:-0.01em; }
 .sidebar-head .sub{ font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); margin-top:4px; }
 .sheet-link{
-  display:flex; align-items:center; gap:12px; padding:12px 24px; text-decoration:none; color:var(--text-dim);
+  display:flex; align-items:center; gap:10px; padding:12px 18px; text-decoration:none; color:var(--text-dim);
   border-left:2px solid transparent; cursor:pointer; background:none; border-top:none; border-right:none; border-bottom:none;
   width:100%; text-align:left; font:inherit;
 }
@@ -278,7 +303,7 @@ svg{ color:var(--text); }
 .sheet-link.locked:hover{ opacity:0.75; background:none; }
 .sheet-link.locked .sheet-link-icon{ opacity:0.6; }
 
-.sidebar-status{ margin-top:20px; padding:14px 24px; border-top:1px solid var(--line); font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); line-height:1.8; }
+.sidebar-status{ margin-top:20px; padding:14px 18px; border-top:1px solid var(--line); font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); line-height:1.8; }
 .sidebar-status b{ color:var(--text); }
 
 /* A brief, self-dismissing explanation for why a locked step didn't
@@ -330,12 +355,21 @@ svg{ color:var(--text); }
    width, impossible to miss (previously Step 01 had small pill toggles). */
 .track-pick-big{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px; }
 .track-pick-big-btn{
-  display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;
-  padding:48px 32px; background:var(--surface); border:none; cursor:pointer; color:var(--text);
+  display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+  padding:30px 32px; background:var(--surface); border:none; cursor:pointer; color:var(--text);
   font:inherit; transition:background .15s ease, box-shadow .15s ease;
 }
-.track-pick-big-btn:hover{ background:var(--surface-2); color:var(--accent); }
-.track-pick-big-btn.active{ background:var(--surface-2); color:var(--accent); box-shadow:inset 0 -3px 0 var(--accent); }
+/* Always tinted with its own brand color — yellow for Node, green for
+   Python — regardless of which (if either) is currently selected. Uses
+   the fixed --node-color / --python-color tokens, not --accent (which
+   only turns yellow/green once that track is the ACTIVE one), so both
+   read as their own color side by side even before a pick is made. */
+.track-pick-big-btn.node{ background:var(--node-wash); }
+.track-pick-big-btn.python{ background:var(--python-wash); }
+.track-pick-big-btn.node:hover, .track-pick-big-btn.node.active{ color:var(--node-color); }
+.track-pick-big-btn.python:hover, .track-pick-big-btn.python.active{ color:var(--python-color); }
+.track-pick-big-btn.node.active{ box-shadow:inset 0 -3px 0 var(--node-color); }
+.track-pick-big-btn.python.active{ box-shadow:inset 0 -3px 0 var(--python-color); }
 .track-pick-big-name{ font-family:"Archivo", sans-serif; font-weight:800; font-size:20px; display:flex; align-items:center; gap:10px; }
 .track-pick-big-sub{ font-size:12.5px; color:var(--text-dim); line-height:1.6; max-width:34ch; }
 @media (max-width: 640px){ .track-pick-big{ grid-template-columns:1fr; } }

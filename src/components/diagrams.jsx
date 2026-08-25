@@ -422,7 +422,7 @@ export function StackFlowDiagram({ track }) {
       role="img"
       aria-label="A shared set of datasets branches sideways into a Node.js tool chain on top and a Python tool chain below it, each doing chunk, embed, and retrieve left to right, converging into a shared augment step and then a shared generate step."
     >
-      <svg viewBox="0 0 1410 280" width="100%" style={{ display: "block", height: "auto" }}>
+      <svg viewBox="0 0 1410 290" width="100%" style={{ display: "block", height: "auto" }}>
         <text x="18" y="22" fontSize="11" fontFamily="Space Mono, monospace" letterSpacing="0.08em" fill="currentColor" opacity="0.45">FIG. 00</text>
 
         <rect x="16" y="98" width="110" height="56" rx="4" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.8" />
@@ -432,8 +432,8 @@ export function StackFlowDiagram({ track }) {
             grew downward (extra room below) — the inner edges facing each
             other, and everything between them (the arrows, the shared
             Augment/Generate boxes), are untouched. */}
-        <Lane x={230} y={20} w={780} h={96} label="NODE" labelX={640} labelY={42} active={nodeActive} />
-        <Lane x={230} y={152} w={780} h={96} label="PYTHON" labelX={640} labelY={234} active={pyActive} />
+        <Lane x={230} y={10} w={780} h={106} label="NODE" labelX={640} labelY={38} active={nodeActive} />
+        <Lane x={230} y={152} w={780} h={106} label="PYTHON" labelX={640} labelY={240} active={pyActive} />
 
         <FlowArrow x1={126} y1={116} x2={324} y2={78} bow={-34} markerId="stackArrow" strokeWidth={1.4} />
         <FlowArrow x1={126} y1={136} x2={324} y2={190} bow={34} markerId="stackArrow" strokeWidth={1.4} />

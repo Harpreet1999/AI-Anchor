@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
 
+/* Primary (body) font only — headings stay Archivo, monospace labels stay
+   Space Mono, both untouched. Self-hosted (not on Google Fonts) — the
+   patched files come straight from ryanoasis/nerd-fonts' own release,
+   shipped there only as .otf (no .woff2 build), so that's what's served
+   here too rather than a hand-converted copy of unclear provenance. */
+@font-face{
+  font-family:"GeistMono Nerd Font";
+  src:url("/fonts/GeistMonoNerdFont-Regular.otf") format("opentype");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"GeistMono Nerd Font";
+  src:url("/fonts/GeistMonoNerdFont-Bold.otf") format("opentype");
+  font-weight:700; font-style:normal; font-display:swap;
+}
+
 :root{
   --bg:#1B1E1D; --surface:#222624; --surface-2:#292E2B;
   --line:#3A403C; --line-strong:#52584F;
@@ -87,7 +103,7 @@ html, body, #root{ min-height:100vh; }
    timeline rail (which already had its own copy of this). */
 html{ scrollbar-width:none; -ms-overflow-style:none; }
 html::-webkit-scrollbar{ display:none; }
-body{ margin:0; background:var(--bg); color:var(--text); font-family:"Work Sans", ui-sans-serif, system-ui, sans-serif; font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased; }
+body{ margin:0; background:var(--bg); color:var(--text); font-family:"GeistMono Nerd Font", "Work Sans", ui-sans-serif, system-ui, sans-serif; font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased; }
 
 /* real section-view cross-hatch — two diagonal line families crossing,
    the actual convention engineers use to shade a cut surface */
@@ -180,7 +196,7 @@ svg{ color:var(--text); }
 .status-ring.up{ border-color:#3ECF6E; }
 .status-ring.down{ border-color:#E05B5B; }
 @media (prefers-reduced-motion: reduce){ .status-ring{ animation:none !important; } }
-.sys-status-row{ display:flex; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line); align-items:flex-start; }
+.sys-status-row{ display:flex; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line); align-items:flex-start; justify-content:space-between; }
 .sys-status-row:last-of-type{ border-bottom:none; }
 .sys-status-row .sys-status-dot{ margin-top:4px; }
 .sys-status-row-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
@@ -527,30 +543,34 @@ svg{ color:var(--text); }
    selection means anything — a deliberate stop between clicking a card
    and actually kicking off chunking/embedding. Portaled straight onto
    document.body (see the component) and given a z-index well above the
-   sticky top bar's (10) and the sidebar/timeline's own stacking, so nothing
-   in the app can ever paint over a full-screen takeover. ---------- */
+   sticky top bar's (10) and the sidebar/timeline's own stacking, so
+   nothing in the app can ever paint over it. A genuine popup — sized to
+   the content, not the viewport — with the actual page still visible
+   (just dimmed and blurred) behind it, not a full-screen takeover. */
 .dataset-preview-overlay{
   position:fixed; inset:0; z-index:1000;
-  background:rgba(10,10,8,0.72); backdrop-filter:blur(6px);
-  display:flex; align-items:stretch; justify-content:stretch;
+  background:rgba(10,10,8,0.55); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center; padding:40px;
 }
 .dataset-preview-modal{
-  width:100%; height:100%; display:flex; flex-direction:column; background:var(--surface);
+  width:100%; max-width:880px; max-height:calc(100vh - 80px);
+  display:flex; flex-direction:column; background:var(--surface);
+  border:1px solid var(--line-strong); border-radius:10px; overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,0.45);
 }
 .dataset-preview-head{
   display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
-  padding:20px 32px; border-bottom:1px solid var(--line); flex-shrink:0;
+  padding:18px 22px; border-bottom:1px solid var(--line); flex-shrink:0;
 }
-.dataset-preview-title{ font-family:"Archivo", sans-serif; font-weight:800; font-size:17px; }
+.dataset-preview-title{ font-family:"Archivo", sans-serif; font-weight:800; font-size:16px; }
 .dataset-preview-file{ font-family:"Space Mono", monospace; font-size:11px; color:var(--text-dim); margin-top:4px; }
 .dataset-preview-close{
   flex-shrink:0; font-size:15px; line-height:1; cursor:pointer; background:none;
-  border:1px solid var(--line-strong); color:var(--text-dim); width:32px; height:32px;
+  border:1px solid var(--line-strong); color:var(--text-dim); width:30px; height:30px;
 }
 .dataset-preview-close:hover{ color:var(--text); border-color:var(--accent); }
 .dataset-preview-body{
-  flex:1 1 auto; min-height:0; overflow-y:auto; padding:22px 32px; background:var(--surface-2);
-  max-width:900px; margin:0 auto; width:100%;
+  flex:1 1 auto; min-height:0; overflow-y:auto; padding:20px 22px; background:var(--surface-2);
   /* Thin, not gone — this is a long real document, so a scroll affordance
      still matters, it just shouldn't be the thick default OS bar. */
   scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent;
@@ -563,9 +583,13 @@ svg{ color:var(--text); }
   margin:0; font-family:"Space Mono", monospace; font-size:11.5px; line-height:1.65;
   color:var(--text); white-space:pre-wrap; word-break:break-word;
 }
-.dataset-preview-foot{ padding:18px 32px; border-top:1px solid var(--line); flex-shrink:0; }
+.dataset-preview-foot{ padding:16px 22px; border-top:1px solid var(--line); flex-shrink:0; }
 .dataset-preview-foot p{ margin:0 0 14px; font-size:12px; color:var(--text-dim); line-height:1.6; }
 .dataset-preview-actions{ display:flex; justify-content:flex-end; gap:10px; }
+@media (max-width: 700px){
+  .dataset-preview-overlay{ padding:0; }
+  .dataset-preview-modal{ max-width:none; max-height:100vh; height:100vh; border:none; border-radius:0; }
+}
 
 /* ---------- Step 03: full-page source-vs-indexed ---------- */
 .preview-placeholder{
@@ -796,7 +820,7 @@ svg{ color:var(--text); }
 }
 .stage-live-check-btn:hover:not(:disabled){ border-color:var(--accent); color:var(--accent); }
 .stage-live-check-btn:disabled{ opacity:0.6; cursor:default; }
-.stage-live-result{ margin-top:10px; display:flex; align-items:flex-start; gap:8px; font-size:12px; line-height:1.5; }
+.stage-live-result{ margin-top:10px; display:flex; align-items:flex-start; justify-content:space-between; gap:8px; font-size:12px; line-height:1.5; }
 .stage-live-result .status-ring{ margin-top:4px; }
 .stage-live-result.up{ color:#3ECF6E; }
 .stage-live-result.down{ color:#E05B5B; }

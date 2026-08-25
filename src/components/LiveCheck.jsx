@@ -46,8 +46,8 @@ export default function LiveCheck({ label, url, serviceId }) {
             carries the "still checking" meaning (a spinning arc) so this
             row never has to disappear and reappear. */}
         <div className={`stage-live-result ${st.phase}`}>
-          <span className={`status-ring ${st.phase}`} aria-hidden="true" />
           <span>{st.message}{st.ms !== undefined ? ` · ${st.ms}ms` : ""}</span>
+          <span className={`status-ring ${st.phase}`} aria-hidden="true" />
         </div>
       </div>
     );

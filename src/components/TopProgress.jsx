@@ -20,6 +20,10 @@ export default function TopProgress({ active, onNavigate, maxStep = Infinity }) 
         {STEPS.map((s) => {
           const locked = s.n > maxStep;
           const state = locked ? "locked" : s.n < active ? "done" : s.n === active ? "current" : "upcoming";
+          // Each block carries its own running percentage right underneath
+          // it — where THIS step sits in the overall 8-step run — instead
+          // of one lone number off in the corner of the whole bar.
+          const segPct = Math.round((s.n / STEPS.length) * 100);
           return (
             <button
               key={s.n}
@@ -28,8 +32,11 @@ export default function TopProgress({ active, onNavigate, maxStep = Infinity }) 
               aria-current={state === "current" ? "step" : undefined}
               title={locked ? "Not reachable yet — click for why" : undefined}
             >
-              <span className="progress-no">{String(s.n).padStart(2, "0")}</span>
-              <span className="progress-name">{s.name}</span>
+              <span className="progress-block-main">
+                <span className="progress-no">{String(s.n).padStart(2, "0")}</span>
+                <span className="progress-name">{s.name}</span>
+              </span>
+              <span className="progress-block-pct">{segPct}%</span>
             </button>
           );
         })}
@@ -53,7 +60,6 @@ export default function TopProgress({ active, onNavigate, maxStep = Infinity }) 
             />
           ))}
         </div>
-        <span className="progress-pct">{pct}%</span>
       </div>
     </div>
   );

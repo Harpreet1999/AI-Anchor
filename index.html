@@ -5,9 +5,45 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Anchor — Data Layer</title>
+    <!-- Inline, dependency-free boot skeleton: paints instantly (no
+         waiting on the JS bundle, React, or the Google Fonts import in
+         index.css) so the first thing a visitor sees is never a blank
+         page. React's createRoot(...).render() replaces #root's contents
+         wholesale on mount, so this is automatically swapped out the
+         moment the real app is ready — nothing to clean up. -->
+    <style>
+      :root{ --boot-bg:#1B1E1D; --boot-text:#E9E7DE; --boot-dim:#8B9088; --boot-line:#3A403C; }
+      @media (prefers-color-scheme: light){
+        :root{ --boot-bg:#F1EFE6; --boot-text:#23261F; --boot-dim:#6B6A5C; --boot-line:#C7C2AC; }
+      }
+      html, body, #root{ height:100%; }
+      body{ margin:0; background:var(--boot-bg); }
+      .boot-screen{
+        height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:14px; font-family:ui-sans-serif, system-ui, sans-serif; color:var(--boot-text);
+      }
+      .boot-mark{
+        width:44px; height:44px; border-radius:8px; border:1.5px solid var(--boot-line);
+        display:flex; align-items:center; justify-content:center;
+        animation:boot-pulse 1.6s ease-in-out infinite;
+      }
+      .boot-mark svg{ width:22px; height:22px; }
+      .boot-title{ font-weight:700; font-size:15px; letter-spacing:0.01em; }
+      .boot-sub{ font-family:ui-monospace, "SFMono-Regular", monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--boot-dim); }
+      @keyframes boot-pulse{ 0%,100%{ opacity:0.5; } 50%{ opacity:1; } }
+      @media (prefers-reduced-motion: reduce){ .boot-mark{ animation:none; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot-screen" role="status" aria-label="Loading AI Anchor">
+        <div class="boot-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M12 3a3 3 0 100 6 3 3 0 000-6zM5 12H3a9 9 0 0018 0h-2M5 12a7 7 0 0014 0" /></svg>
+        </div>
+        <div class="boot-title">AI Anchor</div>
+        <div class="boot-sub">Loading the pipeline…</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -6,6 +6,7 @@ import RetrievalResults from "./RetrievalResults.jsx";
 import { rankChunks } from "../lib/retrieval.js";
 import { pyApiUrl } from "../lib/pyApi.js";
 import { useDataset } from "../lib/useDataset.js";
+import { useSystemStatus } from "../lib/systemStatus.jsx";
 
 const DATASETS = {
   career: "Portfolio Data",
@@ -55,6 +56,7 @@ function PlanNode({ number, label, detail, active }) {
 
 export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }) {
   const isNode = track === "node";
+  const systemStatus = useSystemStatus();
   const datasetName = selectedId ? DATASETS[selectedId] : "the selected dataset";
   const searchName = isNode ? "Cosine similarity / in-memory index" : "ChromaDB (live, cosine)";
 
@@ -82,6 +84,10 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
   const [pyWaking, setPyWaking] = useState(false);
   const [pyError, setPyError] = useState("");
   const [pyTopK, setPyTopK] = useState(5);
+  // Collapsed by default — free typing is the primary interaction on both
+  // tracks; these are optional inspiration, not the only way in, and
+  // showing them open by default read as if typing were secondary.
+  const [showExamples, setShowExamples] = useState(false);
 
   useEffect(() => {
     setQuestion("");
@@ -91,6 +97,7 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
     setPyResults([]);
     setPyError("");
     setPyWaking(false);
+    setShowExamples(false);
   }, [selectedId, track]);
 
   const handlePySearch = async (event) => {
@@ -123,6 +130,10 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
         throw Object.assign(new Error(data.detail || "Retrieval failed."), { status: res.status });
       }
       setPyResults(data.results || []);
+      // This request just proved the service is up, right now — reflect
+      // that in the one shared status truth immediately instead of
+      // waiting up to 30s for the next scheduled poll to notice.
+      systemStatus?.markUp("py");
     } catch (searchError) {
       console.error(searchError);
       // status is undefined when fetch itself threw (a real network error —
@@ -250,12 +261,19 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
               placeholder={`Ask a precise question about ${datasetName}…`}
             />
             {pyExamples.length > 0 && (
-              <div className="demo-question-list" aria-label="Example questions">
-                {pyExamples.map((q) => (
-                  <button key={q} type="button" className="demo-question" onClick={() => { setPyQuestion(q); setPyResults([]); setPyError(""); }}>
-                    {q}
-                  </button>
-                ))}
+              <div className="demo-question-disclosure">
+                <button type="button" className="demo-question-toggle" onClick={() => setShowExamples((v) => !v)} aria-expanded={showExamples}>
+                  {showExamples ? "▾" : "▸"} Need inspiration? {pyExamples.length} example question{pyExamples.length === 1 ? "" : "s"}
+                </button>
+                {showExamples && (
+                  <div className="demo-question-list" aria-label="Example questions">
+                    {pyExamples.map((q) => (
+                      <button key={q} type="button" className="demo-question" onClick={() => { setPyQuestion(q); setPyResults([]); setPyError(""); }}>
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
             <div className="query-meta">

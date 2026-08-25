@@ -4,7 +4,10 @@
   --bg:#1B1E1D; --surface:#222624; --surface-2:#292E2B;
   --line:#3A403C; --line-strong:#52584F;
   --text:#E9E7DE; --text-dim:#8B9088;
-  --accent:#E8B923; --accent-dim:#7A661C; --accent-wash:rgba(232,185,35,0.12);
+  /* Neutral "no track picked yet" accent — a plain off-white, not a
+     brand color. Node (yellow) and Python (green) below only apply once
+     [data-track] is actually set by a real user choice in Step 01. */
+  --accent:#C9C6BA; --accent-dim:#5C5A50; --accent-wash:rgba(201,198,186,0.10);
   --topbar-h:76px;
   --masthead-h:136px;
 }
@@ -13,25 +16,34 @@
     --bg:#F1EFE6; --surface:#E8E4D6; --surface-2:#DFDACB;
     --line:#C7C2AC; --line-strong:#9B9682;
     --text:#23261F; --text-dim:#6B6A5C;
-    --accent:#A67C0A; --accent-dim:#E4D6A6; --accent-wash:rgba(166,124,10,0.10);
+    --accent:#4B4A40; --accent-dim:#B8B6A8; --accent-wash:rgba(75,74,64,0.08);
   }
 }
 :root[data-theme="light"]{
   --bg:#F1EFE6; --surface:#E8E4D6; --surface-2:#DFDACB;
   --line:#C7C2AC; --line-strong:#9B9682;
   --text:#23261F; --text-dim:#6B6A5C;
-  --accent:#A67C0A; --accent-dim:#E4D6A6; --accent-wash:rgba(166,124,10,0.10);
+  --accent:#4B4A40; --accent-dim:#B8B6A8; --accent-wash:rgba(75,74,64,0.08);
 }
 :root[data-theme="dark"]{
   --bg:#1B1E1D; --surface:#222624; --surface-2:#292E2B;
   --line:#3A403C; --line-strong:#52584F;
   --text:#E9E7DE; --text-dim:#8B9088;
-  --accent:#E8B923; --accent-dim:#7A661C; --accent-wash:rgba(232,185,35,0.12);
+  --accent:#C9C6BA; --accent-dim:#5C5A50; --accent-wash:rgba(201,198,186,0.10);
 }
 
-/* ---------- Track-based accent: Python swaps the primary color to green,
-   everywhere, until the user manually switches back to Node. Placed after
-   the light/dark blocks above so it wins the cascade in either theme. ---------- */
+/* ---------- Track-based accent: picking a track in Step 01 recolors the
+   whole app — Node.js yellow, Python green — replacing the neutral
+   default above. Placed after the light/dark blocks so it wins the
+   cascade in either theme; the neutral blocks above are what's visible
+   before any pick has been made (track === null). ---------- */
+:root[data-track="node"]{ --accent:#E8B923; --accent-dim:#7A661C; --accent-wash:rgba(232,185,35,0.12); }
+@media (prefers-color-scheme: light){
+  :root[data-track="node"]:not([data-theme="dark"]){ --accent:#A67C0A; --accent-dim:#E4D6A6; --accent-wash:rgba(166,124,10,0.10); }
+}
+:root[data-track="node"][data-theme="light"]{ --accent:#A67C0A; --accent-dim:#E4D6A6; --accent-wash:rgba(166,124,10,0.10); }
+:root[data-track="node"][data-theme="dark"]{ --accent:#E8B923; --accent-dim:#7A661C; --accent-wash:rgba(232,185,35,0.12); }
+
 :root[data-track="python"]{ --accent:#3ECF6E; --accent-dim:#1F6B3A; --accent-wash:rgba(62,207,110,0.14); }
 @media (prefers-color-scheme: light){
   :root[data-track="python"]:not([data-theme="dark"]){ --accent:#1F8A44; --accent-dim:#B9E6C7; --accent-wash:rgba(31,138,68,0.10); }
@@ -150,6 +162,8 @@ svg{ color:var(--text); }
 .progress-block.current .progress-no{ color:var(--accent); }
 .progress-block.upcoming{ color:var(--text-dim); }
 .progress-block.upcoming .progress-no{ opacity:0.6; }
+.progress-block.locked{ color:var(--text-dim); opacity:0.45; cursor:pointer; }
+.progress-block.locked .progress-no{ opacity:0.5; }
 
 /* the actual percentage gauge — a ruled track with tick marks at each
    step boundary, echoing the dimension-line ticks used elsewhere */
@@ -169,9 +183,11 @@ svg{ color:var(--text); }
   position:sticky; top:calc(var(--masthead-h) + var(--topbar-h));
   height:calc(100vh - var(--masthead-h) - var(--topbar-h)); overflow-y:auto;
   display:flex; border-left:1px solid var(--line); background:var(--surface);
-  width:208px; flex-shrink:0;
+  width:232px; flex-shrink:0; transition:width .2s ease;
 }
-.timeline-rail.collapsed{ width:36px; overflow:visible; flex-direction:column; }
+/* Fully collapsed — nothing but the toggle/caret. No mini current-stage
+   glyph anymore: "collapsed" means collapsed, not "slightly smaller". */
+.timeline-rail.collapsed{ width:36px; overflow:hidden; flex-direction:column; }
 .timeline-toggle{
   flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center;
   background:var(--surface-2); border:none; border-right:1px solid var(--line); cursor:pointer;
@@ -182,23 +198,16 @@ svg{ color:var(--text); }
 .timeline-body{ flex:1 1 auto; min-width:0; padding:18px 16px; }
 .timeline-head{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:16px; }
 .timeline-track{ display:flex; flex-direction:column; }
-.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:6px; }
-.timeline-node-icon{ position:relative; display:flex; align-items:center; justify-content:center; width:52px; height:44px; opacity:0.45; transition:opacity .2s; }
-.timeline-node-icon figure{ width:52px; height:44px; margin:0; display:flex; align-items:center; justify-content:center; }
-.timeline-node-icon svg{ width:100%; max-width:44px; height:auto; max-height:36px; display:block; }
+.timeline-node{ position:relative; display:flex; flex-direction:column; align-items:center; padding-bottom:8px; }
+.timeline-node-icon{ position:relative; display:flex; align-items:center; justify-content:center; width:64px; height:54px; opacity:0.45; transition:opacity .2s; }
+.timeline-node-icon figure{ width:64px; height:54px; margin:0; display:flex; align-items:center; justify-content:center; }
+.timeline-node-icon svg{ width:100%; max-width:56px; height:auto; max-height:46px; display:block; }
+/* Bolder strokes specifically in the timeline — the same icon components
+   render at their normal weight in Step 02's grid; this is a scoped
+   override so the rail's smaller icons still read clearly at a glance. */
+.timeline-node-icon svg :is(rect, line, circle, path, polygon){ stroke-width:2.2; }
 .timeline-node.current .timeline-node-icon, .timeline-node.past .timeline-node-icon{ opacity:1; }
 .timeline-node.current .timeline-node-icon svg, .timeline-node.past .timeline-node-icon svg{ color:var(--accent); }
-
-/* Collapsed state: nothing but the toggle + a small pulsing glyph for
-   whichever stage is current, so the rail still reads as "alive" at a
-   glance without taking up any real width. */
-.timeline-collapsed-current{
-  position:relative; flex-shrink:0; margin:14px 0; width:36px; height:32px;
-  display:flex; align-items:center; justify-content:center; color:var(--accent);
-}
-.timeline-collapsed-current figure{ width:24px; height:20px; margin:0; display:flex; align-items:center; justify-content:center; }
-.timeline-collapsed-current svg{ width:100%; max-width:22px; height:auto; max-height:18px; display:block; }
-.timeline-collapsed-current .timeline-pulse{ border-width:1px; }
 .timeline-node-label{ display:flex; flex-direction:column; align-items:center; text-align:center; margin-top:2px; }
 .timeline-node-num{ font-family:"Space Mono", monospace; font-size:9px; color:var(--text-dim); }
 .timeline-node-title{ font-family:"Archivo", sans-serif; font-size:10.5px; font-weight:700; color:var(--text-dim); line-height:1.3; margin-top:2px; }
@@ -243,9 +252,28 @@ svg{ color:var(--text); }
 .sheet-link.active{ border-left-color:var(--accent); background:var(--accent-wash); }
 .sheet-link.active .no{ color:var(--accent); }
 .sheet-link.active .sheet-link-icon{ opacity:1; color:var(--accent); }
+/* Locked, not disabled — still clickable, so the click can explain why
+   (see App.jsx's attemptNavigate) instead of just silently doing nothing. */
+.sheet-link.locked{ color:var(--text-dim); opacity:0.5; cursor:pointer; }
+.sheet-link.locked:hover{ opacity:0.75; background:none; }
+.sheet-link.locked .sheet-link-icon{ opacity:0.6; }
 
 .sidebar-status{ margin-top:20px; padding:14px 24px; border-top:1px solid var(--line); font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); line-height:1.8; }
 .sidebar-status b{ color:var(--text); }
+
+/* A brief, self-dismissing explanation for why a locked step didn't
+   navigate — appears right under the top progress bar, not a full modal,
+   since it's informational, not blocking. */
+.nav-lock-toast{
+  position:relative; z-index:2; margin:0 auto; max-width:fit-content;
+  transform:translateY(-6px); padding:8px 16px; font-size:12.5px; font-weight:600;
+  color:var(--bg); background:var(--accent); border-radius:0 0 6px 6px;
+  animation:nav-lock-in .18s ease-out;
+}
+@keyframes nav-lock-in{ from{ opacity:0; transform:translateY(-14px); } to{ opacity:1; transform:translateY(-6px); } }
+@media (prefers-reduced-motion: reduce){ .nav-lock-toast{ animation:none; } }
+
+.step-loading{ padding:64px 56px; color:var(--text-dim); font-family:"Space Mono", monospace; font-size:12px; }
 
 /* ---------- Main sheets ---------- */
 .sheets{ min-width:0; }
@@ -279,6 +307,16 @@ svg{ color:var(--text); }
 .track-btn.disabled{ cursor:not-allowed; opacity:0.55; }
 .track-status{ font-family:"Space Mono", monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; padding:2px 6px; border:1px solid var(--line-strong); color:var(--text-dim); }
 .track-status.live{ color:var(--accent); border-color:var(--accent); }
+.track-pick-hint{ margin:-16px 0 20px; font-size:12.5px; color:var(--text-dim); }
+
+.shared-runtime{ border:1px solid var(--line); background:var(--surface); }
+.shared-runtime-head{ padding:10px 14px; font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); border-bottom:1px solid var(--line); }
+.shared-runtime-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); }
+.shared-runtime-col{ background:var(--surface); padding:14px; }
+.shared-runtime-stage{ font-family:"Space Mono", monospace; font-size:9.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
+.shared-runtime-col b{ font-family:"Archivo", sans-serif; font-size:13px; font-weight:700; display:block; }
+.shared-runtime-col p{ margin:6px 0 0; font-size:12px; color:var(--text-dim); line-height:1.5; }
+@media (max-width: 640px){ .shared-runtime-grid{ grid-template-columns:1fr; } }
 
 /* ---------- Stack comparison table (Step 01) ---------- */
 .stack-table{ display:grid; grid-template-columns:160px 1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
@@ -453,7 +491,13 @@ svg{ color:var(--text); }
 .topk-button.active{ background:var(--accent); color:var(--bg); border-color:var(--accent); }
 .topk-button.active:hover:not(:disabled){ background:var(--accent); color:var(--bg); border-color:var(--accent); }
 .retrieve-button{ display:flex; align-items:center; justify-content:center; margin:14px 16px 0 auto; min-width:154px; padding:10px 20px; font-size:14px; text-align:center; }
-.demo-question-list{ display:flex; flex-direction:column; gap:1px; margin:0 16px; background:var(--line); border:1px solid var(--line); }
+.demo-question-disclosure{ margin:0 16px 12px; }
+.demo-question-toggle{
+  font:inherit; font-family:"Space Mono", monospace; font-size:11px; color:var(--text-dim);
+  background:none; border:none; padding:0; cursor:pointer;
+}
+.demo-question-toggle:hover{ color:var(--text); }
+.demo-question-list{ display:flex; flex-direction:column; gap:1px; margin:10px 0 0; background:var(--line); border:1px solid var(--line); }
 .demo-question{ text-align:left; padding:12px 14px; background:var(--surface); color:var(--text-dim); font:inherit; font-size:12.5px; line-height:1.5; border:none; cursor:pointer; }
 .demo-question:hover{ background:var(--surface-2); color:var(--text); }
 .demo-question.active{ background:var(--accent-wash); color:var(--text); box-shadow:inset 2px 0 0 var(--accent); }
@@ -496,6 +540,8 @@ svg{ color:var(--text); }
 .prompt-evidence-caret{ font-family:"Space Mono", monospace; color:var(--text-dim); flex-shrink:0; }
 .prompt-evidence-text{ margin:0 16px 14px; padding:12px 14px; border:1px solid var(--line); background:var(--bg); color:var(--text-dim); font-size:12px; line-height:1.65; white-space:pre-wrap; }
 .prompt-panel-foot{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 16px; font-family:"Space Mono", monospace; font-size:10.5px; color:var(--text-dim); }
+.prompt-panel-foot-actions{ display:flex; gap:8px; }
+.full-prompt-block{ margin:0 16px 16px; white-space:pre-wrap; word-break:break-word; font-size:11.5px; line-height:1.6; max-height:420px; overflow-y:auto; }
 .augment-note{ margin-top:20px; padding:12px 16px; border-left:2px solid var(--accent); background:var(--accent-wash); color:var(--text-dim); font-size:12px; line-height:1.6; }
 .augment-note b{ color:var(--text); }
 .generation-layout{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px; }
@@ -504,7 +550,10 @@ svg{ color:var(--text); }
 .answer-panel{ margin-top:20px; }
 .answer-body{ min-height:150px; padding:22px 18px; color:var(--text-dim); background:var(--bg); font-size:15px; line-height:1.7; }
 .answer-body.ready{ color:var(--text); }
-.generate-button{ display:flex; margin:14px 16px 16px auto; padding:10px 18px; font-size:13.5px; }
+.generate-actions-row{ display:flex; justify-content:flex-end; align-items:center; gap:10px; margin:14px 16px 16px; }
+.generate-button{ padding:10px 18px; font-size:13.5px; }
+.restart-rag-button{ padding:10px 16px; font-size:12.5px; color:var(--text-dim); }
+.restart-rag-button:hover:not(:disabled){ color:var(--accent); border-color:var(--accent); }
 
 /* ---------- Step 08: real usage/timing readout after a live generation ---------- */
 .usage-strip{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:0 16px; padding:12px 0; border-top:1px solid var(--line); }
@@ -528,14 +577,24 @@ svg{ color:var(--text); }
    card to open a detail panel below the grid instead of navigating away.
    Master/detail, not accordion-per-card, so the 3-column grid never
    reflows awkwardly when one card expands. ---------- */
-.stage-btn{ display:block; width:100%; text-align:left; font:inherit; cursor:pointer; border:none; background:var(--surface); padding:20px 18px; }
+.stage-btn{ display:block; width:100%; text-align:left; font:inherit; cursor:pointer; border:none; background:var(--surface); padding:20px 18px; opacity:1; transition:opacity .18s ease, background .15s ease; }
 .stage-btn.live{ box-shadow:inset 2px 0 0 var(--accent); }
 .stage-btn:hover{ background:var(--surface-2); }
+.stage-btn.dimmed{ opacity:0.4; }
 .stage-btn.expanded{ background:var(--surface-2); box-shadow:inset 2px 0 0 var(--accent), inset 0 -2px 0 var(--accent); }
 .stage-expand-hint{ margin-top:10px; font-family:"Space Mono", monospace; font-size:10px; color:var(--text-dim); letter-spacing:0.04em; text-transform:uppercase; display:flex; align-items:center; gap:5px; }
 .stage-btn.expanded .stage-expand-hint{ color:var(--accent); }
 
-.stage-detail{ margin-top:1px; border:1px solid var(--line); border-top:none; background:var(--surface-2); padding:22px 24px; }
+/* Animated height wrapper (the "0fr / 1fr grid-template-rows" trick) so
+   the detail panel below the stage grid can expand/collapse smoothly
+   without ever needing a measured pixel height in JS, and — the actual
+   point of moving it here — without reflowing the grid above it, since
+   this sits after the grid entirely instead of injected as a grid item. */
+.stage-detail-wrap{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .28s ease; margin-top:1px; }
+.stage-detail-wrap.open{ grid-template-rows:1fr; }
+.stage-detail-inner{ overflow:hidden; }
+.stage-detail{ border:1px solid var(--line); border-top:none; background:var(--surface-2); padding:22px 24px; }
+.stage-detail-title{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
 .stage-detail-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
 .stage-detail h4{ font-family:"Space Mono", monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
 .stage-detail-tech{ display:flex; flex-direction:column; gap:6px; }
@@ -554,6 +613,7 @@ svg{ color:var(--text); }
 .stage-live-result .sys-status-dot{ margin-top:4px; }
 .stage-live-result.up{ color:#3ECF6E; }
 .stage-live-result.down{ color:#E05B5B; }
+.stage-live-result.waking{ color:#E8B923; }
 @media (max-width: 900px){
   .stage-detail-grid{ grid-template-columns:1fr; }
 }

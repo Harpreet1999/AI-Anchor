@@ -36,22 +36,12 @@ export default function PipelineTimeline({ activeStep }) {
   };
 
   const currentIndex = STEP_TO_STAGE_INDEX[activeStep];
-  const currentStage = currentIndex !== undefined ? STAGES[currentIndex] : null;
 
   return (
     <aside className={`timeline-rail${collapsed ? " collapsed" : ""}`} aria-label="Live pipeline position">
       <button type="button" className="timeline-toggle" onClick={toggle} aria-expanded={!collapsed} title={collapsed ? "Show pipeline timeline" : "Hide pipeline timeline"}>
         <ArrowRight2 size={13} variant="Outline" color="currentColor" style={{ transform: collapsed ? "rotate(180deg)" : undefined, transition: "transform .15s" }} />
       </button>
-
-      {/* Collapsed: rail shrinks to just the toggle, plus a small pulsing
-          glyph for the current stage so it still reads live at a glance. */}
-      {collapsed && currentStage && (
-        <div className="timeline-collapsed-current" title={`Live — stage ${currentIndex + 1} of ${STAGES.length}: ${currentStage.title}`}>
-          <currentStage.Icon />
-          <span className="timeline-pulse" aria-hidden="true" />
-        </div>
-      )}
 
       {!collapsed && (
         <div className="timeline-body">

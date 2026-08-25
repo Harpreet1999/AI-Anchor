@@ -2,6 +2,7 @@ import { useState } from "react";
 import CopyButton from "./CopyButton.jsx";
 import JsonBlock from "./JsonBlock.jsx";
 import StepNav from "./StepNav.jsx";
+import { useSystemStatus } from "../lib/systemStatus.jsx";
 
 const DATASETS = {
   career: "Portfolio Data",
@@ -20,7 +21,8 @@ function describeError(status, message) {
   return message || "Generation failed.";
 }
 
-export default function Step8Generate({ track, selectedId, retrievalData, onBack }) {
+export default function Step8Generate({ track, selectedId, retrievalData, onBack, onRestartRag }) {
+  const systemStatus = useSystemStatus();
   const [answer, setAnswer] = useState("");
   const [model, setModel] = useState("");
   const [usage, setUsage] = useState(null);
@@ -57,6 +59,10 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
       setTruncated(Boolean(data.truncated));
       setLatencyMs(Math.round(performance.now() - started));
       setRawResponse(data);
+      // Same principle as Step 06's retrieval call — a real answer just
+      // came back, so the shared status truth should say "up" right now,
+      // not wait for the next scheduled poll.
+      systemStatus?.markUp("groq", data.model ? { message: `Live — ${data.model}` } : undefined);
     } catch (generationError) {
       console.error(generationError);
       setError(describeError(generationError.status ?? 0, generationError.message));
@@ -128,9 +134,21 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
           <pre className="chunk-block raw-response-block"><JsonBlock value={rawResponse} /></pre>
         )}
 
-        <button className="chunk-nav-btn generate-button" type="button" onClick={handleGenerate} disabled={loading || !results.length}>
-          {loading ? "Generating…" : answer ? "Generate again" : "Generate answer"}
-        </button>
+        <div className="generate-actions-row">
+          <button className="chunk-nav-btn generate-button" type="button" onClick={handleGenerate} disabled={loading || !results.length}>
+            {loading ? "Generating…" : answer ? "Generate again" : "Generate answer"}
+          </button>
+          {onRestartRag && (
+            <button
+              className="chunk-nav-btn restart-rag-button"
+              type="button"
+              onClick={onRestartRag}
+              title={`Back to Step 06 — ${trackName === "NODE.JS" ? "Node" : "Python"} track and ${datasetName} stay selected`}
+            >
+              ↻ Perform another RAG in same stack
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="augment-note">

@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { LockCircle } from "iconsax-react";
 import Sidebar from "./components/Sidebar.jsx";
 import TopProgress from "./components/TopProgress.jsx";
 import Masthead from "./components/Masthead.jsx";
@@ -102,7 +103,12 @@ function App() {
     }
     setLockedMsg(lockReason(n, activeStep, track));
     clearTimeout(lockedTimerRef.current);
-    lockedTimerRef.current = setTimeout(() => setLockedMsg(""), 3200);
+    lockedTimerRef.current = setTimeout(() => setLockedMsg(""), 3600);
+  };
+
+  const dismissLockedMsg = () => {
+    clearTimeout(lockedTimerRef.current);
+    setLockedMsg("");
   };
 
   // Switching track mid-flow used to leave selectedId/retrievalData from
@@ -149,7 +155,15 @@ function App() {
       <Masthead />
       <TopProgress active={activeStep} onNavigate={attemptNavigate} maxStep={maxStep} />
       {lockedMsg && (
-        <div className="nav-lock-toast" role="status" aria-live="polite">{lockedMsg}</div>
+        // Fixed to the viewport, not tucked under the top bar — the old
+        // spot was easy to miss entirely if that bar had already scrolled
+        // out of view when a locked step got clicked. This floats above
+        // everything and stays put regardless of scroll position.
+        <div className="nav-lock-toast" role="status" aria-live="polite">
+          <LockCircle size={16} variant="Bold" color="currentColor" className="nav-lock-toast-icon" />
+          <span>{lockedMsg}</span>
+          <button type="button" className="nav-lock-toast-close" onClick={dismissLockedMsg} aria-label="Dismiss">✕</button>
+        </div>
       )}
       <div className="layout">
         <Sidebar

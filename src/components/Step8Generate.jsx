@@ -2,6 +2,7 @@ import { useState } from "react";
 import CopyButton from "./CopyButton.jsx";
 import JsonBlock from "./JsonBlock.jsx";
 import StepNav from "./StepNav.jsx";
+import AnswerMarkdown from "./AnswerMarkdown.jsx";
 import { useSystemStatus } from "../lib/systemStatus.jsx";
 
 const DATASETS = {
@@ -32,6 +33,8 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
   const [showRaw, setShowRaw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [contextChunksUsed, setContextChunksUsed] = useState(null);
+  const [contextChunksRequested, setContextChunksRequested] = useState(null);
   const results = retrievalData?.results || [];
   const question = retrievalData?.question || "No retrieved question available.";
   const trackName = track === "node" ? "NODE.JS" : "PYTHON";
@@ -59,6 +62,8 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
       setTruncated(Boolean(data.truncated));
       setLatencyMs(Math.round(performance.now() - started));
       setRawResponse(data);
+      setContextChunksUsed(data.contextChunksUsed ?? null);
+      setContextChunksRequested(data.contextChunksRequested ?? null);
       // Same principle as Step 06's retrieval call — a real answer just
       // came back, so the shared status truth should say "up" right now,
       // not wait for the next scheduled poll.
@@ -105,8 +110,16 @@ export default function Step8Generate({ track, selectedId, retrievalData, onBack
       <div className="retrieval-panel answer-panel">
         <div className="retrieval-panel-head"><span>GENERATED ANSWER</span><span>{loading ? "GENERATING…" : "GROQ"}</span></div>
         <div className={`answer-body${answer ? " ready" : ""}`}>
-          {answer || "Run generation to produce a grounded answer."}
+          {answer ? <AnswerMarkdown text={answer} /> : "Run generation to produce a grounded answer."}
         </div>
+
+        {contextChunksUsed !== null && contextChunksRequested !== null && contextChunksUsed < contextChunksRequested && (
+          <p className="retrieval-note" style={{ color: "#E8B923" }}>
+            Only {contextChunksUsed} of the {contextChunksRequested} retrieved chunks were actually
+            sent to the model — the rest didn't fit this request's token budget (the lowest-ranked
+            ones were dropped first).
+          </p>
+        )}
 
         {truncated && (
           <p className="retrieval-note" style={{ color: "#E8B923" }}>

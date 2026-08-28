@@ -238,6 +238,12 @@ export default function Step6RetrievalPlan({ track, selectedId, onBack, onNext }
               <span className="topk-label">Top K</span>
               <button type="button" className={`chunk-nav-btn topk-button${topK === 3 ? " active" : ""}`} onClick={() => { setTopK(3); setResults([]); }}>3</button>
               <button type="button" className={`chunk-nav-btn topk-button${topK === 5 ? " active" : ""}`} onClick={() => { setTopK(5); setResults([]); }}>5</button>
+              {/* 10 is genuinely safe to offer now — generateAnswer() trims
+                  evidence to a token budget itself (see api/_lib/groq.mjs),
+                  so a bigger topK request just means "use up to this many,
+                  budget permitting" instead of risking an oversized request
+                  the way it would have before that fix. */}
+              <button type="button" className={`chunk-nav-btn topk-button${topK === 10 ? " active" : ""}`} onClick={() => { setTopK(10); setResults([]); }}>10</button>
             </div>
             <button className="chunk-nav-btn retrieve-button" type="submit" disabled={loading || !nodeDataset}>
               {loading ? <span className="loading-pulse">Searching…</span> : "Run retrieval"}
